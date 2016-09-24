@@ -22,13 +22,36 @@
 -keepclasseswithmembernames class * {
     @com.f2prateek.dart.* <fields>;
 }
-#for dart 2.0 only
+
+# Dart
 -keep class **Henson { *; }
 -keep class **$$IntentBuilder { *; }
 
-# Parcel library
+# Parceler
 -keep interface org.parceler.Parcel
 -keep @org.parceler.Parcel class * { *; }
 -keep class **$$Parcelable { *; }
 
+# Retrolambda
 -dontwarn java.lang.invoke.*
+
+# LeakCanary
+-dontwarn com.squareup.haha.guava.**
+-dontwarn com.squareup.haha.perflib.**
+-dontwarn com.squareup.haha.trove.**
+-dontwarn com.squareup.leakcanary.**
+-keep class com.squareup.haha.** { *; }
+-keep class com.squareup.leakcanary.** { *; }
+-dontwarn android.app.Notification
+
+# Glide
+-keep public class * implements com.bumptech.glide.module.GlideModule
+-keep public enum com.bumptech.glide.load.resource.bitmap.ImageHeaderParser$** {
+  **[] $VALUES;
+  public *;
+}
+-keepresourcexmlelements manifest/application/meta-data@value=GlideModule
+
+# Firebase
+-keepattributes Signature
+-keepattributes *Annotation*

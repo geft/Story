@@ -21,6 +21,11 @@ public class HomeActivity extends CoreActivity<HomePresenter, HomeViewModel> {
     }
 
     @Override
+    protected HomePresenter createPresenter() {
+        return new HomePresenter(getViewModel());
+    }
+
+    @Override
     protected ViewDataBinding initBinding(HomeViewModel viewModel) {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_home);
         binding.setViewModel(viewModel);
