@@ -17,6 +17,8 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import com.mager.story.R;
 import com.mager.story.util.FirebaseUtil;
 
+import static com.mager.story.util.FirebaseUtil.RC_SIGN_IN;
+
 /**
  * Created by Gerry on 25/09/2016.
  */
@@ -24,7 +26,6 @@ import com.mager.story.util.FirebaseUtil;
 public class SignInActivity extends AppCompatActivity {
 
     private final String TAG = this.getClass().getName();
-    private static final int RC_SIGN_IN = 100;
 
     private GoogleApiClient googleApiClient;
 

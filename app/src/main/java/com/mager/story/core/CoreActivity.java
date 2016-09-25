@@ -7,12 +7,16 @@ import android.os.Parcelable;
 import android.util.Log;
 
 import com.f2prateek.dart.Dart;
+import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.mager.story.BuildConfig;
 import com.mager.story.R;
 import com.squareup.leakcanary.LeakCanary;
 
 import org.parceler.Parcels;
+
+import static com.mager.story.util.FirebaseUtil.RC_SIGN_IN;
 
 /**
  * Created by Gerry on 23/09/2016.
@@ -64,9 +68,14 @@ public abstract class CoreActivity<P extends CorePresenter, VM extends CoreViewM
 
         authStateListener = firebaseAuth1 -> {
             FirebaseUser user = firebaseAuth1.getCurrentUser();
-
             if (user == null) {
                 Log.d(TAG, getString(R.string.auth_signed_out));
+                startActivityForResult(
+                        AuthUI.getInstance()
+                                .createSignInIntentBuilder()
+                                .setIsSmartLockEnabled(!BuildConfig.DEBUG)
+                                .build(),
+                        RC_SIGN_IN);
             } else {
                 Log.d(TAG, getString(
                         R.string.auth_signed_in,
