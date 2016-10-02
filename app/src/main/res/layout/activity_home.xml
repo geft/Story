@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout 
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
     
     <data>
@@ -8,12 +8,31 @@
             name="viewModel"
             type="com.mager.story.home.HomeViewModel" />
     </data>
-    
-    <LinearLayout
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        
-        
-    </LinearLayout>
+        android:layout_height="match_parent"
+        android:padding="@dimen/double_padding">
+
+        <com.rengwuxian.materialedittext.MaterialEditText
+            android:id="@+id/edit_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_margin="@dimen/default_padding"
+            android:hint="@string/auth_edit_text_hint"
+            android:inputType="textPassword"
+            android:maxLength="12"
+            app:met_clearButton="true"
+            tools:text="" />
+
+        <com.google.android.gms.common.SignInButton
+            android:id="@+id/button_sign_in"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/edit_text"
+            android:layout_centerHorizontal="true" />
+
+    </RelativeLayout>
 
 </layout>

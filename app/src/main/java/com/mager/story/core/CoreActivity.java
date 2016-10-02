@@ -1,29 +1,23 @@
 package com.mager.story.core;
 
-import android.app.Activity;
 import android.databinding.ViewDataBinding;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.util.Log;
+import android.support.v4.app.FragmentActivity;
 
 import com.f2prateek.dart.Dart;
-import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.mager.story.BuildConfig;
-import com.mager.story.R;
+import com.mager.story.util.FirebaseHelper;
 import com.squareup.leakcanary.LeakCanary;
 
 import org.parceler.Parcels;
-
-import static com.mager.story.util.FirebaseUtil.RC_SIGN_IN;
 
 /**
  * Created by Gerry on 23/09/2016.
  */
 
 public abstract class CoreActivity<P extends CorePresenter, VM extends CoreViewModel>
-        extends Activity {
+        extends FragmentActivity {
 
     private static final String TAG = "AUTH";
     private static final String PARCEL = "PARCEL";
@@ -40,11 +34,17 @@ public abstract class CoreActivity<P extends CorePresenter, VM extends CoreViewM
 
         initLeakCanary();
         initDart();
-        initAuth();
+        initFirebase();
 
         presenter = createPresenter();
-        viewModel = getViewModel();
+        viewModel = createViewModel();
+
         initBinding(viewModel);
+    }
+
+    private void initFirebase() {
+        firebaseAuth = FirebaseAuth.getInstance();
+        authStateListener = FirebaseHelper.getFirebaseAuthListener();
     }
 
     @Override
@@ -63,29 +63,6 @@ public abstract class CoreActivity<P extends CorePresenter, VM extends CoreViewM
         }
     }
 
-    private void initAuth() {
-        firebaseAuth = FirebaseAuth.getInstance();
-
-        authStateListener = firebaseAuth1 -> {
-            FirebaseUser user = firebaseAuth1.getCurrentUser();
-            if (user == null) {
-                Log.d(TAG, getString(R.string.auth_signed_out));
-                startActivityForResult(
-                        AuthUI.getInstance()
-                                .createSignInIntentBuilder()
-                                .setIsSmartLockEnabled(!BuildConfig.DEBUG)
-                                .build(),
-                        RC_SIGN_IN);
-            } else {
-                Log.d(TAG, getString(
-                        R.string.auth_signed_in,
-                        user.getDisplayName(),
-                        user.getUid(),
-                        user.getEmail()));
-            }
-        };
-    }
-
     private void initDart() {
         Dart.inject(this);
     }
@@ -101,7 +78,7 @@ public abstract class CoreActivity<P extends CorePresenter, VM extends CoreViewM
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        Parcelable parcelable = Parcels.wrap(getViewModel().getClass(), getViewModel());
+        Parcelable parcelable = Parcels.wrap(createViewModel().getClass(), createViewModel());
         outState.putParcelable(PARCEL, parcelable);
 
         super.onSaveInstanceState(outState);
@@ -114,13 +91,17 @@ public abstract class CoreActivity<P extends CorePresenter, VM extends CoreViewM
         viewModel = Parcels.unwrap(savedInstanceState.getParcelable(PARCEL));
     }
 
-    protected abstract VM getViewModel();
+    protected abstract VM createViewModel();
 
     protected abstract P createPresenter();
+
+    protected abstract ViewDataBinding initBinding(VM viewModel);
 
     protected P getPresenter() {
         return presenter;
     }
 
-    protected abstract ViewDataBinding initBinding(VM viewModel);
+    protected VM getViewModel() {
+        return viewModel;
+    }
 }

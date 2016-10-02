@@ -1,8 +1,8 @@
 package com.mager.story;
 
 import android.app.Application;
-import android.content.Context;
 
+import com.google.firebase.FirebaseApp;
 import com.squareup.leakcanary.LeakCanary;
 
 /**
@@ -15,7 +15,12 @@ public class StoryApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
+        initFirebase();
         initLeakCanary();
+    }
+
+    private void initFirebase() {
+        FirebaseApp.initializeApp(this);
     }
 
     private void initLeakCanary() {
