@@ -17,6 +17,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.mager.story.R;
+import com.mager.story.menu.Henson;
 
 import java.util.Arrays;
 
@@ -27,8 +28,8 @@ import java.util.Arrays;
 public class FirebaseHelper {
     public static final int RC_SIGN_IN = 100;
     private static final String TAG = "Firebase";
-    private static final String encryptedPassword = "gtpaGltYXdhcmk=";
-    private static final String encryptedClientId = "sHbNTE1Mzk2MTM2NDkyLTkycjBpNnM3bm5xdTd1NzFvNHYyYm1nNmNtYnIwdXIxLmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQuY29t";
+    private static final String encryptedPassword = "=kmchdXYtlGa";
+    private static final String clientId = "515396136492-92r0i6s7nnqu7u71o4v2bmg6cmbr0ur1.apps.googleusercontent.com";
 
     private GoogleApiClient googleApiClient;
     private FragmentActivity activity;
@@ -58,28 +59,27 @@ public class FirebaseHelper {
      */
     private String getClientId(String password) {
         if (isPasswordValid(password)) {
-            return Arrays.toString(
-                    Base64.decode(getBytesFromEncryptedString(encryptedClientId), Base64.DEFAULT));
+            return clientId;
         } else {
             return "null";
         }
     }
 
     private boolean isPasswordValid(String password) {
-        return Arrays.equals(
-                getBytesFromEncryptedString(encryptedPassword),
-                Base64.encode(password.getBytes(), Base64.DEFAULT));
+        byte[] decryptedPassword = getBytesFromEncryptedString(encryptedPassword);
+        byte[] encodedInputPassword = Base64.encode(password.getBytes(), Base64.NO_WRAP);
+        return Arrays.equals(decryptedPassword, encodedInputPassword);
     }
 
     private byte[] getBytesFromEncryptedString(String key) {
-        return key.substring(3).getBytes();
+        return new StringBuilder(key).reverse().toString().getBytes();
     }
 
     @NonNull
     private GoogleApiClient getGoogleAPIClient(FragmentActivity activity, GoogleSignInOptions gso) {
         return new GoogleApiClient.Builder(activity)
                 .enableAutoManage(activity, connectionResult -> ResourceUtil.showToast(
-                        activity, activity.getString(R.string.error_connection_fail)))
+                        activity, activity.getString(R.string.auth_connection_fail)))
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
     }
@@ -98,8 +98,8 @@ public class FirebaseHelper {
     @Nullable
     public GoogleSignInAccount handleSignInResult(Intent data) {
         GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-
         Log.d(TAG, "handleSignInResult:" + result.isSuccess());
+
         if (result.isSuccess()) {
             return result.getSignInAccount();
         } else {
@@ -117,6 +117,8 @@ public class FirebaseHelper {
 
                     if (task.isSuccessful()) {
                         ResourceUtil.showToast(activity, activity.getString(R.string.auth_sign_in_success));
+                        Log.d(TAG, activity.getString(R.string.auth_signed_in, account.getDisplayName(), account.getEmail()));
+                        activity.startActivity(Henson.with(activity).gotoMenuActivity().build());
                     } else {
                         Log.d(TAG, "signInWithCredential", task.getException());
                         ResourceUtil.showToast(activity, activity.getString(R.string.auth_sign_in_fail));

@@ -6,6 +6,12 @@
     <string name="auth_signed_out">User is signed out</string>
     <string name="auth_sign_in_success">Successfully signed in</string>
     <string name="auth_sign_in_fail">Failed to sign in</string>
+    <string name="auth_connection_fail">Failed to connect</string>
 
-    <string name="error_connection_fail">Failed to connect</string>
+    <string name="menu_title">Main Menu</string>
+    <string name="menu_button_story">Story</string>
+    <string name="menu_button_photo">Photo</string>
+    <string name="menu_button_audio">Audio</string>
+
+    <string name="action_settings">Settings</string>
 </resources>

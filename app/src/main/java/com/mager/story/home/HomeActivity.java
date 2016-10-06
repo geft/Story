@@ -68,17 +68,14 @@ public class HomeActivity
             GoogleSignInAccount account = firebaseHelper.handleSignInResult(data);
 
             if (account != null) {
-                handleSignInSuccess(account);
+                firebaseHelper.firebaseAuthWithGoogle(account);
             } else {
-                ResourceUtil.showToast(this, getString(R.string.auth_sign_in_fail));
+                handleSignInFail();
             }
         }
     }
 
-    private void handleSignInSuccess(GoogleSignInAccount account) {
-        Log.d(TAG, getString(
-                R.string.auth_signed_in, account.getDisplayName(), account.getEmail()));
-        ResourceUtil.showToast(this, getString(R.string.auth_sign_in_success));
-        startActivity(new Intent(this, HomeActivity.class));
+    private void handleSignInFail() {
+        ResourceUtil.showToast(this, getString(R.string.auth_sign_in_fail));
     }
 }

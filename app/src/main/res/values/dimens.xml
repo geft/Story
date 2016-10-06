@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- padding -->
     <dimen name="zero">0dp</dimen>
     <dimen name="one">1dp</dimen>
     <dimen name="half_padding">8dp</dimen>
     <dimen name="default_padding">16dp</dimen>
     <dimen name="double_padding">32dp</dimen>
+
+    <!-- shape -->
+    <dimen name="default_radius">4dp</dimen>
+    <dimen name="half_radius">2dp</dimen>
 </resources>

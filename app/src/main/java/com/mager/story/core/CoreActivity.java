@@ -78,7 +78,7 @@ public abstract class CoreActivity<P extends CorePresenter, VM extends CoreViewM
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        Parcelable parcelable = Parcels.wrap(createViewModel().getClass(), createViewModel());
+        Parcelable parcelable = Parcels.wrap(viewModel.getClass(), viewModel);
         outState.putParcelable(PARCEL, parcelable);
 
         super.onSaveInstanceState(outState);
@@ -88,7 +88,9 @@ public abstract class CoreActivity<P extends CorePresenter, VM extends CoreViewM
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
 
-        viewModel = Parcels.unwrap(savedInstanceState.getParcelable(PARCEL));
+        if (savedInstanceState != null) {
+            viewModel = Parcels.unwrap(savedInstanceState.getParcelable(PARCEL));
+        }
     }
 
     protected abstract VM createViewModel();
