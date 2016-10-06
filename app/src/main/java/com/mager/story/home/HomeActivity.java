@@ -5,6 +5,7 @@ import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.common.SignInButton;
@@ -21,7 +22,8 @@ import static com.mager.story.util.FirebaseHelper.RC_SIGN_IN;
  */
 
 public class HomeActivity
-        extends CoreActivity<HomePresenter, HomeViewModel> {
+        extends CoreActivity<HomePresenter, HomeViewModel>
+        implements View.OnClickListener {
 
     private final String TAG = this.getClass().getName();
 
@@ -47,21 +49,6 @@ public class HomeActivity
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        firebaseHelper = new FirebaseHelper(this, "himawari");
-
-        initSignInButton();
-    }
-
-    private void initSignInButton() {
-        SignInButton button = (SignInButton) findViewById(R.id.button_sign_in);
-        button.setOnClickListener(view ->
-                startActivityForResult(firebaseHelper.getSignInIntent(), RC_SIGN_IN));
-    }
-
-    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == RC_SIGN_IN && resultCode == RESULT_OK) {
@@ -77,5 +64,13 @@ public class HomeActivity
 
     private void handleSignInFail() {
         ResourceUtil.showToast(this, getString(R.string.auth_sign_in_fail));
+    }
+
+    @Override
+    public void onClick(View view) {
+        if (view.equals(binding.buttonSignIn)) {
+            firebaseHelper = new FirebaseHelper(this, getViewModel().getPassword());
+            startActivityForResult(firebaseHelper.getSignInIntent(), RC_SIGN_IN);
+        }
     }
 }

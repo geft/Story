@@ -4,12 +4,14 @@ import android.databinding.ViewDataBinding;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 
 import com.f2prateek.dart.Dart;
 import com.google.firebase.auth.FirebaseAuth;
 import com.mager.story.util.FirebaseHelper;
 import com.squareup.leakcanary.LeakCanary;
 
+import org.parceler.ParcelerRuntimeException;
 import org.parceler.Parcels;
 
 /**
@@ -78,8 +80,12 @@ public abstract class CoreActivity<P extends CorePresenter, VM extends CoreViewM
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        Parcelable parcelable = Parcels.wrap(viewModel.getClass(), viewModel);
-        outState.putParcelable(PARCEL, parcelable);
+        try {
+            Parcelable parcelable = Parcels.wrap(viewModel.getClass(), viewModel);
+            outState.putParcelable(PARCEL, parcelable);
+        } catch (ParcelerRuntimeException e) {
+            Log.d(TAG, "Unable to parcel " + viewModel.getClass().getCanonicalName());
+        }
 
         super.onSaveInstanceState(outState);
     }
