@@ -44,6 +44,7 @@ public class HomeActivity
     protected ViewDataBinding initBinding(HomeViewModel viewModel) {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_home);
         binding.setViewModel(viewModel);
+        binding.setOnClickListener(this);
 
         return binding;
     }

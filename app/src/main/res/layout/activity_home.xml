@@ -37,7 +37,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/edit_text"
             android:layout_centerHorizontal="true"
-            android:onClick="@{onClickListener::onClick}" />
+            android:onClick="@{onClickListener}" />
 
     </RelativeLayout>
 </layout>

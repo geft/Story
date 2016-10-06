@@ -11,7 +11,6 @@ import org.parceler.Parcel;
  * Created by Gerry on 24/09/2016.
  */
 
-@Parcel
 public class HomeViewModel extends CoreViewModel {
 
     protected String password;
