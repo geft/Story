@@ -11,17 +11,18 @@ import org.parceler.Parcel;
  * Created by Gerry on 24/09/2016.
  */
 
+@Parcel
 public class HomeViewModel extends CoreViewModel {
 
-    protected String password;
+    protected String key;
 
     @Bindable
-    public String getPassword() {
-        return password;
+    public String getKey() {
+        return key;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-        notifyPropertyChanged(BR.password);
+    public void setKey(String key) {
+        this.key = key;
+        notifyPropertyChanged(BR.key);
     }
 }

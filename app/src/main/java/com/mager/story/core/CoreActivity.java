@@ -8,7 +8,7 @@ import android.util.Log;
 
 import com.f2prateek.dart.Dart;
 import com.google.firebase.auth.FirebaseAuth;
-import com.mager.story.util.FirebaseHelper;
+import com.mager.story.util.FirebaseUtil;
 import com.squareup.leakcanary.LeakCanary;
 
 import org.parceler.ParcelerRuntimeException;
@@ -38,15 +38,16 @@ public abstract class CoreActivity<P extends CorePresenter, VM extends CoreViewM
         initDart();
         initFirebase();
 
-        presenter = createPresenter();
         viewModel = createViewModel();
+        presenter = createPresenter();
+        presenter.setContext(this);
 
         initBinding(viewModel);
     }
 
     private void initFirebase() {
         firebaseAuth = FirebaseAuth.getInstance();
-        authStateListener = FirebaseHelper.getFirebaseAuthListener();
+        authStateListener = FirebaseUtil.getFirebaseAuthListener();
     }
 
     @Override
@@ -81,10 +82,10 @@ public abstract class CoreActivity<P extends CorePresenter, VM extends CoreViewM
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         try {
-            Parcelable parcelable = Parcels.wrap(viewModel.getClass(), viewModel);
+            Parcelable parcelable = Parcels.wrap(viewModel);
             outState.putParcelable(PARCEL, parcelable);
         } catch (ParcelerRuntimeException e) {
-            Log.d(TAG, "Unable to parcel " + viewModel.getClass().getCanonicalName());
+            Log.w(TAG, "Unable to parcel " + viewModel.getClass().getCanonicalName());
         }
 
         super.onSaveInstanceState(outState);

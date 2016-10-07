@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
-import android.util.Base64;
 import android.util.Log;
 
 import com.google.android.gms.auth.api.Auth;
@@ -19,25 +18,22 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import com.mager.story.R;
 import com.mager.story.menu.Henson;
 
-import java.util.Arrays;
-
 /**
  * Created by Gerry on 25/09/2016.
  */
 
-public class FirebaseHelper {
-    public static final int RC_SIGN_IN = 100;
+public class FirebaseUtil {
     private static final String TAG = "Firebase";
-    private static final String encryptedPassword = "=kmchdXYtlGa";
+    private static final String reversedHash = "03d6e83e5956797cee0b02370cb33d5f";
     private static final String clientId = "515396136492-92r0i6s7nnqu7u71o4v2bmg6cmbr0ur1.apps.googleusercontent.com";
 
     private GoogleApiClient googleApiClient;
     private FragmentActivity activity;
 
-    public FirebaseHelper(FragmentActivity activity, String password) {
+    public FirebaseUtil(FragmentActivity activity, String key) {
         this.activity = activity;
 
-        GoogleSignInOptions gso = getSignInOptions(password);
+        GoogleSignInOptions gso = getSignInOptions(key);
         googleApiClient = getGoogleAPIClient(activity, gso);
     }
 
@@ -52,27 +48,17 @@ public class FirebaseHelper {
         };
     }
 
-    /**
-     * encryption  Base64
-     * password    himawari
-     * client id   515396136492-92r0i6s7nnqu7u71o4v2bmg6cmbr0ur1.apps.googleusercontent.com
-     */
-    private String getClientId(String password) {
-        if (isPasswordValid(password)) {
+    private String getClientId(String key) {
+        if (isPasswordValid(key)) {
             return clientId;
         } else {
             return "null";
         }
     }
 
-    private boolean isPasswordValid(String password) {
-        byte[] decryptedPassword = getBytesFromEncryptedString(encryptedPassword);
-        byte[] encodedInputPassword = Base64.encode(password.getBytes(), Base64.NO_WRAP);
-        return Arrays.equals(decryptedPassword, encodedInputPassword);
-    }
-
-    private byte[] getBytesFromEncryptedString(String key) {
-        return new StringBuilder(key).reverse().toString().getBytes();
+    private boolean isPasswordValid(String key) {
+        String encryptedInput = new StringBuilder(EncryptionUtil.MD5(key)).reverse().toString();
+        return encryptedInput.equals(reversedHash);
     }
 
     @NonNull
@@ -84,9 +70,9 @@ public class FirebaseHelper {
                 .build();
     }
 
-    private GoogleSignInOptions getSignInOptions(String password) {
+    private GoogleSignInOptions getSignInOptions(String key) {
         return new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getClientId(password))
+                .requestIdToken(getClientId(key))
                 .requestEmail()
                 .build();
     }

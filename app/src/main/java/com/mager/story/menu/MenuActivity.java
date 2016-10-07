@@ -7,8 +7,6 @@ import android.view.View;
 import com.f2prateek.dart.HensonNavigable;
 import com.mager.story.R;
 import com.mager.story.core.CoreActivity;
-import com.mager.story.core.CorePresenter;
-import com.mager.story.core.CoreViewModel;
 import com.mager.story.databinding.ActivityMenuBinding;
 
 /**
@@ -34,6 +32,7 @@ public class MenuActivity extends CoreActivity<MenuPresenter, MenuViewModel> imp
     protected ViewDataBinding initBinding(MenuViewModel viewModel) {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_menu);
         binding.setViewModel(viewModel);
+        binding.setOnClickListener(this);
 
         return binding;
     }
@@ -42,6 +41,10 @@ public class MenuActivity extends CoreActivity<MenuPresenter, MenuViewModel> imp
     public void onClick(View view) {
         if (view.equals(binding.buttonStory)) {
             getPresenter().goToStory();
+        } else if (view.equals(binding.buttonPhoto)) {
+            getPresenter().goToPhoto();
+        } else if (view.equals(binding.buttonAudio)) {
+            getPresenter().goToAudio();
         }
     }
 }
