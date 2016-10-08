@@ -1,9 +1,9 @@
 package com.mager.story.core;
 
+import android.app.Activity;
 import android.databinding.ViewDataBinding;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 
 import com.f2prateek.dart.Dart;
@@ -19,7 +19,7 @@ import org.parceler.Parcels;
  */
 
 public abstract class CoreActivity<P extends CorePresenter, VM extends CoreViewModel>
-        extends FragmentActivity {
+        extends Activity {
 
     private static final String TAG = "AUTH";
     private static final String PARCEL = "PARCEL";

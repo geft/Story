@@ -26,4 +26,8 @@ public abstract class CorePresenter<VM extends CoreViewModel> {
     public void setContext(Context context) {
         this.context = context;
     }
+
+    protected String getString(int stringId) {
+        return context.getString(stringId);
+    }
 }

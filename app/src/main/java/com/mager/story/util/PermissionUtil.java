@@ -5,8 +5,8 @@ import android.content.Context;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 
-import com.mager.story.util.StoryConstant.PermissionType;
-import com.mager.story.util.StoryConstant.RequestCode;
+import com.mager.story.constant.EnumConstant.PermissionType;
+import com.mager.story.constant.EnumConstant.RequestCode;
 
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 

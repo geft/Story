@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="valid_imei">
+        <item>358240050857507</item>
+    </string-array>
+
+    <string-array name="valid_uid">
+        <item>RiUl89dIAGecXOSyWvz1A17t6g83</item>
+        <item>LrEUGWlvMgTgG703XK9hzR7C12D2</item>
+    </string-array>
+</resources>

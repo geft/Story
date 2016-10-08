@@ -1,13 +1,20 @@
 <resources>
     <string name="app_name">Story</string>
 
-    <string name="auth_edit_text_hint">Enter key</string>
-    <string name="auth_signed_in">User %1$s is signed in with e-mail %2$s</string>
+    <string name="auth_edit_text_email_hint">Enter email</string>
+    <string name="auth_edit_text_password_hint">Enter password</string>
+    <string name="auth_signed_in_format">User is signed in: %s</string>
     <string name="auth_signed_out">User is signed out</string>
     <string name="auth_sign_in_success">Successfully signed in</string>
     <string name="auth_sign_in_fail">Failed to sign in</string>
     <string name="auth_connection_fail">Failed to connect</string>
     <string name="auth_identity_fail">Authentication failed</string>
+
+    <string name="home_email_error_empty">E-mail cannot be empty</string>
+    <string name="home_email_error_invalid">Invalid e-mail format</string>
+    <string name="home_password_error_empty">Password cannot be empty</string>
+    <string name="home_password_error_minimum">Password must have at least 6 characters</string>
+    <string name="home_button_sign_in">Sign In</string>
 
     <string name="menu_title">Main Menu</string>
     <string name="menu_button_story">Story</string>
@@ -16,9 +23,5 @@
     <string name="menu_coming_soon">Coming Soon!</string>
 
     <string name="action_settings">Settings</string>
-
-    <string-array name="valid_imei">
-        <item>358240050857507</item>
-    </string-array>
 
 </resources>

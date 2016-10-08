@@ -10,4 +10,7 @@
     <!-- shape -->
     <dimen name="default_radius">4dp</dimen>
     <dimen name="half_radius">2dp</dimen>
+
+    <!-- component -->
+    <dimen name="edit_text_width">250dp</dimen>
 </resources>

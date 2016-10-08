@@ -1,4 +1,4 @@
-package com.mager.story.util;
+package com.mager.story.constant;
 
 import android.Manifest;
 import android.support.annotation.IntDef;
@@ -11,13 +11,12 @@ import java.lang.annotation.RetentionPolicy;
  * Created by Gerry on 08/10/2016.
  */
 
-public class StoryConstant {
+public class EnumConstant {
 
     @IntDef
     @Retention(RetentionPolicy.SOURCE)
     public @interface RequestCode {
         int PERMISSION = 100;
-        int FIREBASE_SIGN_IN = 101;
     }
 
     @StringDef
