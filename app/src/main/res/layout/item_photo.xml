@@ -8,16 +8,16 @@
             type="com.mager.story.photo.PhotoItem" />
     </data>
 
-    <FrameLayout
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:layout_margin="@dimen/half_padding"
-        android:background="@color/background_grey">
+    <RelativeLayout
+        android:layout_width="@dimen/photo_size"
+        android:layout_height="@dimen/photo_size"
+        android:padding="@dimen/half_padding">
 
         <com.mager.story.common.CustomImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:adjustViewBounds="true"
+            android:scaleType="center"
             app:imageUrl="@{item.url}" />
-    </FrameLayout>
+    </RelativeLayout>
 </layout>

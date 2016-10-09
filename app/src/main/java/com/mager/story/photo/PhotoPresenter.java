@@ -19,9 +19,9 @@ class PhotoPresenter extends CorePresenter<PhotoViewModel> {
         List<PhotoItem> list = getViewModel().items;
 
         PhotoItem item = new PhotoItem();
-        item.setUrl("https://www.google.com/images/nav_logo242_hr.png");
+        item.setUrl("http://www.freeiconspng.com/uploads/multimedia-photo-icon-31.png");
 
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 16; i++) {
             list.add(item);
         }
     }

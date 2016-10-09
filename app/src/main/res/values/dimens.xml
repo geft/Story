@@ -13,4 +13,7 @@
 
     <!-- component -->
     <dimen name="edit_text_width">250dp</dimen>
+
+    <!-- photo -->
+    <dimen name="photo_size">120dp</dimen>
 </resources>

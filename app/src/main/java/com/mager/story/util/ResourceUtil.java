@@ -32,4 +32,14 @@ public class ResourceUtil {
     public static Drawable getDrawable(Context context, int resId) {
         return ContextCompat.getDrawable(context, resId);
     }
+
+    public static int getDimenInPx(Context context, int dimenId) {
+        return (int) context.getResources().getDimension(dimenId);
+    }
+
+    public static int getDimenInDp(Context context, int dimenId) {
+        return ViewUtil.pxToDp(context, getDimenInPx(context, dimenId));
+    }
+
+
 }

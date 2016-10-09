@@ -11,6 +11,8 @@ import com.mager.story.R;
 import com.mager.story.core.BindAdapter;
 import com.mager.story.core.CoreActivity;
 import com.mager.story.databinding.ActivityPhotoBinding;
+import com.mager.story.util.ResourceUtil;
+import com.mager.story.util.ViewUtil;
 
 /**
  * Created by Gerry on 08/10/2016.
@@ -58,8 +60,13 @@ public class PhotoActivity
             }
         };
 
-        binding.recyclerView.setLayoutManager(new GridLayoutManager(this, 4));
+        binding.recyclerView.setLayoutManager(new GridLayoutManager(this, getSpanCount()));
         binding.recyclerView.setAdapter(adapter);
+    }
+
+    private int getSpanCount() {
+        return ViewUtil.calculateSpanCount(
+                this, ResourceUtil.getDimenInDp(this, R.dimen.photo_size));
     }
 
     @Override
