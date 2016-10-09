@@ -49,7 +49,7 @@ public class HomeActivity
     }
 
     private void signIn() {
-        FirebaseUtil firebaseUtil = new FirebaseUtil(this);
+        FirebaseUtil firebaseUtil = new FirebaseUtil(this.getApplicationContext());
 
         if (BuildConfig.DEBUG) {
             getViewModel().setEmail("lifeof843@gmail.com");

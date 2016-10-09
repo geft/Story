@@ -1,6 +1,7 @@
 package com.mager.story.core;
 
 import android.content.Context;
+import android.content.Intent;
 
 /**
  * Created by Gerry on 23/09/2016.
@@ -29,5 +30,9 @@ public abstract class CorePresenter<VM extends CoreViewModel> {
 
     protected String getString(int stringId) {
         return context.getString(stringId);
+    }
+
+    public void navigateTo(Intent intent) {
+        context.startActivity(intent);
     }
 }

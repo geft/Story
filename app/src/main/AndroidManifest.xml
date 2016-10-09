@@ -23,10 +23,13 @@
             android:name=".menu.MenuActivity"
             android:label="@string/menu_title"
             android:parentActivityName=".home.HomeActivity"
+            android:theme="@style/AppTheme"></activity>
+
+        <activity
+            android:name=".photo.PhotoActivity"
+            android:label="@string/photo_title"
+            android:parentActivityName=".menu.MenuActivity"
             android:theme="@style/AppTheme">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.mager.story.home.HomeActivity" />
         </activity>
     </application>
 

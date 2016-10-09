@@ -5,6 +5,8 @@ import android.databinding.ViewDataBinding;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.Log;
+import android.view.Window;
+import android.view.WindowManager;
 
 import com.f2prateek.dart.Dart;
 import com.google.firebase.auth.FirebaseAuth;
@@ -13,6 +15,8 @@ import com.squareup.leakcanary.LeakCanary;
 
 import org.parceler.ParcelerRuntimeException;
 import org.parceler.Parcels;
+
+import static android.view.WindowManager.LayoutParams.FLAG_SECURE;
 
 /**
  * Created by Gerry on 23/09/2016.
@@ -34,6 +38,7 @@ public abstract class CoreActivity<P extends CorePresenter, VM extends CoreViewM
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        initWindowStyle();
         initLeakCanary();
         initDart();
         initFirebase();
@@ -43,6 +48,10 @@ public abstract class CoreActivity<P extends CorePresenter, VM extends CoreViewM
         presenter.setContext(this);
 
         initBinding(viewModel);
+    }
+
+    private void initWindowStyle() {
+        getWindow().setFlags(FLAG_SECURE, FLAG_SECURE);
     }
 
     private void initFirebase() {

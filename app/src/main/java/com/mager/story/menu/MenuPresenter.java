@@ -19,7 +19,11 @@ class MenuPresenter extends CorePresenter<MenuViewModel> {
     }
 
     void goToPhoto() {
-
+        navigateTo(
+                Henson.with(getContext())
+                        .gotoMenuActivity()
+                        .build()
+        );
     }
 
     void goToAudio() {
