@@ -1,24 +1,15 @@
-package com.mager.story.common;
+package com.mager.story.core;
 
-import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.databinding.ObservableList;
 import android.databinding.ViewDataBinding;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 
 import com.mager.story.BR;
-import com.mager.story.core.CoreActivity;
-import com.mager.story.photo.PhotoActivity;
-import com.mager.story.photo.PhotoItem;
-import com.mager.story.photo.PhotoPresenter;
-import com.mager.story.photo.PhotoViewModel;
-
-import java.util.List;
 
 /**
  * Created by Gerry on 09/10/2016.
@@ -27,16 +18,16 @@ import java.util.List;
 public abstract class BindAdapter<T> extends RecyclerView.Adapter<BindViewHolder>
         implements AdapterView.OnItemClickListener, BindOnItemClickListener<T> {
 
-    private List<T> items;
-    private int layoutId;
+    private final int layoutId;
+    private final ObservableList<T> items;
 
     /**
-     * Generic adapter for binding items in a recycler view
+     * A simple class for item binding to recycler view
      *
-     * @param layoutId layout id of each bound item
-     * @param items    list of items to bind
+     * @param layoutId layout resource id
+     * @param items list of items to bind
      */
-    protected BindAdapter(int layoutId, List<T> items) {
+    protected BindAdapter(int layoutId, ObservableList<T> items) {
         this.layoutId = layoutId;
         this.items = items;
     }
@@ -44,7 +35,8 @@ public abstract class BindAdapter<T> extends RecyclerView.Adapter<BindViewHolder
     @Override
     public BindViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
-        ViewDataBinding binding = DataBindingUtil.inflate(inflater, layoutId, viewGroup, false);
+        ViewDataBinding binding = DataBindingUtil.inflate(
+                inflater, layoutId, viewGroup, false);
 
         return new BindViewHolder(binding);
     }
@@ -52,7 +44,8 @@ public abstract class BindAdapter<T> extends RecyclerView.Adapter<BindViewHolder
     @Override
     public void onBindViewHolder(BindViewHolder holder, int position) {
         ViewDataBinding binding = holder.getViewDataBinding();
-        binding.setVariable(BR.items, items.get(position));
+        binding.setVariable(BR.item, items.get(position));
+        binding.executePendingBindings();
     }
 
     @Override

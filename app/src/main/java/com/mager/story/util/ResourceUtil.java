@@ -1,6 +1,7 @@
 package com.mager.story.util;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
@@ -26,5 +27,9 @@ public class ResourceUtil {
 
     public static int getColor(Context context, int resId) {
         return ContextCompat.getColor(context, resId);
+    }
+
+    public static Drawable getDrawable(Context context, int resId) {
+        return ContextCompat.getDrawable(context, resId);
     }
 }

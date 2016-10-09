@@ -1,5 +1,6 @@
 package com.mager.story.menu;
 
+import com.mager.story.Henson;
 import com.mager.story.R;
 import com.mager.story.core.CorePresenter;
 import com.mager.story.util.ResourceUtil;
@@ -21,7 +22,7 @@ class MenuPresenter extends CorePresenter<MenuViewModel> {
     void goToPhoto() {
         navigateTo(
                 Henson.with(getContext())
-                        .gotoMenuActivity()
+                        .gotoPhotoActivity()
                         .build()
         );
     }

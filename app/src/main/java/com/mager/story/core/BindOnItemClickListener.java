@@ -1,4 +1,4 @@
-package com.mager.story.common;
+package com.mager.story.core;
 
 /**
  * Created by Gerry on 09/10/2016.

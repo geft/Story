@@ -1,8 +1,7 @@
-package com.mager.story.common;
+package com.mager.story.core;
 
 import android.databinding.ViewDataBinding;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
 
 /**
  * Created by Gerry on 09/10/2016.

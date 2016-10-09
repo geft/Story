@@ -5,11 +5,10 @@ import android.databinding.ViewDataBinding;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.view.View;
-import android.widget.AdapterView;
 
 import com.f2prateek.dart.HensonNavigable;
 import com.mager.story.R;
-import com.mager.story.common.BindAdapter;
+import com.mager.story.core.BindAdapter;
 import com.mager.story.core.CoreActivity;
 import com.mager.story.databinding.ActivityPhotoBinding;
 
@@ -58,6 +57,7 @@ public class PhotoActivity
                 getPresenter().handleItemClick(item, position);
             }
         };
+
         binding.recyclerView.setLayoutManager(new GridLayoutManager(this, 4));
         binding.recyclerView.setAdapter(adapter);
     }

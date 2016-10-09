@@ -7,9 +7,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.mager.story.Henson;
 import com.mager.story.R;
 import com.mager.story.home.HomeViewModel;
-import com.mager.story.menu.Henson;
 
 /**
  * Created by Gerry on 25/09/2016.
