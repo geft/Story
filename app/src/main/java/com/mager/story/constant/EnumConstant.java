@@ -24,4 +24,12 @@ public class EnumConstant {
     public @interface PermissionType {
         String PHONE = Manifest.permission.READ_PHONE_STATE;
     }
+
+    @StringDef
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface FolderType {
+        String STORY = "story";
+        String PHOTO = "photo";
+        String AUDIO = "audio";
+    }
 }

@@ -1,25 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
         <variable
             name="viewModel"
             type="com.mager.story.photo.PhotoViewModel" />
-
-        <variable
-            name="onClickListener"
-            type="android.view.View.OnClickListener" />
     </data>
 
-    <RelativeLayout
+    <com.mager.story.core.recyclerView.BindRecyclerView
+        android:id="@+id/recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recycler_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center_horizontal" />
-    </RelativeLayout>
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        app:bindItems="@{viewModel.items}" />
 
 </layout>

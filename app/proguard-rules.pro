@@ -55,6 +55,9 @@
 # Firebase
 -keepattributes Signature
 -keepattributes *Annotation*
+-keepclassmembers class com.mager.story.** {
+  *;
+}
 
 # RxAndroid
 -keep class rx.schedulers.Schedulers {

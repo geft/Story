@@ -8,9 +8,11 @@ import android.view.View;
 
 import com.f2prateek.dart.HensonNavigable;
 import com.mager.story.R;
-import com.mager.story.core.BindAdapter;
 import com.mager.story.core.CoreActivity;
+import com.mager.story.core.recyclerView.BindAdapter;
+import com.mager.story.core.recyclerView.OnRecyclerItemClickListener;
 import com.mager.story.databinding.ActivityPhotoBinding;
+import com.mager.story.util.FirebaseUtil;
 import com.mager.story.util.ResourceUtil;
 import com.mager.story.util.ViewUtil;
 
@@ -21,7 +23,7 @@ import com.mager.story.util.ViewUtil;
 @HensonNavigable
 public class PhotoActivity
         extends CoreActivity<PhotoPresenter, PhotoViewModel>
-        implements View.OnClickListener {
+        implements View.OnClickListener, OnRecyclerItemClickListener<PhotoItem> {
 
     private ActivityPhotoBinding binding;
 
@@ -39,7 +41,6 @@ public class PhotoActivity
     protected ViewDataBinding initBinding(PhotoViewModel viewModel) {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_photo);
         binding.setViewModel(viewModel);
-        binding.setOnClickListener(this);
 
         return binding;
     }
@@ -49,19 +50,20 @@ public class PhotoActivity
         super.onCreate(savedInstanceState);
 
         initAdapter();
-        getPresenter().populateData();
+        populateData();
     }
 
     private void initAdapter() {
-        BindAdapter<PhotoItem> adapter = new BindAdapter<PhotoItem>(R.layout.item_photo, getViewModel().getItems()) {
-            @Override
-            public void onItemClick(PhotoItem item, int position) {
-                getPresenter().handleItemClick(item, position);
-            }
-        };
+        BindAdapter<PhotoItem> adapter = new BindAdapter<>(this, R.layout.item_photo);
+        adapter.setOnItemClickListener(this);
 
         binding.recyclerView.setLayoutManager(new GridLayoutManager(this, getSpanCount()));
         binding.recyclerView.setAdapter(adapter);
+    }
+
+    private void populateData() {
+        FirebaseUtil firebaseUtil = new FirebaseUtil();
+        firebaseUtil.populatePhotos(this, getViewModel().getItems());
     }
 
     private int getSpanCount() {
@@ -72,5 +74,10 @@ public class PhotoActivity
     @Override
     public void onClick(View view) {
 
+    }
+
+    @Override
+    public void onItemClick(int position, PhotoItem item) {
+        getPresenter().handleItemClick(item, position);
     }
 }

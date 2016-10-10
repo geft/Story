@@ -1,24 +1,34 @@
 package com.mager.story.photo;
 
 import android.databinding.Bindable;
-import android.databinding.ObservableArrayList;
-import android.databinding.ObservableList;
 
+import com.mager.story.BR;
 import com.mager.story.core.CoreViewModel;
+
+import org.parceler.Parcel;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Gerry on 08/10/2016.
  */
 
+@Parcel
 public class PhotoViewModel extends CoreViewModel {
-    protected final ObservableList<PhotoItem> items;
+    protected List<PhotoItem> items;
 
     PhotoViewModel() {
-        this.items = new ObservableArrayList<>();
+        this.items = new ArrayList<>();
     }
 
     @Bindable
-    public ObservableList<PhotoItem> getItems() {
+    public List<PhotoItem> getItems() {
         return items;
+    }
+
+    public void setItems(List<PhotoItem> items) {
+        this.items = items;
+        notifyPropertyChanged(BR.items);
     }
 }
