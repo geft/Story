@@ -15,5 +15,6 @@
     <dimen name="edit_text_width">250dp</dimen>
 
     <!-- photo -->
+    <dimen name="load_icon_size">48dp</dimen>
     <dimen name="photo_size">120dp</dimen>
 </resources>

@@ -7,7 +7,9 @@ import android.support.v7.widget.GridLayoutManager;
 import android.view.View;
 
 import com.f2prateek.dart.HensonNavigable;
+import com.google.firebase.storage.StorageReference;
 import com.mager.story.R;
+import com.mager.story.constant.EnumConstant;
 import com.mager.story.core.CoreActivity;
 import com.mager.story.core.recyclerView.BindAdapter;
 import com.mager.story.core.recyclerView.OnRecyclerItemClickListener;
@@ -15,6 +17,10 @@ import com.mager.story.databinding.ActivityPhotoBinding;
 import com.mager.story.util.FirebaseUtil;
 import com.mager.story.util.ResourceUtil;
 import com.mager.story.util.ViewUtil;
+
+import java.util.List;
+
+import static com.mager.story.constant.EnumConstant.FolderType.PHOTO;
 
 /**
  * Created by Gerry on 08/10/2016.
@@ -62,8 +68,7 @@ public class PhotoActivity
     }
 
     private void populateData() {
-        FirebaseUtil firebaseUtil = new FirebaseUtil();
-        firebaseUtil.populatePhotos(this, getViewModel().getItems());
+        new PhotoDownloader(this).populatePhotos(EnumConstant.PhotoGroup.ONS);
     }
 
     private int getSpanCount() {
@@ -78,6 +83,20 @@ public class PhotoActivity
 
     @Override
     public void onItemClick(int position, PhotoItem item) {
-        getPresenter().handleItemClick(item, position);
+        FirebaseUtil firebaseUtil = new FirebaseUtil();
+        StorageReference storage = firebaseUtil.getStorage(PHOTO).child(item.getGroup());
+
+        String fullName = item.getName()
+                .replace(EnumConstant.PhotoType.THUMB, EnumConstant.PhotoType.FULL);
+
+        storage.child(fullName).getDownloadUrl().addOnCompleteListener(this, task -> {
+            if (task.isSuccessful()) {
+                getPresenter().handleItemClick(item, task.getResult().toString());
+            }
+        });
+    }
+
+    public void setItems(List<PhotoItem> list) {
+        getPresenter().setItems(list);
     }
 }

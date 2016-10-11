@@ -32,4 +32,17 @@ public class EnumConstant {
         String PHOTO = "photo";
         String AUDIO = "audio";
     }
+
+    @StringDef
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface PhotoType {
+        String THUMB = "thumb";
+        String FULL = "full";
+    }
+
+    @StringDef
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface PhotoGroup {
+        String ONS = "ons";
+    }
 }

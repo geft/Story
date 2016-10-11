@@ -1,7 +1,10 @@
 package com.mager.story.photo;
 
+import android.app.Dialog;
+
 import com.mager.story.core.CorePresenter;
-import com.mager.story.util.ResourceUtil;
+
+import java.util.List;
 
 /**
  * Created by Gerry on 08/10/2016.
@@ -13,7 +16,12 @@ class PhotoPresenter extends CorePresenter<PhotoViewModel> {
         super(viewModel);
     }
 
-    void handleItemClick(PhotoItem item, int position) {
-        ResourceUtil.showToast(getContext(), Integer.toString(position));
+    void handleItemClick(PhotoItem item, String url) {
+        Dialog dialog = new PhotoDialog(getContext(), url);
+        dialog.show();
+    }
+
+    void setItems(List<PhotoItem> list) {
+        getViewModel().setItems(list);
     }
 }

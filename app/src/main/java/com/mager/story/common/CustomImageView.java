@@ -39,6 +39,10 @@ public class CustomImageView extends ImageView {
                 .listener(new RequestListener<String, GlideDrawable>() {
                     @Override
                     public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                        if (e != null) {
+                            e.printStackTrace();
+                            progressView.setVisibility(GONE);
+                        }
                         return false;
                     }
 
@@ -48,7 +52,7 @@ public class CustomImageView extends ImageView {
                         return false;
                     }
                 })
-                .fitCenter()
+                .centerCrop()
                 .into(view);
     }
 }

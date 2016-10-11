@@ -23,6 +23,7 @@
     <string name="menu_coming_soon">Coming Soon!</string>
 
     <string name="photo_title">Photos</string>
+    <string name="photo_load_error">Error loading photo</string>
 
     <string name="action_settings">Settings</string>
 
