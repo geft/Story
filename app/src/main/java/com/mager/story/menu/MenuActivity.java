@@ -2,7 +2,7 @@ package com.mager.story.menu;
 
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
-import android.view.View;
+import android.os.Bundle;
 
 import com.f2prateek.dart.HensonNavigable;
 import com.mager.story.R;
@@ -14,7 +14,7 @@ import com.mager.story.databinding.ActivityMenuBinding;
  */
 
 @HensonNavigable
-public class MenuActivity extends CoreActivity<MenuPresenter, MenuViewModel> implements View.OnClickListener {
+public class MenuActivity extends CoreActivity<MenuPresenter, MenuViewModel> {
 
     private ActivityMenuBinding binding;
 
@@ -32,19 +32,30 @@ public class MenuActivity extends CoreActivity<MenuPresenter, MenuViewModel> imp
     protected ViewDataBinding initBinding(MenuViewModel viewModel) {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_menu);
         binding.setViewModel(viewModel);
-        binding.setOnClickListener(this);
 
         return binding;
     }
 
     @Override
-    public void onClick(View view) {
-        if (view.equals(binding.buttonStory)) {
-            getPresenter().goToStory();
-        } else if (view.equals(binding.buttonPhoto)) {
-            getPresenter().goToPhoto();
-        } else if (view.equals(binding.buttonAudio)) {
-            getPresenter().goToAudio();
-        }
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        initBottomBar();
+    }
+
+    private void initBottomBar() {
+        binding.bottomBar.setOnTabSelectListener(tabId -> {
+            switch (tabId) {
+                case R.id.tab_photo:
+                    getPresenter().goToPhoto();
+                    break;
+                case R.id.tab_story:
+                    getPresenter().goToStory();
+                    break;
+                case R.id.tab_audio:
+                    getPresenter().goToAudio();
+                    break;
+            }
+        });
     }
 }

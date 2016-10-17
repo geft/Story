@@ -3,17 +3,21 @@ package com.mager.story.core;
 import android.content.Context;
 import android.content.Intent;
 
+import rx.subscriptions.CompositeSubscription;
+
 /**
  * Created by Gerry on 23/09/2016.
  */
 
 public abstract class CorePresenter<VM extends CoreViewModel> {
 
+    CompositeSubscription compositeSubscription;
     private Context context;
     private VM viewModel;
 
     public CorePresenter(VM viewModel) {
         this.viewModel = viewModel;
+        this.compositeSubscription = new CompositeSubscription();
     }
 
     protected VM getViewModel() {
@@ -32,7 +36,11 @@ public abstract class CorePresenter<VM extends CoreViewModel> {
         return context.getString(stringId);
     }
 
-    public void navigateTo(Intent intent) {
+    protected void navigateTo(Intent intent) {
         context.startActivity(intent);
+    }
+
+    void unsubscribe() {
+        compositeSubscription.unsubscribe();
     }
 }

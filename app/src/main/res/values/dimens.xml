@@ -1,5 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- material -->
+    <dimen name="status_bar">24dp</dimen>
+    <dimen name="subtitle">48dp</dimen>
+    <dimen name="app_bar">56dp</dimen>
+    <dimen name="app_bar_extended">128dp</dimen>
+    <dimen name="list_item_height">72dp</dimen>
+    <dimen name="icon_size">24dp</dimen>
+    <dimen name="icon_large">48dp</dimen>
+    <dimen name="button_height">36dp</dimen>
+
+    <dimen name="margin_side">16dp</dimen>
+    <dimen name="margin_side_wide">72dp</dimen>
+    <dimen name="margin_item">8dp</dimen>
+    <dimen name="margin_navigation_right">56dp</dimen>
+
+    <dimen name="grid_list_padding">4dp</dimen>
+    <dimen name="grid_list_single_line_height">48dp</dimen>
+    <dimen name="grid_list_two_line_height">68dp</dimen>
+
+    <dimen name="elevation_switch">1dp</dimen>
+    <dimen name="elevation_rest">2dp</dimen>
+    <dimen name="elevation_refresh">3dp</dimen>
+    <dimen name="elevation_app_bar">4dp</dimen>
+    <dimen name="elevation_menu">8dp</dimen>
+    <dimen name="elevation_active">8dp</dimen>
+    <dimen name="elevation_fab_rest">6dp</dimen>
+    <dimen name="elevation_fab_pressed">12dp</dimen>
+    <dimen name="elevation_drawer">16dp</dimen>
+    <dimen name="elevation_dialog">24dp</dimen>
+
     <!-- padding -->
     <dimen name="zero">0dp</dimen>
     <dimen name="one">1dp</dimen>

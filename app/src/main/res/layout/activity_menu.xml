@@ -1,44 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
         <variable
             name="viewModel"
             type="com.mager.story.menu.MenuViewModel" />
-
-        <variable
-            name="onClickListener"
-            type="android.view.View.OnClickListener" />
     </data>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <Button
-            android:id="@+id/button_story"
-            style="@style/Widget.AppCompat.Button.Colored"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="@{onClickListener}"
-            android:text="@string/menu_button_story" />
+        <com.roughike.bottombar.BottomBar
+            android:id="@+id/bottom_bar"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/primary"
+            app:bb_activeTabColor="@color/white"
+            app:bb_behavior="shifting"
+            app:bb_inActiveTabColor="@color/primary_darker"
+            app:bb_tabXmlResource="@xml/bottombar_tabs" />
 
-        <Button
-            android:id="@+id/button_photo"
-            style="@style/Widget.AppCompat.Button.Colored"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="@{onClickListener}"
-            android:text="@string/menu_button_photo" />
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/bottom_bar">
 
-        <Button
-            android:id="@+id/button_audio"
-            style="@style/Widget.AppCompat.Button.Colored"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="@{onClickListener}"
-            android:text="@string/menu_button_audio" />
-
-    </LinearLayout>
+            <Button
+                android:id="@+id/button_photo"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/menu_button_photo" />
+        </FrameLayout>
+    </RelativeLayout>
 </layout>

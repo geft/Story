@@ -44,5 +44,7 @@ public class EnumConstant {
     @Retention(RetentionPolicy.SOURCE)
     public @interface PhotoGroup {
         String ONS = "ons";
+        String AIRY = "airy";
+        String SWISSBEL = "swissbel";
     }
 }

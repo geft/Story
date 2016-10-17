@@ -65,12 +65,14 @@ public abstract class CoreActivity<P extends CorePresenter, VM extends CoreViewM
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
+    protected void onDestroy() {
+        getPresenter().unsubscribe();
 
         if (authStateListener != null) {
             firebaseAuth.removeAuthStateListener(authStateListener);
         }
+
+        super.onDestroy();
     }
 
     private void initDart() {
