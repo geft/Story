@@ -3,6 +3,7 @@ package com.mager.story.menu;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.os.Bundle;
+import android.support.v4.view.ViewPager;
 
 import com.f2prateek.dart.HensonNavigable;
 import com.mager.story.R;
@@ -40,20 +41,41 @@ public class MenuActivity extends CoreActivity<MenuPresenter, MenuViewModel> {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        initMenuPager();
         initBottomBar();
+    }
+
+    private void initMenuPager() {
+        binding.viewPager.setAdapter(new MenuPagerAdapter(this));
+        binding.viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                binding.bottomBar.selectTabAtPosition(position);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
 
     private void initBottomBar() {
         binding.bottomBar.setOnTabSelectListener(tabId -> {
             switch (tabId) {
                 case R.id.tab_photo:
-                    getPresenter().goToPhoto();
+                    binding.viewPager.setCurrentItem(0, true);
                     break;
                 case R.id.tab_story:
-                    getPresenter().goToStory();
+                    binding.viewPager.setCurrentItem(1, true);
                     break;
                 case R.id.tab_audio:
-                    getPresenter().goToAudio();
+                    binding.viewPager.setCurrentItem(2, true);
                     break;
             }
         });

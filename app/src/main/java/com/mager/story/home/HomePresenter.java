@@ -11,7 +11,7 @@ import com.rengwuxian.materialedittext.MaterialEditText;
  * Created by Gerry on 24/09/2016.
  */
 
-class HomePresenter extends CorePresenter<HomeViewModel> {
+public class HomePresenter extends CorePresenter<HomeViewModel> {
 
     private MaterialEditText emailInput;
     private MaterialEditText passwordInput;
@@ -41,5 +41,9 @@ class HomePresenter extends CorePresenter<HomeViewModel> {
 
     boolean validateInputs() {
         return BuildConfig.DEBUG || emailInput.validate() && passwordInput.validate();
+    }
+
+    public void setLoading(boolean loading) {
+        getViewModel().setLoading(loading);
     }
 }

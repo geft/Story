@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.mager.story.BuildConfig;
+import com.mager.story.Henson;
 import com.mager.story.R;
 import com.mager.story.core.CoreActivity;
 import com.mager.story.databinding.ActivityHomeBinding;
@@ -48,6 +49,13 @@ public class HomeActivity
         getPresenter().initPasswordInput(binding.editTextPassword);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        getPresenter().setLoading(false);
+    }
+
     private void signIn() {
         FirebaseUtil firebaseUtil = new FirebaseUtil();
 
@@ -59,10 +67,20 @@ public class HomeActivity
         firebaseUtil.signIn(this, getViewModel());
     }
 
+    public void goToMenu() {
+        startActivity(
+                Henson.with(this)
+                        .gotoMenuActivity()
+                        .build()
+        );
+    }
+
     @Override
     public void onClick(View view) {
         if (view.equals(binding.buttonSignIn)) {
-            if (getPresenter().validateInputs()) {
+            if (BuildConfig.DEBUG) {
+                goToMenu();
+            } else if (getPresenter().validateInputs()) {
                 signIn();
             }
         }

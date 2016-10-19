@@ -115,11 +115,11 @@ public abstract class CoreActivity<P extends CorePresenter, VM extends CoreViewM
 
     protected abstract ViewDataBinding initBinding(VM viewModel);
 
-    protected P getPresenter() {
+    public P getPresenter() {
         return presenter;
     }
 
-    protected VM getViewModel() {
+    public VM getViewModel() {
         return viewModel;
     }
 }

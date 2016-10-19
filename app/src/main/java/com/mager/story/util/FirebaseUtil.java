@@ -1,6 +1,5 @@
 package com.mager.story.util;
 
-import android.content.Context;
 import android.util.Log;
 
 import com.google.android.gms.tasks.Task;
@@ -11,9 +10,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.mager.story.Henson;
 import com.mager.story.R;
 import com.mager.story.constant.EnumConstant.FolderType;
+import com.mager.story.home.HomeActivity;
 import com.mager.story.home.HomeViewModel;
 
 /**
@@ -44,7 +43,7 @@ public class FirebaseUtil {
         };
     }
 
-    public void signIn(Context context, HomeViewModel viewModel) {
+    public void signIn(HomeActivity activity, HomeViewModel viewModel) {
         viewModel.setLoading(true);
 
         FirebaseAuth.getInstance().signInWithEmailAndPassword(viewModel.getEmail(), viewModel.getPassword())
@@ -54,31 +53,25 @@ public class FirebaseUtil {
                     if (task.isSuccessful()) {
                         FirebaseUser user = auth.getCurrentUser();
                         if (user != null) {
-                            handleSignInSuccess(context, viewModel, user);
+                            handleSignInSuccess(activity, user);
                         } else {
-                            handleSignInFailure(context, viewModel, task);
+                            handleSignInFailure(activity, viewModel, task);
                         }
                     } else {
-                        handleSignInFailure(context, viewModel, task);
+                        handleSignInFailure(activity, viewModel, task);
                     }
                 });
     }
 
-    private void handleSignInSuccess(Context context, HomeViewModel viewModel, FirebaseUser user) {
-        Log.d(TAG, context.getString(R.string.auth_signed_in_format, user.getEmail()));
-        ResourceUtil.showToast(context, context.getString(R.string.auth_sign_in_success));
-        viewModel.setLoading(false);
-
-        context.startActivity(
-                Henson.with(context)
-                        .gotoMenuActivity()
-                        .build()
-        );
+    private void handleSignInSuccess(HomeActivity activity, FirebaseUser user) {
+        Log.d(TAG, activity.getString(R.string.auth_signed_in_format, user.getEmail()));
+        ResourceUtil.showToast(activity, activity.getString(R.string.auth_sign_in_success));
+        activity.goToMenu();
     }
 
-    private void handleSignInFailure(Context context, HomeViewModel viewModel, Task<AuthResult> task) {
+    private void handleSignInFailure(HomeActivity activity, HomeViewModel viewModel, Task<AuthResult> task) {
         Log.w(TAG, "signInWithEmail:failed", task.getException());
-        ResourceUtil.showToast(context, context.getString(R.string.auth_sign_in_fail));
+        ResourceUtil.showToast(activity, activity.getString(R.string.auth_sign_in_fail));
 
         viewModel.setLoading(false);
     }
