@@ -68,10 +68,7 @@ public class HomeActivity
     }
 
     public void goToMenu() {
-        startActivity(
-                Henson.with(this).gotoMenuActivity().build()
-        );
-
+        startActivity(Henson.with(this).gotoMenuActivity().build());
         overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
     }
 

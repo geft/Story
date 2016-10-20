@@ -11,7 +11,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.mager.story.R;
-import com.mager.story.constant.EnumConstant.FolderType;
+import com.mager.story.constant.EnumConstant.MenuType;
 import com.mager.story.home.HomeActivity;
 import com.mager.story.home.HomeViewModel;
 
@@ -76,11 +76,11 @@ public class FirebaseUtil {
         viewModel.setLoading(false);
     }
 
-    public StorageReference getStorage(@FolderType String folderType) {
-        return storage.child(folderType);
+    public StorageReference getStorage(@MenuType String menuType) {
+        return storage.child(menuType);
     }
 
-    public DatabaseReference getDatabase(@FolderType String folderType) {
-        return database.child(folderType);
+    public DatabaseReference getDatabase(@MenuType String menuType) {
+        return database.child(menuType);
     }
 }

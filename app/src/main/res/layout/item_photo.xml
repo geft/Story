@@ -5,7 +5,7 @@
     <data>
         <variable
             name="item"
-            type="com.mager.story.photo.PhotoItem" />
+            type="com.mager.story.content.photo.PhotoItem" />
     </data>
 
     <RelativeLayout

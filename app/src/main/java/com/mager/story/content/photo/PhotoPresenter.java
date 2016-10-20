@@ -1,4 +1,4 @@
-package com.mager.story.photo;
+package com.mager.story.content.photo;
 
 import android.app.Dialog;
 

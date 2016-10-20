@@ -1,4 +1,4 @@
-package com.mager.story.photo;
+package com.mager.story.content.photo;
 
 import android.app.Activity;
 import android.util.Log;
@@ -8,7 +8,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.StorageReference;
-import com.mager.story.constant.EnumConstant.FolderType;
+import com.mager.story.constant.EnumConstant.MenuType;
 import com.mager.story.util.FirebaseUtil;
 
 import java.util.ArrayList;
@@ -32,8 +32,8 @@ class PhotoDownloader {
         this.activity = activity;
 
         FirebaseUtil firebaseUtil = new FirebaseUtil();
-        database = firebaseUtil.getDatabase(FolderType.PHOTO);
-        storage = firebaseUtil.getStorage(FolderType.PHOTO);
+        database = firebaseUtil.getDatabase(MenuType.PHOTO);
+        storage = firebaseUtil.getStorage(MenuType.PHOTO);
     }
 
     void populatePhotos(@PhotoGroup String group) {

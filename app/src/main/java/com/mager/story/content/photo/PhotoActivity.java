@@ -1,4 +1,4 @@
-package com.mager.story.photo;
+package com.mager.story.content.photo;
 
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
@@ -20,7 +20,7 @@ import com.mager.story.util.ViewUtil;
 
 import java.util.List;
 
-import static com.mager.story.constant.EnumConstant.FolderType.PHOTO;
+import static com.mager.story.constant.EnumConstant.MenuType.PHOTO;
 
 /**
  * Created by Gerry on 08/10/2016.

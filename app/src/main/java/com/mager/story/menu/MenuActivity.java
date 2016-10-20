@@ -7,9 +7,14 @@ import android.support.v4.view.ViewPager;
 import android.view.MenuItem;
 
 import com.f2prateek.dart.HensonNavigable;
+import com.mager.story.Henson;
 import com.mager.story.R;
+import com.mager.story.content.photo.PhotoParcel;
 import com.mager.story.core.CoreActivity;
 import com.mager.story.databinding.ActivityMenuBinding;
+import com.mager.story.menu.audio.MenuItemAudio;
+import com.mager.story.menu.photo.MenuItemPhoto;
+import com.mager.story.menu.story.MenuItemStory;
 
 /**
  * Created by Gerry on 07/10/2016.
@@ -97,5 +102,25 @@ public class MenuActivity extends CoreActivity<MenuPresenter, MenuViewModel> {
                     break;
             }
         });
+    }
+
+    public void goToPhoto(MenuItemPhoto item) {
+        PhotoParcel parcel = new PhotoParcel();
+        parcel.photoGroup = item.getPhotoGroup();
+        parcel.count = item.getCount();
+
+        startActivity(
+                Henson.with(this)
+                        .gotoPhotoActivity()
+                        .build()
+        );
+    }
+
+    public void goToStory(MenuItemStory item) {
+
+    }
+
+    public void goToAudio(MenuItemAudio item) {
+
     }
 }

@@ -20,7 +20,7 @@
     <string name="menu_button_story">Story</string>
     <string name="menu_button_photo">Photo</string>
     <string name="menu_button_audio">Audio</string>
-    <string name="menu_coming_soon">Coming Soon!</string>
+    <string name="menu_coming_soon">Coming Soon</string>
 
     <string name="photo_title">Photo</string>
     <string name="photo_load_error">Error loading photo</string>
