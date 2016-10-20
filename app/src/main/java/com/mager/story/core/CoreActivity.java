@@ -36,6 +36,9 @@ public abstract class CoreActivity<P extends CorePresenter, VM extends CoreViewM
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        Thread.setDefaultUncaughtExceptionHandler((thread, throwable) ->
+                Log.e(TAG, "uncaughtException: " + throwable.getMessage(), throwable));
+
         initWindowStyle();
         initLeakCanary();
         initDart();

@@ -75,7 +75,7 @@ class PhotoDownloader {
         for (PhotoItem item : list) {
             String name = item.getName();
 
-            if (name != null) {
+            try {
                 storage.child(item.getName()).getDownloadUrl()
                         .addOnCompleteListener(activity, task -> {
                             if (task.isSuccessful()) {
@@ -86,6 +86,8 @@ class PhotoDownloader {
                                 }
                             }
                         });
+            } catch (IllegalStateException e) {
+                Log.w(TAG, "downloadPhotos: Interrupted", e);
             }
         }
 
