@@ -19,7 +19,7 @@
             android:background="@color/primary"
             app:bb_activeTabColor="@color/white"
             app:bb_behavior="shifting"
-            app:bb_inActiveTabColor="@color/primary_darker"
+            app:bb_inActiveTabColor="@color/primary_light"
             app:bb_tabXmlResource="@xml/bottombar_tabs" />
 
         <android.support.v4.view.ViewPager

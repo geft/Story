@@ -4,6 +4,7 @@ import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.view.MenuItem;
 
 import com.f2prateek.dart.HensonNavigable;
 import com.mager.story.R;
@@ -43,6 +44,23 @@ public class MenuActivity extends CoreActivity<MenuPresenter, MenuViewModel> {
 
         initMenuPager();
         initBottomBar();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.slide_back_in, R.anim.slide_back_out);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                overridePendingTransition(R.anim.slide_back_in, R.anim.slide_back_out);
+
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void initMenuPager() {
