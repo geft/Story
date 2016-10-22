@@ -12,6 +12,7 @@
 
         <activity
             android:name=".home.HomeActivity"
+            android:excludeFromRecents="true"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,15 +22,21 @@
 
         <activity
             android:name=".menu.MenuActivity"
+            android:excludeFromRecents="true"
             android:label="@string/menu_title"
-            android:parentActivityName=".home.HomeActivity"
-            android:theme="@style/AppTheme"></activity>
+            android:parentActivityName=".home.HomeActivity"></activity>
 
         <activity
             android:name=".content.photo.PhotoActivity"
+            android:excludeFromRecents="true"
             android:label="@string/photo_title"
-            android:parentActivityName=".menu.MenuActivity"
-            android:theme="@style/AppTheme">
+            android:parentActivityName=".menu.MenuActivity"></activity>
+
+        <activity
+            android:name=".content.story.StoryActivity"
+            android:excludeFromRecents="true"
+            android:label="@string/story_title"
+            android:parentActivityName=".menu.MenuActivity">
         </activity>
     </application>
 

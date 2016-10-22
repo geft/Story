@@ -1,7 +1,5 @@
 package com.mager.story.core;
 
-import android.content.Context;
-
 import rx.subscriptions.CompositeSubscription;
 
 /**
@@ -10,32 +8,22 @@ import rx.subscriptions.CompositeSubscription;
 
 public abstract class CorePresenter<VM extends CoreViewModel> {
 
-    CompositeSubscription compositeSubscription;
-    private Context context;
+    protected CompositeSubscription subscription;
     private VM viewModel;
 
     public CorePresenter(VM viewModel) {
         this.viewModel = viewModel;
-        this.compositeSubscription = new CompositeSubscription();
     }
 
     protected VM getViewModel() {
         return viewModel;
     }
 
-    protected Context getContext() {
-        return context;
+    void setSubscription(CompositeSubscription subscription) {
+        this.subscription = subscription;
     }
 
-    public void setContext(Context context) {
-        this.context = context;
-    }
+    protected void showError(Throwable throwable) {
 
-    protected String getString(int stringId) {
-        return context.getString(stringId);
-    }
-
-    void unsubscribe() {
-        compositeSubscription.unsubscribe();
     }
 }

@@ -14,6 +14,8 @@ import com.squareup.leakcanary.LeakCanary;
 import org.parceler.ParcelerRuntimeException;
 import org.parceler.Parcels;
 
+import rx.subscriptions.CompositeSubscription;
+
 import static android.view.WindowManager.LayoutParams.FLAG_SECURE;
 
 /**
@@ -25,10 +27,9 @@ public abstract class CoreActivity<P extends CorePresenter, VM extends CoreViewM
 
     private static final String TAG = "AUTH";
     private static final String PARCEL = "PARCEL";
-
+    protected CompositeSubscription subscription;
     private P presenter;
     private VM viewModel;
-
     private FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener authStateListener;
 
@@ -43,10 +44,11 @@ public abstract class CoreActivity<P extends CorePresenter, VM extends CoreViewM
         initLeakCanary();
         initDart();
         initFirebase();
+        subscription = new CompositeSubscription();
 
         viewModel = createViewModel();
-        presenter = createPresenter();
-        presenter.setContext(this);
+        presenter = createPresenter(viewModel);
+        presenter.setSubscription(subscription);
 
         initBinding(viewModel);
     }
@@ -69,11 +71,12 @@ public abstract class CoreActivity<P extends CorePresenter, VM extends CoreViewM
 
     @Override
     protected void onDestroy() {
-        getPresenter().unsubscribe();
+        subscription.unsubscribe();
 
         if (authStateListener != null) {
             firebaseAuth.removeAuthStateListener(authStateListener);
         }
+
 
         super.onDestroy();
     }
@@ -114,7 +117,7 @@ public abstract class CoreActivity<P extends CorePresenter, VM extends CoreViewM
 
     protected abstract VM createViewModel();
 
-    protected abstract P createPresenter();
+    protected abstract P createPresenter(VM viewModel);
 
     protected abstract ViewDataBinding initBinding(VM viewModel);
 

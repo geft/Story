@@ -30,4 +30,7 @@
 
     <string name="action_settings">Settings</string>
 
+    <string name="screen_loading_title">Loading…</string>
+    <string name="screen_loading_subtitle">Please wait a moment</string>
+
 </resources>

@@ -47,4 +47,24 @@ public class EnumConstant {
         String AIRY = "airy";
         String SWISSBEL = "swissbel";
     }
+
+    @StringDef
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface StoryChapter {
+        String CH0 = "PROLOGUE";
+        String CH1 = "Chapter 1";
+        String CH2 = "Chapter 2";
+        String CH3 = "Chapter 3";
+        String CH4 = "Chapter 4";
+    }
+
+    @StringDef
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface StoryTitle {
+        String CH0 = "First Contact";
+        String CH1 = "First Date";
+        String CH2 = "First Kiss";
+        String CH3 = "First Foreplay";
+        String CH4 = "First Orgasm";
+    }
 }

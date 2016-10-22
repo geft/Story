@@ -65,13 +65,13 @@ public class FirebaseUtil {
 
     private void handleSignInSuccess(HomeActivity activity, FirebaseUser user) {
         Log.d(TAG, activity.getString(R.string.auth_signed_in_format, user.getEmail()));
-        ResourceUtil.showToast(activity, activity.getString(R.string.auth_sign_in_success));
+        ResourceUtil.showToast(activity.getString(R.string.auth_sign_in_success));
         activity.goToMenu();
     }
 
     private void handleSignInFailure(HomeActivity activity, HomeViewModel viewModel, Task<AuthResult> task) {
         Log.w(TAG, "signInWithEmail:failed", task.getException());
-        ResourceUtil.showToast(activity, activity.getString(R.string.auth_sign_in_fail));
+        ResourceUtil.showToast(activity.getString(R.string.auth_sign_in_fail));
 
         viewModel.setLoading(false);
     }

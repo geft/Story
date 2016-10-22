@@ -4,17 +4,18 @@ import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.view.MenuItem;
 
 import com.f2prateek.dart.HensonNavigable;
 import com.mager.story.Henson;
 import com.mager.story.R;
 import com.mager.story.content.photo.PhotoParcel;
+import com.mager.story.content.story.StoryParcel;
 import com.mager.story.core.CoreActivity;
 import com.mager.story.databinding.ActivityMenuBinding;
-import com.mager.story.menu.audio.MenuItemAudio;
-import com.mager.story.menu.photo.MenuItemPhoto;
-import com.mager.story.menu.story.MenuItemStory;
+import com.mager.story.menu.audio.MenuAudio;
+import com.mager.story.menu.photo.MenuPhoto;
+import com.mager.story.menu.story.MenuStory;
+import com.mager.story.util.CommonUtil;
 
 /**
  * Created by Gerry on 07/10/2016.
@@ -31,7 +32,7 @@ public class MenuActivity extends CoreActivity<MenuPresenter, MenuViewModel> {
     }
 
     @Override
-    protected MenuPresenter createPresenter() {
+    protected MenuPresenter createPresenter(MenuViewModel viewModel) {
         return new MenuPresenter(getViewModel());
     }
 
@@ -47,45 +48,17 @@ public class MenuActivity extends CoreActivity<MenuPresenter, MenuViewModel> {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        initMenuPager();
-        initBottomBar();
-    }
+        getPresenter().setLoading(true);
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        overridePendingTransition(R.anim.slide_back_in, R.anim.slide_back_out);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                overridePendingTransition(R.anim.slide_back_in, R.anim.slide_back_out);
-
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    private void initMenuPager() {
-        binding.viewPager.setAdapter(new MenuPagerAdapter(this));
-        binding.viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                binding.bottomBar.selectTabAtPosition(position);
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
+        subscription.add(
+                getPresenter().populateMenu()
+                        .compose(CommonUtil.getCommonTransformer())
+                        .subscribe(result -> {
+                            initBottomBar();
+                            initMenuPager();
+                            getPresenter().setLoading(false);
+                        })
+        );
     }
 
     private void initBottomBar() {
@@ -104,23 +77,47 @@ public class MenuActivity extends CoreActivity<MenuPresenter, MenuViewModel> {
         });
     }
 
-    public void goToPhoto(MenuItemPhoto item) {
+    private void initMenuPager() {
+        binding.viewPager.setAdapter(new MenuPagerAdapter(
+                this,
+                getViewModel().getPhotoList(),
+                getViewModel().getStoryList(),
+                getViewModel().getAudioList()));
+
+        binding.viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                binding.bottomBar.selectTabAtPosition(position);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+    }
+
+    public void goToPhoto(MenuPhoto item) {
         PhotoParcel parcel = new PhotoParcel();
         parcel.photoGroup = item.getPhotoGroup();
-        parcel.count = item.getCount();
 
-        startActivity(
-                Henson.with(this)
-                        .gotoPhotoActivity()
-                        .build()
-        );
+        startActivity(Henson.with(this).gotoPhotoActivity().parcel(parcel).build());
     }
 
-    public void goToStory(MenuItemStory item) {
+    public void goToStory(MenuStory item) {
+        StoryParcel parcel = new StoryParcel();
+        parcel.chapter = item.getChapter();
+        parcel.title = item.getTitle();
 
+        startActivity(Henson.with(this).gotoStoryActivity().parcel(parcel).build());
     }
 
-    public void goToAudio(MenuItemAudio item) {
+    public void goToAudio(MenuAudio item) {
 
     }
 }

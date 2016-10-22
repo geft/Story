@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <import type="java.lang.Integer" />
+
+        <variable
+            name="item"
+            type="com.mager.story.menu.story.MenuStory" />
+
+        <variable
+            name="onClickListener"
+            type="android.view.View.OnClickListener" />
+    </data>
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/menu_card_height"
+        android:layout_marginEnd="@dimen/default_padding"
+        android:layout_marginStart="@dimen/default_padding"
+        android:layout_marginTop="@dimen/half_padding"
+        android:onClick="@{onClickListener}"
+        app:cardBackgroundColor="@color/accent"
+        app:cardCornerRadius="@dimen/default_radius"
+        app:cardElevation="@dimen/elevation_rest"
+        app:cardUseCompatPadding="true">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentStart="true"
+                android:layout_toStartOf="@+id/image"
+                android:padding="@dimen/default_padding">
+
+                <TextView
+                    android:id="@+id/chapter"
+                    style="@style/TextAppearance.AppCompat.Title.Inverse"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="@{item.chapter}"
+                    tools:text="Chapter 1" />
+
+                <TextView
+                    style="@style/TextAppearance.AppCompat.Title.Inverse"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/chapter"
+                    android:ellipsize="end"
+                    android:fontFamily="sans-serif-light"
+                    android:maxLines="1"
+                    android:paddingTop="@dimen/default_padding"
+                    android:text="@{item.title}"
+                    tools:text="First Kiss" />
+            </RelativeLayout>
+
+            <ImageView
+                android:id="@+id/image"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:adjustViewBounds="true"
+                android:scaleType="fitCenter"
+                android:src="@{item.image}"
+                tools:src="@drawable/book_ch1" />
+
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+</layout>

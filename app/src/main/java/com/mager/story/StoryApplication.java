@@ -11,9 +11,16 @@ import com.squareup.leakcanary.LeakCanary;
 
 public class StoryApplication extends Application {
 
+    private static StoryApplication instance;
+
+    public static StoryApplication getInstance() {
+        return instance;
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
+        instance = this;
 
         initFirebase();
         initLeakCanary();

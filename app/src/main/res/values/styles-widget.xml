@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-
-    <style name="IndeterminateProgressBar" parent="Material.Drawable.LinearProgress">
-        <item name="pv_progressMode">indeterminate</item>
-        <item name="lpd_strokeColor">@color/primary</item>
-        <item name="lpd_strokeSecondaryColor">@color/primary_light</item>
-    </style>
-</resources>

@@ -15,26 +15,15 @@ import org.parceler.Transient;
  */
 
 @Parcel
-public class MenuItemPhoto extends BaseObservable {
+public class MenuPhoto extends BaseObservable {
 
-    protected int count;
     protected String name;
 
     @EnumConstant.PhotoGroup
     protected String photoGroup;
 
     @Transient
-    protected Drawable image;
-
-    @Bindable
-    public int getCount() {
-        return count;
-    }
-
-    public void setCount(int count) {
-        this.count = count;
-        notifyPropertyChanged(BR.count);
-    }
+    private Drawable image;
 
     @Bindable
     public String getName() {

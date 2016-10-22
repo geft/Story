@@ -28,7 +28,7 @@ public class HomeActivity
     }
 
     @Override
-    protected HomePresenter createPresenter() {
+    protected HomePresenter createPresenter(HomeViewModel viewModel) {
         return new HomePresenter(createViewModel());
     }
 
@@ -69,7 +69,6 @@ public class HomeActivity
 
     public void goToMenu() {
         startActivity(Henson.with(this).gotoMenuActivity().build());
-        overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
     }
 
     @Override

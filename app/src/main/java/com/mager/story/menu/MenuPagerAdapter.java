@@ -13,12 +13,9 @@ import com.mager.story.constant.EnumConstant.MenuType;
 import com.mager.story.constant.MapConstant;
 import com.mager.story.core.recyclerView.BindAdapter;
 import com.mager.story.databinding.MenuPageBinding;
-import com.mager.story.menu.audio.MenuItemAudio;
-import com.mager.story.menu.audio.MenuItemAudioGenerator;
-import com.mager.story.menu.photo.MenuItemPhoto;
-import com.mager.story.menu.photo.MenuItemPhotoGenerator;
-import com.mager.story.menu.story.MenuItemStory;
-import com.mager.story.menu.story.MenuItemStoryGenerator;
+import com.mager.story.menu.audio.MenuAudio;
+import com.mager.story.menu.photo.MenuPhoto;
+import com.mager.story.menu.story.MenuStory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,9 +27,15 @@ import java.util.List;
 class MenuPagerAdapter extends PagerAdapter {
 
     private MenuActivity activity;
+    private List<MenuPhoto> photoList;
+    private List<MenuStory> storyList;
+    private List<MenuAudio> audioList;
 
-    MenuPagerAdapter(MenuActivity activity) {
+    MenuPagerAdapter(MenuActivity activity, List<MenuPhoto> photoList, List<MenuStory> storyList, List<MenuAudio> audioList) {
         this.activity = activity;
+        this.photoList = photoList;
+        this.storyList = storyList;
+        this.audioList = audioList;
     }
 
     @Override
@@ -54,11 +57,11 @@ class MenuPagerAdapter extends PagerAdapter {
 
         switch (menuType) {
             case MenuType.PHOTO:
-                return new MenuItemPhotoGenerator(activity).getPhotoList();
+                return photoList;
             case MenuType.STORY:
-                return new MenuItemStoryGenerator(activity).getStoryList();
+                return storyList;
             case MenuType.AUDIO:
-                return new MenuItemAudioGenerator(activity).getAudioList();
+                return audioList;
             default:
                 return new ArrayList();
         }
@@ -70,19 +73,19 @@ class MenuPagerAdapter extends PagerAdapter {
 
         switch (menuType) {
             case MenuType.PHOTO:
-                BindAdapter<MenuItemPhoto> photoAdapter = new BindAdapter<>(activity, R.layout.menu_photo_item);
+                BindAdapter<MenuPhoto> photoAdapter = new BindAdapter<>(activity, R.layout.menu_photo);
                 photoAdapter.setOnItemClickListener((position, item) -> activity.goToPhoto(item));
                 return photoAdapter;
             case MenuType.STORY:
-                BindAdapter<MenuItemStory> storyAdapter = new BindAdapter<>(activity, R.layout.menu_photo_item);
+                BindAdapter<MenuStory> storyAdapter = new BindAdapter<>(activity, R.layout.menu_story);
                 storyAdapter.setOnItemClickListener((position, item) -> activity.goToStory(item));
                 return storyAdapter;
             case MenuType.AUDIO:
-                BindAdapter<MenuItemAudio> audioAdapter = new BindAdapter<>(activity, R.layout.menu_photo_item);
+                BindAdapter<MenuAudio> audioAdapter = new BindAdapter<>(activity, R.layout.menu_audio);
                 audioAdapter.setOnItemClickListener((position, item) -> activity.goToAudio(item));
                 return audioAdapter;
             default:
-                return new BindAdapter(activity, R.layout.menu_photo_item);
+                return new BindAdapter(activity, R.layout.menu_photo);
         }
     }
 

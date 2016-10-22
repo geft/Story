@@ -1,12 +1,13 @@
 package com.mager.story.content.photo;
 
+import android.app.Dialog;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.view.View;
 
-import com.f2prateek.dart.HensonNavigable;
+import com.f2prateek.dart.InjectExtra;
 import com.google.firebase.storage.StorageReference;
 import com.mager.story.R;
 import com.mager.story.constant.EnumConstant;
@@ -26,11 +27,12 @@ import static com.mager.story.constant.EnumConstant.MenuType.PHOTO;
  * Created by Gerry on 08/10/2016.
  */
 
-@HensonNavigable
 public class PhotoActivity
         extends CoreActivity<PhotoPresenter, PhotoViewModel>
         implements View.OnClickListener, OnRecyclerItemClickListener<PhotoItem> {
 
+    @InjectExtra
+    protected PhotoParcel parcel;
     private ActivityPhotoBinding binding;
 
     @Override
@@ -39,7 +41,7 @@ public class PhotoActivity
     }
 
     @Override
-    protected PhotoPresenter createPresenter() {
+    protected PhotoPresenter createPresenter(PhotoViewModel viewModel) {
         return new PhotoPresenter(getViewModel());
     }
 
@@ -73,7 +75,7 @@ public class PhotoActivity
 
     private int getSpanCount() {
         return ViewUtil.calculateSpanCount(
-                this, ResourceUtil.getDimenInDp(this, R.dimen.photo_size));
+                this, ResourceUtil.getDimenInDp(R.dimen.photo_size));
     }
 
     @Override
@@ -91,7 +93,8 @@ public class PhotoActivity
 
         storage.child(fullName).getDownloadUrl().addOnCompleteListener(this, task -> {
             if (task.isSuccessful()) {
-                getPresenter().handleItemClick(item, task.getResult().toString());
+                Dialog dialog = new PhotoDialog(this, task.getResult().toString());
+                dialog.show();
             }
         });
     }
