@@ -11,6 +11,7 @@ import com.f2prateek.dart.InjectExtra;
 import com.google.firebase.storage.StorageReference;
 import com.mager.story.R;
 import com.mager.story.constant.EnumConstant;
+import com.mager.story.constant.EnumConstant.PhotoGroup;
 import com.mager.story.core.CoreActivity;
 import com.mager.story.core.recyclerView.BindAdapter;
 import com.mager.story.core.recyclerView.OnRecyclerItemClickListener;
@@ -58,7 +59,7 @@ public class PhotoActivity
         super.onCreate(savedInstanceState);
 
         initAdapter();
-        populateData();
+        populateData(parcel.photoGroup);
     }
 
     private void initAdapter() {
@@ -69,8 +70,8 @@ public class PhotoActivity
         binding.recyclerView.setAdapter(adapter);
     }
 
-    private void populateData() {
-        new PhotoDownloader(this).populatePhotos(EnumConstant.PhotoGroup.ONS);
+    private void populateData(@PhotoGroup String photoGroup) {
+        new PhotoDownloader(this).populatePhotos(photoGroup);
     }
 
     private int getSpanCount() {

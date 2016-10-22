@@ -4,7 +4,6 @@ import com.mager.story.core.CorePresenter;
 import com.mager.story.menu.audio.MenuAudioGenerator;
 import com.mager.story.menu.photo.MenuPhotoGenerator;
 import com.mager.story.menu.story.MenuStoryGenerator;
-import com.mager.story.util.CommonUtil;
 
 import rx.Observable;
 
@@ -30,7 +29,7 @@ class MenuPresenter extends CorePresenter<MenuViewModel> {
 
                     return true;
                 }
-        ).compose(CommonUtil.getCommonTransformer());
+        );
     }
 
     public void setLoading(boolean loading) {

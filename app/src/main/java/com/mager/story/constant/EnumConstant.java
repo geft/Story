@@ -51,7 +51,7 @@ public class EnumConstant {
     @StringDef
     @Retention(RetentionPolicy.SOURCE)
     public @interface StoryChapter {
-        String CH0 = "PROLOGUE";
+        String CH0 = "Prologue";
         String CH1 = "Chapter 1";
         String CH2 = "Chapter 2";
         String CH3 = "Chapter 3";

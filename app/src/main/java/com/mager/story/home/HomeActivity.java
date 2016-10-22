@@ -68,6 +68,7 @@ public class HomeActivity
     }
 
     public void goToMenu() {
+        getPresenter().setLoading(true);
         startActivity(Henson.with(this).gotoMenuActivity().build());
     }
 

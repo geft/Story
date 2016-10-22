@@ -52,10 +52,16 @@ public class MenuActivity extends CoreActivity<MenuPresenter, MenuViewModel> {
 
         subscription.add(
                 getPresenter().populateMenu()
+                        .map(result -> {
+                            initBottomBar();
+                            return true;
+                        })
+                        .map(result -> {
+                            initMenuPager();
+                            return true;
+                        })
                         .compose(CommonUtil.getCommonTransformer())
                         .subscribe(result -> {
-                            initBottomBar();
-                            initMenuPager();
                             getPresenter().setLoading(false);
                         })
         );

@@ -19,4 +19,10 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
     </style>
+
+    <style name="IndeterminateProgressBar" parent="Material.Drawable.LinearProgress">
+        <item name="pv_progressMode">indeterminate</item>
+        <item name="lpd_strokeColor">@color/primary</item>
+        <item name="lpd_strokeSecondaryColor">@color/primary_light</item>
+    </style>
 </resources>
