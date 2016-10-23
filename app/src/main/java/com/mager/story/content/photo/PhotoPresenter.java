@@ -10,8 +10,9 @@ import java.util.List;
 
 class PhotoPresenter extends CorePresenter<PhotoViewModel> {
 
-    PhotoPresenter(PhotoViewModel viewModel) {
-        super(viewModel);
+    @Override
+    protected PhotoViewModel getViewModel() {
+        return new PhotoViewModel();
     }
 
     void setItems(List<PhotoItem> list) {

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="viewModel"
+            type="com.mager.story.login.LoginViewModel" />
+
+        <variable
+            name="onClickListener"
+            type="android.view.View.OnClickListener" />
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.rey.material.widget.ProgressView
+            android:id="@+id/progress_bar"
+            style="@style/IndeterminateProgressBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:visibility="@{viewModel.loading ? View.VISIBLE : View.GONE}" />
+
+        <LinearLayout
+            android:id="@+id/content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="@dimen/double_padding">
+
+            <com.rengwuxian.materialedittext.MaterialEditText
+                android:id="@+id/edit_text_email"
+                android:layout_width="@dimen/edit_text_width"
+                android:layout_height="wrap_content"
+                android:inputType="textEmailAddress"
+                android:maxLength="32"
+                android:text="@={viewModel.email}"
+                app:met_clearButton="true"
+                app:met_floatingLabelAnimating="true"
+                app:met_helperText="@string/auth_edit_text_email_hint"
+                app:met_helperTextColor="@color/primary" />
+
+            <com.rengwuxian.materialedittext.MaterialEditText
+                android:id="@+id/edit_text_password"
+                android:layout_width="@dimen/edit_text_width"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:maxLength="32"
+                android:text="@={viewModel.password}"
+                app:met_clearButton="true"
+                app:met_floatingLabelAnimating="true"
+                app:met_helperText="@string/auth_edit_text_password_hint"
+                app:met_helperTextColor="@color/primary" />
+
+            <Button
+                android:id="@+id/button_sign_in"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:enabled="@{!viewModel.loading}"
+                android:onClick="@{onClickListener}"
+                android:text="@string/home_button_sign_in" />
+
+        </LinearLayout>
+    </RelativeLayout>
+
+
+</layout>

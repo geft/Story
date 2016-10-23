@@ -13,8 +13,9 @@ import rx.Observable;
 
 class MenuPresenter extends CorePresenter<MenuViewModel> {
 
-    MenuPresenter(MenuViewModel viewModel) {
-        super(viewModel);
+    @Override
+    protected MenuViewModel getViewModel() {
+        return new MenuViewModel();
     }
 
     Observable<Boolean> populateMenu() {

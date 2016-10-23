@@ -24,8 +24,8 @@ public class StoryActivity extends CoreActivity<StoryPresenter, StoryViewModel> 
     }
 
     @Override
-    protected StoryPresenter createPresenter(StoryViewModel viewModel) {
-        return new StoryPresenter(viewModel);
+    protected StoryPresenter createPresenter() {
+        return new StoryPresenter();
     }
 
     @Override

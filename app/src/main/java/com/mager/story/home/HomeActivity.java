@@ -3,24 +3,19 @@ package com.mager.story.home;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.os.Bundle;
-import android.view.View;
 
-import com.mager.story.BuildConfig;
-import com.mager.story.Henson;
 import com.mager.story.R;
 import com.mager.story.core.CoreActivity;
 import com.mager.story.databinding.ActivityHomeBinding;
-import com.mager.story.util.FirebaseUtil;
+import com.mager.story.login.LoginFragment;
 
 /**
  * Created by Gerry on 24/09/2016.
  */
 
-public class HomeActivity
-        extends CoreActivity<HomePresenter, HomeViewModel>
-        implements View.OnClickListener {
+public class HomeActivity extends CoreActivity<HomePresenter, HomeViewModel> {
 
-    private ActivityHomeBinding binding;
+    private String TAG_LOGIN = "LOGIN";
 
     @Override
     protected HomeViewModel createViewModel() {
@@ -28,15 +23,14 @@ public class HomeActivity
     }
 
     @Override
-    protected HomePresenter createPresenter(HomeViewModel viewModel) {
-        return new HomePresenter(createViewModel());
+    protected HomePresenter createPresenter() {
+        return new HomePresenter();
     }
 
     @Override
     protected ViewDataBinding initBinding(HomeViewModel viewModel) {
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_home);
+        ActivityHomeBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_home);
         binding.setViewModel(viewModel);
-        binding.setOnClickListener(this);
 
         return binding;
     }
@@ -45,41 +39,13 @@ public class HomeActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        getPresenter().initEmailInput(binding.editTextEmail);
-        getPresenter().initPasswordInput(binding.editTextPassword);
+        initLogin();
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        getPresenter().setLoading(false);
-    }
-
-    private void signIn() {
-        FirebaseUtil firebaseUtil = new FirebaseUtil();
-
-        if (BuildConfig.DEBUG) {
-            getViewModel().setEmail("lifeof843@gmail.com");
-            getViewModel().setPassword("story84348");
-        }
-
-        firebaseUtil.signIn(this, getViewModel());
-    }
-
-    public void goToMenu() {
-        getPresenter().setLoading(true);
-        startActivity(Henson.with(this).gotoMenuActivity().build());
-    }
-
-    @Override
-    public void onClick(View view) {
-        if (view.equals(binding.buttonSignIn)) {
-            if (BuildConfig.DEBUG) {
-                goToMenu();
-            } else if (getPresenter().validateInputs()) {
-                signIn();
-            }
-        }
+    private void initLogin() {
+        getFragmentManager()
+                .beginTransaction()
+                .add(new LoginFragment(), TAG_LOGIN)
+                .commit();
     }
 }

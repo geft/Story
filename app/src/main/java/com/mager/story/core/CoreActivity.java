@@ -2,7 +2,6 @@ package com.mager.story.core;
 
 import android.databinding.ViewDataBinding;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
@@ -47,7 +46,7 @@ public abstract class CoreActivity<P extends CorePresenter, VM extends CoreViewM
         subscription = new CompositeSubscription();
 
         viewModel = createViewModel();
-        presenter = createPresenter(viewModel);
+        presenter = createPresenter();
         presenter.setSubscription(subscription);
 
         initBinding(viewModel);
@@ -97,8 +96,7 @@ public abstract class CoreActivity<P extends CorePresenter, VM extends CoreViewM
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         try {
-            Parcelable parcelable = Parcels.wrap(viewModel);
-            outState.putParcelable(PARCEL, parcelable);
+            outState.putParcelable(PARCEL, Parcels.wrap(viewModel));
         } catch (ParcelerRuntimeException e) {
             Log.w(TAG, "Unable to parcel " + viewModel.getClass().getCanonicalName());
         }
@@ -117,7 +115,7 @@ public abstract class CoreActivity<P extends CorePresenter, VM extends CoreViewM
 
     protected abstract VM createViewModel();
 
-    protected abstract P createPresenter(VM viewModel);
+    protected abstract P createPresenter();
 
     protected abstract ViewDataBinding initBinding(VM viewModel);
 

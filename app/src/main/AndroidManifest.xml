@@ -24,13 +24,13 @@
             android:name=".menu.MenuActivity"
             android:excludeFromRecents="true"
             android:label="@string/menu_title"
-            android:parentActivityName=".home.HomeActivity"></activity>
+            android:parentActivityName=".home.HomeActivity" />
 
         <activity
             android:name=".content.photo.PhotoActivity"
             android:excludeFromRecents="true"
             android:label="@string/photo_title"
-            android:parentActivityName=".menu.MenuActivity"></activity>
+            android:parentActivityName=".menu.MenuActivity" />
 
         <activity
             android:name=".content.story.StoryActivity"

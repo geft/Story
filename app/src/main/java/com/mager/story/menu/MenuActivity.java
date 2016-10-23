@@ -32,8 +32,8 @@ public class MenuActivity extends CoreActivity<MenuPresenter, MenuViewModel> {
     }
 
     @Override
-    protected MenuPresenter createPresenter(MenuViewModel viewModel) {
-        return new MenuPresenter(getViewModel());
+    protected MenuPresenter createPresenter() {
+        return new MenuPresenter();
     }
 
     @Override

@@ -9,21 +9,10 @@ import rx.subscriptions.CompositeSubscription;
 public abstract class CorePresenter<VM extends CoreViewModel> {
 
     protected CompositeSubscription subscription;
-    private VM viewModel;
 
-    public CorePresenter(VM viewModel) {
-        this.viewModel = viewModel;
-    }
-
-    protected VM getViewModel() {
-        return viewModel;
-    }
+    protected abstract VM getViewModel();
 
     void setSubscription(CompositeSubscription subscription) {
         this.subscription = subscription;
-    }
-
-    protected void showError(Throwable throwable) {
-
     }
 }
