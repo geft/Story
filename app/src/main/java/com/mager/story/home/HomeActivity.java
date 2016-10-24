@@ -17,6 +17,8 @@ public class HomeActivity extends CoreActivity<HomePresenter, HomeViewModel> {
 
     private String TAG_LOGIN = "LOGIN";
 
+    private ActivityHomeBinding binding;
+
     @Override
     protected HomeViewModel createViewModel() {
         return new HomeViewModel();
@@ -29,7 +31,7 @@ public class HomeActivity extends CoreActivity<HomePresenter, HomeViewModel> {
 
     @Override
     protected ViewDataBinding initBinding(HomeViewModel viewModel) {
-        ActivityHomeBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_home);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_home);
         binding.setViewModel(viewModel);
 
         return binding;
@@ -39,7 +41,27 @@ public class HomeActivity extends CoreActivity<HomePresenter, HomeViewModel> {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        initBottomBar();
         initLogin();
+    }
+
+    private void initBottomBar() {
+        binding.bottomView.setOnNavigationItemSelectedListener(
+                item -> {
+                    switch (item.getItemId()) {
+                        case R.id.tab_photo:
+                            break;
+                        case R.id.tab_story:
+                            break;
+                        case R.id.tab_audio:
+                            break;
+                        default:
+                            break;
+                    }
+
+                    return false;
+                }
+        );
     }
 
     private void initLogin() {

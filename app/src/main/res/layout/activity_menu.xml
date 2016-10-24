@@ -22,7 +22,7 @@
             android:visibility="@{viewModel.loading ? View.VISIBLE : View.GONE}" />
 
         <com.roughike.bottombar.BottomBar
-            android:id="@+id/bottom_bar"
+            android:id="@+id/bottom_view"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_alignParentBottom="true"
@@ -36,6 +36,6 @@
             android:id="@+id/view_pager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_above="@+id/bottom_bar" />
+            android:layout_above="@+id/bottom_view" />
     </RelativeLayout>
 </layout>

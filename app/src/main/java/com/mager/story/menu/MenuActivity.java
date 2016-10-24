@@ -68,7 +68,7 @@ public class MenuActivity extends CoreActivity<MenuPresenter, MenuViewModel> {
     }
 
     private void initBottomBar() {
-        binding.bottomBar.setOnTabSelectListener(tabId -> {
+        binding.bottomView.setOnTabSelectListener(tabId -> {
             switch (tabId) {
                 case R.id.tab_photo:
                     binding.viewPager.setCurrentItem(0, true);
@@ -98,7 +98,7 @@ public class MenuActivity extends CoreActivity<MenuPresenter, MenuViewModel> {
 
             @Override
             public void onPageSelected(int position) {
-                binding.bottomBar.selectTabAtPosition(position);
+                binding.bottomView.selectTabAtPosition(position);
             }
 
             @Override
