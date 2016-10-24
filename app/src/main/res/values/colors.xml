@@ -11,5 +11,6 @@
 
     <color name="white">@color/white_1000</color>
     <color name="black">@color/black_1000</color>
+    <color name="red">@color/red_500</color>
 
 </resources>

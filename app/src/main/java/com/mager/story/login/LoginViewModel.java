@@ -14,19 +14,8 @@ import org.parceler.Parcel;
 @Parcel
 public class LoginViewModel extends CoreViewModel {
 
-    protected boolean loading;
     protected String email;
     protected String password;
-
-    @Bindable
-    public boolean isLoading() {
-        return loading;
-    }
-
-    public void setLoading(boolean loading) {
-        this.loading = loading;
-        notifyPropertyChanged(BR.loading);
-    }
 
     @Bindable
     public String getEmail() {

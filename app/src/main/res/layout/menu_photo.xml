@@ -7,8 +7,6 @@
 
         <import type="android.view.View" />
 
-        <import type="java.lang.Integer" />
-
         <variable
             name="item"
             type="com.mager.story.menu.photo.MenuPhoto" />

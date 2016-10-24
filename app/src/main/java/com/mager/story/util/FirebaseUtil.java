@@ -13,7 +13,6 @@ import com.google.firebase.storage.StorageReference;
 import com.mager.story.R;
 import com.mager.story.constant.EnumConstant.MenuType;
 import com.mager.story.login.LoginFragment;
-import com.mager.story.login.LoginViewModel;
 
 /**
  * Created by Gerry on 25/09/2016.
@@ -43,10 +42,8 @@ public class FirebaseUtil {
         };
     }
 
-    public void signIn(LoginFragment loginFragment, LoginViewModel viewModel) {
-        viewModel.setLoading(true);
-
-        FirebaseAuth.getInstance().signInWithEmailAndPassword(viewModel.getEmail(), viewModel.getPassword())
+    public void signIn(LoginFragment loginFragment, String email, String password) {
+        FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(task -> {
                     Log.d(TAG, "signInWithEmail:onComplete:" + task.isSuccessful());
 
@@ -55,25 +52,22 @@ public class FirebaseUtil {
                         if (user != null) {
                             handleSignInSuccess(loginFragment, user);
                         } else {
-                            handleSignInFailure(loginFragment, viewModel, task);
+                            handleSignInFailure(loginFragment, task);
                         }
                     } else {
-                        handleSignInFailure(loginFragment, viewModel, task);
+                        handleSignInFailure(loginFragment, task);
                     }
                 });
     }
 
     private void handleSignInSuccess(LoginFragment loginFragment, FirebaseUser user) {
         Log.d(TAG, loginFragment.getString(R.string.auth_signed_in_format, user.getEmail()));
-        ResourceUtil.showToast(loginFragment.getString(R.string.auth_sign_in_success));
-        loginFragment.goToMenu();
+        loginFragment.sendResult(true);
     }
 
-    private void handleSignInFailure(LoginFragment loginFragment, LoginViewModel viewModel, Task<AuthResult> task) {
+    private void handleSignInFailure(LoginFragment loginFragment, Task<AuthResult> task) {
         Log.w(TAG, "signInWithEmail:failed", task.getException());
-        ResourceUtil.showToast(loginFragment.getString(R.string.auth_sign_in_fail));
-
-        viewModel.setLoading(false);
+        loginFragment.sendResult(false);
     }
 
     public StorageReference getStorage(@MenuType String menuType) {

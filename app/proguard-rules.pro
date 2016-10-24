@@ -32,6 +32,9 @@
 -keep @org.parceler.Parcel class * { *; }
 -keep class **$$Parcelable { *; }
 
+# FragmentArgs
+-keep class com.hannesdorfmann.fragmentargs.** { *; }
+
 # Retrolambda
 -dontwarn java.lang.invoke.*
 

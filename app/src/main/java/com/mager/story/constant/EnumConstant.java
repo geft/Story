@@ -27,6 +27,13 @@ public class EnumConstant {
 
     @StringDef
     @Retention(RetentionPolicy.SOURCE)
+    public @interface SnackBarType {
+        String NORMAL = "NORMAL";
+        String ERROR = "ERROR";
+    }
+
+    @StringDef
+    @Retention(RetentionPolicy.SOURCE)
     public @interface MenuType {
         String STORY = "story";
         String PHOTO = "photo";

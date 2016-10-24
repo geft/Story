@@ -17,6 +17,10 @@ class LoginPresenter extends CorePresenter<LoginViewModel> {
     private MaterialEditText emailInput;
     private MaterialEditText passwordInput;
 
+    LoginPresenter(LoginViewModel viewModel) {
+        super(viewModel);
+    }
+
     void initEmailInput(MaterialEditText editText) {
         emailInput = editText;
 
@@ -38,10 +42,6 @@ class LoginPresenter extends CorePresenter<LoginViewModel> {
 
     boolean validateInputs() {
         return BuildConfig.DEBUG || emailInput.validate() && passwordInput.validate();
-    }
-
-    public void setLoading(boolean loading) {
-        getViewModel().setLoading(loading);
     }
 
     @Override

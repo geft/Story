@@ -1,9 +1,10 @@
 package com.mager.story.core;
 
 import android.app.Fragment;
-import android.databinding.ViewDataBinding;
 import android.os.Bundle;
 import android.util.Log;
+
+import com.hannesdorfmann.fragmentargs.FragmentArgs;
 
 import org.parceler.ParcelerRuntimeException;
 import org.parceler.Parcels;
@@ -26,18 +27,27 @@ public abstract class CoreFragment<P extends CorePresenter, VM extends CoreViewM
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        initInstanceState(savedInstanceState);
+        initProperties();
+        initFragmentArgs();
+    }
+
+    private void initProperties() {
+        subscription = new CompositeSubscription();
+        presenter = createPresenter(viewModel);
+        presenter.setSubscription(subscription);
+    }
+
+    private void initInstanceState(Bundle savedInstanceState) {
         if (savedInstanceState != null) {
             viewModel = Parcels.unwrap(savedInstanceState.getParcelable(PARCEL_KEY));
         } else {
             viewModel = createViewModel();
         }
+    }
 
-        subscription = new CompositeSubscription();
-
-        presenter = createPresenter(viewModel);
-        presenter.setSubscription(subscription);
-
-        initBinding(viewModel);
+    private void initFragmentArgs() {
+        FragmentArgs.inject(this);
     }
 
     @Override
@@ -60,8 +70,6 @@ public abstract class CoreFragment<P extends CorePresenter, VM extends CoreViewM
     protected abstract VM createViewModel();
 
     protected abstract P createPresenter(VM viewModel);
-
-    protected abstract ViewDataBinding initBinding(VM viewModel);
 
     public P getPresenter() {
         return presenter;

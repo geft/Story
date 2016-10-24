@@ -42,8 +42,8 @@ public class PhotoActivity
     }
 
     @Override
-    protected PhotoPresenter createPresenter() {
-        return new PhotoPresenter();
+    protected PhotoPresenter createPresenter(PhotoViewModel viewModel) {
+        return new PhotoPresenter(viewModel);
     }
 
     @Override

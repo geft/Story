@@ -41,15 +41,20 @@ public abstract class CoreActivity<P extends CorePresenter, VM extends CoreViewM
 
         initWindowStyle();
         initLeakCanary();
-        initDart();
         initFirebase();
+        initDart();
+
         subscription = new CompositeSubscription();
 
         viewModel = createViewModel();
-        presenter = createPresenter();
+        presenter = createPresenter(viewModel);
         presenter.setSubscription(subscription);
 
         initBinding(viewModel);
+    }
+
+    private void initDart() {
+        Dart.inject(this);
     }
 
     private void initWindowStyle() {
@@ -78,10 +83,6 @@ public abstract class CoreActivity<P extends CorePresenter, VM extends CoreViewM
 
 
         super.onDestroy();
-    }
-
-    private void initDart() {
-        Dart.inject(this);
     }
 
     private void initLeakCanary() {
@@ -115,7 +116,7 @@ public abstract class CoreActivity<P extends CorePresenter, VM extends CoreViewM
 
     protected abstract VM createViewModel();
 
-    protected abstract P createPresenter();
+    protected abstract P createPresenter(VM viewModel);
 
     protected abstract ViewDataBinding initBinding(VM viewModel);
 

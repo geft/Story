@@ -8,8 +8,7 @@ import com.mager.story.core.CorePresenter;
 
 class StoryPresenter extends CorePresenter<StoryViewModel> {
 
-    @Override
-    protected StoryViewModel getViewModel() {
-        return new StoryViewModel();
+    StoryPresenter(StoryViewModel viewModel) {
+        super(viewModel);
     }
 }

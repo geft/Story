@@ -1,5 +1,6 @@
 package com.mager.story.util;
 
+import android.app.Activity;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.ColorRes;
 import android.support.annotation.DimenRes;
@@ -13,6 +14,7 @@ import android.widget.Toast;
 
 import com.mager.story.R;
 import com.mager.story.StoryApplication;
+import com.mager.story.constant.EnumConstant.SnackBarType;
 
 /**
  * Created by Gerry on 25/09/2016.
@@ -24,9 +26,23 @@ public class ResourceUtil {
         Toast.makeText(StoryApplication.getInstance(), text, Toast.LENGTH_SHORT).show();
     }
 
-    public static void showSnackbar(View view, String text) {
-        Snackbar snackbar = Snackbar.make(view, text, Snackbar.LENGTH_SHORT);
-        snackbar.getView().setBackgroundColor(getColor(R.color.primary));
+    public static void showSnackBar(Activity activity, @StringRes int stringRes, @SnackBarType String type) {
+        View view = activity.findViewById(android.R.id.content);
+        Snackbar snackbar = Snackbar.make(view, stringRes, Snackbar.LENGTH_SHORT);
+        int backgroundColor;
+
+        switch (type) {
+            case SnackBarType.NORMAL:
+                backgroundColor = getColor(R.color.black);
+                break;
+            case SnackBarType.ERROR:
+                backgroundColor = getColor(R.color.red);
+                break;
+            default:
+                backgroundColor = getColor(R.color.primary);
+        }
+
+        snackbar.getView().setBackgroundColor(backgroundColor);
         snackbar.setActionTextColor(getColor(R.color.white));
         snackbar.show();
     }

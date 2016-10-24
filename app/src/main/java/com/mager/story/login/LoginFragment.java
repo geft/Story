@@ -1,15 +1,19 @@
 package com.mager.story.login;
 
+import android.content.Context;
 import android.databinding.DataBindingUtil;
-import android.databinding.ViewDataBinding;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.mager.story.BuildConfig;
-import com.mager.story.Henson;
 import com.mager.story.R;
 import com.mager.story.core.CoreFragment;
 import com.mager.story.databinding.FragmentLoginBinding;
+import com.mager.story.home.LoadingInterface;
+import com.mager.story.home.LoginInterface;
 import com.mager.story.util.FirebaseUtil;
 
 /**
@@ -22,6 +26,19 @@ public class LoginFragment
 
     private FragmentLoginBinding binding;
 
+    private LoginInterface loginInterface;
+    private LoadingInterface loadingInterface;
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_login, container, false);
+        binding.setViewModel(getViewModel());
+        binding.setOnClickListener(this);
+
+        return binding.getRoot();
+    }
+
     @Override
     protected LoginViewModel createViewModel() {
         return new LoginViewModel();
@@ -29,16 +46,15 @@ public class LoginFragment
 
     @Override
     protected LoginPresenter createPresenter(LoginViewModel viewModel) {
-        return new LoginPresenter();
+        return new LoginPresenter(viewModel);
     }
 
     @Override
-    protected ViewDataBinding initBinding(LoginViewModel viewModel) {
-        binding = DataBindingUtil.setContentView(getActivity(), R.layout.fragment_login);
-        binding.setViewModel(viewModel);
-        binding.setOnClickListener(this);
+    public void onAttach(Context context) {
+        super.onAttach(context);
 
-        return binding;
+        loginInterface = ((LoginInterface) context);
+        loadingInterface = ((LoadingInterface) context);
     }
 
     @Override
@@ -50,26 +66,29 @@ public class LoginFragment
     }
 
     private void signIn() {
-        FirebaseUtil firebaseUtil = new FirebaseUtil();
+        binding.buttonSignIn.setEnabled(false);
+        loadingInterface.setLoading(true);
 
         if (BuildConfig.DEBUG) {
             getViewModel().setEmail("lifeof843@gmail.com");
             getViewModel().setPassword("story84348");
         }
 
-        firebaseUtil.signIn(this, getViewModel());
+        new FirebaseUtil().signIn(this,
+                getViewModel().getEmail(), getViewModel().getPassword());
     }
 
-    public void goToMenu() {
-        getPresenter().setLoading(true);
-        startActivity(Henson.with(getActivity()).gotoMenuActivity().build());
+    public void sendResult(boolean isSuccess) {
+        binding.buttonSignIn.setEnabled(true);
+        loadingInterface.setLoading(false);
+        loginInterface.sendSignInResult(isSuccess);
     }
 
     @Override
     public void onClick(View view) {
         if (view.equals(binding.buttonSignIn)) {
             if (BuildConfig.DEBUG) {
-                goToMenu();
+                sendResult(true);
             } else if (getPresenter().validateInputs()) {
                 signIn();
             }

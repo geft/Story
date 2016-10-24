@@ -21,7 +21,7 @@
         </activity>
 
         <activity
-            android:name=".menu.MenuActivity"
+            android:name=".menu.MenuFragment"
             android:excludeFromRecents="true"
             android:label="@string/menu_title"
             android:parentActivityName=".home.HomeActivity" />
@@ -30,13 +30,13 @@
             android:name=".content.photo.PhotoActivity"
             android:excludeFromRecents="true"
             android:label="@string/photo_title"
-            android:parentActivityName=".menu.MenuActivity" />
+            android:parentActivityName=".menu.MenuFragment" />
 
         <activity
             android:name=".content.story.StoryActivity"
             android:excludeFromRecents="true"
             android:label="@string/story_title"
-            android:parentActivityName=".menu.MenuActivity">
+            android:parentActivityName=".menu.MenuFragment">
         </activity>
     </application>
 
