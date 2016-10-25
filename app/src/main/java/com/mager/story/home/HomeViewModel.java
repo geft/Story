@@ -20,11 +20,10 @@ import java.util.List;
 public class HomeViewModel extends CoreViewModel {
 
     protected boolean loading;
-    protected boolean showBottomNavigation;
 
-    protected List<MenuPhoto> photoList;
-    protected List<MenuStory> storyList;
-    protected List<MenuAudio> audioList;
+    List<MenuPhoto> photoList;
+    List<MenuStory> storyList;
+    List<MenuAudio> audioList;
 
     @Bindable
     public boolean isLoading() {
@@ -34,16 +33,6 @@ public class HomeViewModel extends CoreViewModel {
     public void setLoading(boolean loading) {
         this.loading = loading;
         notifyPropertyChanged(BR.loading);
-    }
-
-    @Bindable
-    public boolean isShowBottomNavigation() {
-        return showBottomNavigation;
-    }
-
-    public void setShowBottomNavigation(boolean showBottomNavigation) {
-        this.showBottomNavigation = showBottomNavigation;
-        notifyPropertyChanged(BR.showBottomNavigation);
     }
 
     public List<MenuAudio> getAudioList() {

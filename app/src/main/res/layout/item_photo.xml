@@ -11,7 +11,7 @@
     <RelativeLayout
         android:layout_width="@dimen/photo_size"
         android:layout_height="@dimen/photo_size"
-        android:padding="@dimen/half_padding">
+        android:padding="@dimen/grid_list_padding">
 
         <com.rey.material.widget.ProgressView
             android:id="@+id/loading"

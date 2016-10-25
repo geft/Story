@@ -44,6 +44,7 @@
     <!-- component -->
     <dimen name="circular_progress_size">48dp</dimen>
     <dimen name="edit_text_width">250dp</dimen>
+    <dimen name="bottom_navigation_height">56dp</dimen>
 
     <!-- menu -->
     <dimen name="menu_card_height">128dp</dimen>

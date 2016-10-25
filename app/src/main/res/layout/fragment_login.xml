@@ -20,7 +20,7 @@
             android:id="@+id/content"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center"
+            android:gravity="center_horizontal"
             android:orientation="vertical"
             android:padding="@dimen/double_padding">
 
@@ -53,6 +53,7 @@
                 style="@style/Widget.AppCompat.Button.Colored"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_margin="@dimen/default_padding"
                 android:onClick="@{onClickListener}"
                 android:text="@string/home_button_sign_in" />
         </LinearLayout>

@@ -5,6 +5,7 @@
     <application
         android:name=".StoryApplication"
         android:allowBackup="true"
+        android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
@@ -12,8 +13,7 @@
 
         <activity
             android:name=".home.HomeActivity"
-            android:excludeFromRecents="true"
-            android:windowSoftInputMode="adjustResize">
+            android:excludeFromRecents="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -21,22 +21,16 @@
         </activity>
 
         <activity
-            android:name=".menu.MenuFragment"
-            android:excludeFromRecents="true"
-            android:label="@string/menu_title"
-            android:parentActivityName=".home.HomeActivity" />
-
-        <activity
             android:name=".content.photo.PhotoActivity"
             android:excludeFromRecents="true"
             android:label="@string/photo_title"
-            android:parentActivityName=".menu.MenuFragment" />
+            android:parentActivityName=".home.HomeActivity" />
 
         <activity
             android:name=".content.story.StoryActivity"
             android:excludeFromRecents="true"
             android:label="@string/story_title"
-            android:parentActivityName=".menu.MenuFragment">
+            android:parentActivityName=".home.HomeActivity">
         </activity>
     </application>
 

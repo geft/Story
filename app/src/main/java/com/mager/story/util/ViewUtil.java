@@ -9,21 +9,21 @@ import android.util.DisplayMetrics;
 
 public class ViewUtil {
 
-    public static ScreenSize getScreenSize(Context context) {
+    public static ScreenSize getScreenSizeDp(Context context) {
         DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
         float dpHeight = displayMetrics.heightPixels / displayMetrics.density;
         float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
 
         ScreenSize screenSize = new ScreenSize();
-        screenSize.dpHeight = dpHeight;
-        screenSize.dpWidth = dpWidth;
+        screenSize.height = dpHeight;
+        screenSize.width = dpWidth;
 
         return screenSize;
     }
 
     public static int calculateSpanCount(Context context, int itemDpWidth) {
-        ScreenSize screenSize = getScreenSize(context);
-        int spanCount = (int) screenSize.dpWidth / itemDpWidth;
+        ScreenSize screenSizeDp = getScreenSizeDp(context);
+        int spanCount = (int) screenSizeDp.width / itemDpWidth;
         return spanCount == 0 ? 1 : spanCount;
     }
 
@@ -40,7 +40,7 @@ public class ViewUtil {
     }
 
     public static class ScreenSize {
-        public float dpHeight;
-        public float dpWidth;
+        public float height;
+        public float width;
     }
 }

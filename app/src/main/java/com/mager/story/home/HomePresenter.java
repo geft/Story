@@ -17,10 +17,6 @@ class HomePresenter extends CorePresenter<HomeViewModel> {
         super(viewModel);
     }
 
-    void showBottomNavigation(boolean show) {
-        getViewModel().setShowBottomNavigation(show);
-    }
-
     Observable<Boolean> populateList() {
         return Observable.zip(
                 Observable.defer(() -> Observable.just(new MenuPhotoGenerator().getPhotoList())),

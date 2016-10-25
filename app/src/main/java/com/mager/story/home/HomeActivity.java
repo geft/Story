@@ -34,12 +34,15 @@ import rx.Observable;
 public class HomeActivity extends CoreActivity<HomePresenter, HomeViewModel>
         implements LoginInterface, MenuInterface, LoadingInterface {
 
+    static final String TAG_LOGIN = "LOGIN";
+    static final String TAG_PHOTO = "PHOTO";
+    static final String TAG_STORY = "STORY";
+    static final String TAG_AUDIO = "AUDIO";
+    MenuPhotoFragment photoFragment;
+    MenuStoryFragment storyFragment;
+    MenuAudioFragment audioFragment;
     private ActivityHomeBinding binding;
-
-    private LoginFragment loginFragment;
-    private MenuPhotoFragment photoFragment;
-    private MenuStoryFragment storyFragment;
-    private MenuAudioFragment audioFragment;
+    private BottomNavigationHandler navigationHandler;
 
     @Override
     protected HomeViewModel createViewModel() {
@@ -68,72 +71,42 @@ public class HomeActivity extends CoreActivity<HomePresenter, HomeViewModel>
     }
 
     private void initLoginFragment() {
-        loginFragment = new LoginFragment();
-
         getFragmentManager()
                 .beginTransaction()
-                .add(R.id.container, loginFragment)
+                .add(R.id.container, new LoginFragment(), TAG_LOGIN)
                 .commit();
     }
 
     private void initBottomNavigation() {
-        binding.bottomView.setOnNavigationItemSelectedListener(
-                item -> {
-                    switch (item.getItemId()) {
-                        case R.id.tab_photo:
-                            insertMenuFragment(photoFragment);
-                            break;
-                        case R.id.tab_story:
-                            insertMenuFragment(storyFragment);
-                            break;
-                        case R.id.tab_audio:
-                            insertMenuFragment(audioFragment);
-                            break;
-                        default:
-                            break;
-                    }
-
-                    return false;
-                }
-        );
+        navigationHandler = new BottomNavigationHandler(this, binding.bottomView);
     }
 
-    private void insertMenuFragment(MenuFragment fragment) {
+    void insertMenuFragment(MenuFragment fragment, String tag) {
         getFragmentManager()
                 .beginTransaction()
-                .replace(R.id.container, fragment)
-                .commit();
-    }
-
-    private void initMenuFragment() {
-        getFragmentManager()
-                .beginTransaction()
-                .setCustomAnimations(
-                        R.animator.slide_enter_from_left, R.animator.slide_exit_to_right,
-                        R.animator.slide_enter_from_right, R.animator.slide_exit_to_left)
-                .replace(R.id.container, photoFragment)
-                .addToBackStack(null)
+                .setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out)
+                .replace(R.id.container, fragment, tag)
                 .commit();
     }
 
     @Override
     public void sendSignInResult(boolean isSuccess) {
         if (isSuccess) {
-            CommonUtil.hideKeyboard(this);
-            ResourceUtil.showSnackBar(this, R.string.auth_sign_in_success, SnackBarType.NORMAL);
+            ResourceUtil.showToast(ResourceUtil.getString(R.string.auth_sign_in_success));
+            getViewModel().setLoading(true);
 
             subscription.add(
                     getPresenter().populateList()
                             .flatMap(result -> Observable.defer(() -> Observable.just(initFragments())))
                             .compose(CommonUtil.getCommonTransformer())
                             .subscribe(result -> {
-                                initMenuFragment();
-                                getPresenter().showBottomNavigation(true);
+                                insertMenuFragment(photoFragment, TAG_PHOTO);
+                                navigationHandler.animateSlideUp();
                                 setLoading(false);
                             })
             );
         } else {
-            ResourceUtil.showSnackBar(this, R.string.auth_sign_in_fail, SnackBarType.ERROR);
+            ResourceUtil.showSnackBar(binding.coordinator, R.string.auth_sign_in_fail, SnackBarType.ERROR);
         }
     }
 

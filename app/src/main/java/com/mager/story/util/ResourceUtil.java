@@ -1,6 +1,5 @@
 package com.mager.story.util;
 
-import android.app.Activity;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.ColorRes;
 import android.support.annotation.DimenRes;
@@ -26,9 +25,8 @@ public class ResourceUtil {
         Toast.makeText(StoryApplication.getInstance(), text, Toast.LENGTH_SHORT).show();
     }
 
-    public static void showSnackBar(Activity activity, @StringRes int stringRes, @SnackBarType String type) {
-        View view = activity.findViewById(android.R.id.content);
-        Snackbar snackbar = Snackbar.make(view, stringRes, Snackbar.LENGTH_SHORT);
+    public static void showSnackBar(View container, @StringRes int stringRes, @SnackBarType String type) {
+        Snackbar snackbar = Snackbar.make(container, stringRes, Snackbar.LENGTH_SHORT);
         int backgroundColor;
 
         switch (type) {

@@ -14,6 +14,7 @@ import com.mager.story.core.CoreFragment;
 import com.mager.story.databinding.FragmentLoginBinding;
 import com.mager.story.home.LoadingInterface;
 import com.mager.story.home.LoginInterface;
+import com.mager.story.util.CommonUtil;
 import com.mager.story.util.FirebaseUtil;
 
 /**
@@ -66,9 +67,6 @@ public class LoginFragment
     }
 
     private void signIn() {
-        binding.buttonSignIn.setEnabled(false);
-        loadingInterface.setLoading(true);
-
         if (BuildConfig.DEBUG) {
             getViewModel().setEmail("lifeof843@gmail.com");
             getViewModel().setPassword("story84348");
@@ -79,19 +77,30 @@ public class LoginFragment
     }
 
     public void sendResult(boolean isSuccess) {
-        binding.buttonSignIn.setEnabled(true);
-        loadingInterface.setLoading(false);
         loginInterface.sendSignInResult(isSuccess);
+        binding.buttonSignIn.setEnabled(true);
     }
 
     @Override
     public void onClick(View view) {
         if (view.equals(binding.buttonSignIn)) {
+            binding.buttonSignIn.setEnabled(false);
+            loadingInterface.setLoading(true);
+            CommonUtil.hideKeyboard(getActivity());
+
             if (BuildConfig.DEBUG) {
                 sendResult(true);
             } else if (getPresenter().validateInputs()) {
                 signIn();
             }
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        binding.editTextEmail.requestFocus();
+        CommonUtil.showKeyboard(getActivity());
     }
 }

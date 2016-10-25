@@ -18,6 +18,10 @@ public class CommonUtil {
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
+    public static void showKeyboard(Activity activity) {
+        activity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+    }
+
     public static void hideKeyboard(Activity activity) {
         activity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
     }
