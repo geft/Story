@@ -13,12 +13,11 @@
         android:layout_height="@dimen/photo_size"
         android:padding="@dimen/grid_list_padding">
 
-        <com.rey.material.widget.ProgressView
+        <ProgressBar
             android:id="@+id/loading"
-            android:layout_width="@dimen/load_icon_size"
-            android:layout_height="@dimen/load_icon_size"
-            android:layout_centerInParent="true"
-            app:pv_progressStyle="@style/Material.Drawable.CircularProgress" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true" />
 
         <com.mager.story.common.CustomImageView
             android:layout_width="match_parent"

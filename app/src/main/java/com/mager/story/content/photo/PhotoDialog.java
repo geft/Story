@@ -28,7 +28,7 @@ class PhotoDialog extends Dialog {
     private String url;
 
     PhotoDialog(Context context, String url) {
-        super(context, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
+        super(context, android.R.style.Theme_DeviceDefault_Light_NoActionBar_Fullscreen);
 
         this.url = url;
         initBinding();
@@ -39,19 +39,13 @@ class PhotoDialog extends Dialog {
         super.onCreate(savedInstanceState);
 
         initFlags();
-        initListeners();
         initImage();
     }
 
     private void initFlags() {
         if (getWindow() != null) {
-            getWindow().setFlags(FLAG_SECURE, FLAG_SECURE);
+            getWindow().addFlags(FLAG_SECURE);
         }
-    }
-
-    private void initListeners() {
-        binding.errorText.setOnClickListener(view -> dismiss());
-        binding.image.setOnClickListener(view -> dismiss());
     }
 
     private void initBinding() {

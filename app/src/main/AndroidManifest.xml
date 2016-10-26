@@ -19,19 +19,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity
-            android:name=".content.photo.PhotoActivity"
-            android:excludeFromRecents="true"
-            android:label="@string/photo_title"
-            android:parentActivityName=".home.HomeActivity" />
-
-        <activity
-            android:name=".content.story.StoryActivity"
-            android:excludeFromRecents="true"
-            android:label="@string/story_title"
-            android:parentActivityName=".home.HomeActivity">
-        </activity>
     </application>
 
 </manifest>

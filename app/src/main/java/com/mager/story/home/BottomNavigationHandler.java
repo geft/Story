@@ -7,9 +7,9 @@ import android.view.animation.AnimationUtils;
 
 import com.mager.story.R;
 
-import static com.mager.story.home.HomeActivity.TAG_AUDIO;
-import static com.mager.story.home.HomeActivity.TAG_PHOTO;
-import static com.mager.story.home.HomeActivity.TAG_STORY;
+import static com.mager.story.home.HomeActivity.TAG_MENU_AUDIO;
+import static com.mager.story.home.HomeActivity.TAG_MENU_PHOTO;
+import static com.mager.story.home.HomeActivity.TAG_MENU_STORY;
 
 /**
  * Created by Gerry on 26/10/2016.
@@ -31,13 +31,13 @@ class BottomNavigationHandler {
                 item -> {
                     switch (item.getItemId()) {
                         case R.id.tab_photo:
-                            activity.insertMenuFragment(activity.photoFragment, TAG_PHOTO);
+                            activity.insertFragment(activity.photoFragment, TAG_MENU_PHOTO);
                             break;
                         case R.id.tab_story:
-                            activity.insertMenuFragment(activity.storyFragment, TAG_STORY);
+                            activity.insertFragment(activity.storyFragment, TAG_MENU_STORY);
                             break;
                         case R.id.tab_audio:
-                            activity.insertMenuFragment(activity.audioFragment, TAG_AUDIO);
+                            activity.insertFragment(activity.audioFragment, TAG_MENU_AUDIO);
                             break;
                         default:
                             break;
@@ -68,5 +68,26 @@ class BottomNavigationHandler {
         });
 
         navigationView.startAnimation(animation);
+    }
+
+    void animateSlideDown() {
+        Animation animation = AnimationUtils.loadAnimation(activity, R.anim.slide_center_to_down);
+        animation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                navigationView.setVisibility(View.GONE);
+                navigationView.findViewById(R.id.tab_photo).performClick();
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
     }
 }

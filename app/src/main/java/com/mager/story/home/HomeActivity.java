@@ -1,18 +1,19 @@
 package com.mager.story.home;
 
+import android.app.Fragment;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.os.Bundle;
 
-import com.mager.story.Henson;
 import com.mager.story.R;
 import com.mager.story.constant.EnumConstant.SnackBarType;
-import com.mager.story.content.photo.PhotoParcel;
-import com.mager.story.content.story.StoryParcel;
+import com.mager.story.content.audio.AudioFragmentBuilder;
+import com.mager.story.content.photo.PhotoFragmentBuilder;
+import com.mager.story.content.story.StoryFragmentBuilder;
 import com.mager.story.core.CoreActivity;
 import com.mager.story.databinding.ActivityHomeBinding;
+import com.mager.story.error.ErrorFragmentBuilder;
 import com.mager.story.login.LoginFragment;
-import com.mager.story.menu.MenuFragment;
 import com.mager.story.menu.audio.MenuAudio;
 import com.mager.story.menu.audio.MenuAudioFragment;
 import com.mager.story.menu.audio.MenuAudioFragmentBuilder;
@@ -34,10 +35,14 @@ import rx.Observable;
 public class HomeActivity extends CoreActivity<HomePresenter, HomeViewModel>
         implements LoginInterface, MenuInterface, LoadingInterface {
 
+    static final String TAG_MENU_PHOTO = "MENU_PHOTO";
+    static final String TAG_MENU_STORY = "MENU_STORY";
+    static final String TAG_MENU_AUDIO = "MENU_AUDIO";
     static final String TAG_LOGIN = "LOGIN";
     static final String TAG_PHOTO = "PHOTO";
     static final String TAG_STORY = "STORY";
     static final String TAG_AUDIO = "AUDIO";
+    static final String TAG_ERROR = "ERROR";
     MenuPhotoFragment photoFragment;
     MenuStoryFragment storyFragment;
     MenuAudioFragment audioFragment;
@@ -81,11 +86,20 @@ public class HomeActivity extends CoreActivity<HomePresenter, HomeViewModel>
         navigationHandler = new BottomNavigationHandler(this, binding.bottomView);
     }
 
-    void insertMenuFragment(MenuFragment fragment, String tag) {
+    void insertFragment(Fragment fragment, String tag) {
         getFragmentManager()
                 .beginTransaction()
                 .setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out)
                 .replace(R.id.container, fragment, tag)
+                .commit();
+    }
+
+    void insertFragmentWithBackStack(Fragment fragment, String tag) {
+        getFragmentManager()
+                .beginTransaction()
+                .setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out)
+                .replace(R.id.container, fragment, tag)
+                .addToBackStack(null)
                 .commit();
     }
 
@@ -100,7 +114,7 @@ public class HomeActivity extends CoreActivity<HomePresenter, HomeViewModel>
                             .flatMap(result -> Observable.defer(() -> Observable.just(initFragments())))
                             .compose(CommonUtil.getCommonTransformer())
                             .subscribe(result -> {
-                                insertMenuFragment(photoFragment, TAG_PHOTO);
+                                insertFragment(photoFragment, TAG_MENU_PHOTO);
                                 navigationHandler.animateSlideUp();
                                 setLoading(false);
                             })
@@ -129,24 +143,33 @@ public class HomeActivity extends CoreActivity<HomePresenter, HomeViewModel>
     }
 
     @Override
-    public void goToPhoto(MenuPhoto item) {
-        PhotoParcel parcel = new PhotoParcel();
-        parcel.photoGroup = item.getPhotoGroup();
+    public void setError(String message) {
+        insertFragment(
+                ErrorFragmentBuilder.newErrorFragment(message), TAG_ERROR
+        );
+    }
 
-        startActivity(Henson.with(this).gotoPhotoActivity().parcel(parcel).build());
+    @Override
+    public void goToPhoto(MenuPhoto item) {
+        insertFragmentWithBackStack(
+                PhotoFragmentBuilder.newPhotoFragment(
+                        item.getPhotoGroup()), TAG_PHOTO
+        );
     }
 
     @Override
     public void goToStory(MenuStory item) {
-        StoryParcel parcel = new StoryParcel();
-        parcel.chapter = item.getChapter();
-        parcel.title = item.getTitle();
-
-        startActivity(Henson.with(this).gotoStoryActivity().parcel(parcel).build());
+        insertFragmentWithBackStack(
+                StoryFragmentBuilder.newStoryFragment(
+                        item.getChapter(), item.getTitle()), TAG_STORY
+        );
     }
 
     @Override
     public void goToAudio(MenuAudio item) {
-
+        insertFragmentWithBackStack(
+                AudioFragmentBuilder.newAudioFragment(
+                        item.getName()), TAG_AUDIO
+        );
     }
 }

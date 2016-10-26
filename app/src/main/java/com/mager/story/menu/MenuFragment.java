@@ -14,7 +14,7 @@ import com.mager.story.R;
 import com.mager.story.constant.EnumConstant.MenuType;
 import com.mager.story.core.CoreFragment;
 import com.mager.story.core.recyclerView.BindAdapter;
-import com.mager.story.databinding.RecyclerViewBinding;
+import com.mager.story.databinding.FragmentRecyclerViewBinding;
 import com.mager.story.home.MenuInterface;
 import com.mager.story.menu.audio.MenuAudio;
 import com.mager.story.menu.photo.MenuPhoto;
@@ -28,13 +28,13 @@ import java.util.List;
 
 public abstract class MenuFragment extends CoreFragment<MenuPresenter, MenuViewModel> {
 
-    private RecyclerViewBinding binding;
+    private FragmentRecyclerViewBinding binding;
     private MenuInterface menuInterface;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(inflater, R.layout.recycler_view, container, false);
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_recycler_view, container, false);
 
         initContent();
 
@@ -80,7 +80,7 @@ public abstract class MenuFragment extends CoreFragment<MenuPresenter, MenuViewM
                 audioAdapter.setOnItemClickListener((position, item) -> menuInterface.goToAudio(item));
                 return audioAdapter;
             default:
-                return new BindAdapter(getActivity(), R.layout.recycler_view);
+                return new BindAdapter(getActivity(), R.layout.fragment_recycler_view);
         }
     }
 

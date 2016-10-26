@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Story</string>
+    <string name="app_name">Mager</string>
 
     <string name="auth_edit_text_email_hint">Enter email</string>
     <string name="auth_edit_text_password_hint">Enter password</string>
@@ -26,6 +26,8 @@
     <string name="photo_load_error">Error loading photo</string>
 
     <string name="story_title">Story</string>
+    <string name="story_header_format">%1$s - %2$s</string>
+
     <string name="audio_title">Audio</string>
 
     <string name="action_settings">Settings</string>

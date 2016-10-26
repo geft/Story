@@ -6,7 +6,7 @@ android {
     compileSdkVersion 25
     buildToolsVersion "25.0.0"
     defaultConfig {
-        applicationId "com.mager.story"
+        applicationId 'com.mager.story'
         minSdkVersion 19
         targetSdkVersion 25
         versionCode 1
@@ -61,7 +61,6 @@ dependencies {
     compile 'com.rengwuxian.materialedittext:library:2.1.4'
     compile 'io.reactivex:rxandroid:1.2.1'
     compile 'io.reactivex:rxjava:1.1.6'
-    compile 'com.github.rey5137:material:1.2.4'
     compile 'com.github.chrisbanes:PhotoView:1.3.0'
     compile 'com.hannesdorfmann.fragmentargs:annotation:3.0.2'
     apt 'com.hannesdorfmann.fragmentargs:processor:3.0.2'

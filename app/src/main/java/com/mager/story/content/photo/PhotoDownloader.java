@@ -1,6 +1,5 @@
 package com.mager.story.content.photo;
 
-import android.app.Activity;
 import android.util.Log;
 
 import com.google.firebase.database.DataSnapshot;
@@ -8,8 +7,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.StorageReference;
+import com.mager.story.R;
 import com.mager.story.constant.EnumConstant.MenuType;
+import com.mager.story.home.LoadingInterface;
 import com.mager.story.util.FirebaseUtil;
+import com.mager.story.util.ResourceUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,12 +26,14 @@ import static com.mager.story.constant.EnumConstant.PhotoType;
 class PhotoDownloader {
     private String TAG = this.getClass().getName();
 
-    private Activity activity;
+    private PhotoFragment fragment;
     private DatabaseReference database;
     private StorageReference storage;
+    private LoadingInterface loadingInterface;
 
-    PhotoDownloader(Activity activity) {
-        this.activity = activity;
+    PhotoDownloader(PhotoFragment fragment, LoadingInterface loadingInterface) {
+        this.fragment = fragment;
+        this.loadingInterface = loadingInterface;
 
         FirebaseUtil firebaseUtil = new FirebaseUtil();
         database = firebaseUtil.getDatabase(MenuType.PHOTO);
@@ -50,6 +54,7 @@ class PhotoDownloader {
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 Log.e(TAG, databaseError.getMessage());
+                setError();
             }
         });
     }
@@ -77,20 +82,27 @@ class PhotoDownloader {
 
             try {
                 storage.child(item.getName()).getDownloadUrl()
-                        .addOnCompleteListener(activity, task -> {
+                        .addOnCompleteListener(fragment.getActivity(), task -> {
                             if (task.isSuccessful()) {
                                 try {
                                     item.setUrl(task.getResult().toString());
                                 } catch (Exception e) {
                                     Log.d(TAG, "Failed to download " + name);
                                 }
+                            } else {
+                                setError();
                             }
                         });
-            } catch (IllegalStateException e) {
-                Log.w(TAG, "downloadPhotos: Interrupted", e);
+            } catch (Exception e) {
+                setError();
             }
         }
 
-        ((PhotoActivity) activity).setItems(list);
+        fragment.setItems(list);
+        loadingInterface.setLoading(false);
+    }
+
+    private void setError() {
+        loadingInterface.setError(ResourceUtil.getString(R.string.photo_load_error));
     }
 }

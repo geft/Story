@@ -8,4 +8,6 @@ public interface LoadingInterface {
     boolean isLoading();
 
     void setLoading(boolean loading);
+
+    void setError(String message);
 }
