@@ -56,7 +56,7 @@ class NavigationHandler {
                         case R.id.tab_photo:
                             FragmentUtil.replace(activity, photoFragment, TAG_MENU_PHOTO);
                             break;
-                        case R.id.tab_story:
+                        case R.id.tab_story: //todo Attempt to write to field 'android.app.FragmentManagerImpl android.app.Fragment.mFragmentManager' on a null object reference
                             FragmentUtil.replace(activity, storyFragment, TAG_MENU_STORY);
                             break;
                         case R.id.tab_audio:

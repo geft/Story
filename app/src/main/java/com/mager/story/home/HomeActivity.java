@@ -75,7 +75,8 @@ public class HomeActivity extends CoreActivity<HomePresenter, HomeViewModel>
     protected void onResume() {
         super.onResume();
 
-        if (navigationHandler.isMenuVisible()) {
+        // todo fix this
+        if (!FragmentUtil.isFragmentVisible(this, TAG_LOGIN)) {
             navigationHandler.animateSlideUp();
         } else {
             navigationHandler.animateSlideDown();
