@@ -1,29 +1,21 @@
 package com.mager.story.home;
 
-import android.app.Fragment;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 
 import com.mager.story.R;
 import com.mager.story.constant.EnumConstant.SnackBarType;
-import com.mager.story.content.audio.AudioFragmentBuilder;
-import com.mager.story.content.photo.PhotoFragmentBuilder;
-import com.mager.story.content.story.StoryFragmentBuilder;
 import com.mager.story.core.CoreActivity;
 import com.mager.story.databinding.ActivityHomeBinding;
 import com.mager.story.error.ErrorFragmentBuilder;
 import com.mager.story.login.LoginFragment;
 import com.mager.story.menu.audio.MenuAudio;
-import com.mager.story.menu.audio.MenuAudioFragment;
-import com.mager.story.menu.audio.MenuAudioFragmentBuilder;
 import com.mager.story.menu.photo.MenuPhoto;
-import com.mager.story.menu.photo.MenuPhotoFragment;
-import com.mager.story.menu.photo.MenuPhotoFragmentBuilder;
 import com.mager.story.menu.story.MenuStory;
-import com.mager.story.menu.story.MenuStoryFragment;
-import com.mager.story.menu.story.MenuStoryFragmentBuilder;
 import com.mager.story.util.CommonUtil;
+import com.mager.story.util.FragmentUtil;
 import com.mager.story.util.ResourceUtil;
 
 import rx.Observable;
@@ -33,22 +25,16 @@ import rx.Observable;
  */
 
 public class HomeActivity extends CoreActivity<HomePresenter, HomeViewModel>
-        implements LoginInterface, MenuInterface, LoadingInterface {
+        implements LoginInterface, LoadingInterface, MenuInterface {
 
-    static final String TAG_MENU_PHOTO = "MENU_PHOTO";
-    static final String TAG_MENU_STORY = "MENU_STORY";
-    static final String TAG_MENU_AUDIO = "MENU_AUDIO";
-    static final String TAG_LOGIN = "LOGIN";
-    static final String TAG_PHOTO = "PHOTO";
-    static final String TAG_STORY = "STORY";
-    static final String TAG_AUDIO = "AUDIO";
-    static final String TAG_ERROR = "ERROR";
-    static final String KEY_ROTATION = "ROTATION";
-    MenuPhotoFragment photoFragment;
-    MenuStoryFragment storyFragment;
-    MenuAudioFragment audioFragment;
+    private static final String TAG_LOGIN = "LOGIN";
+    private static final String TAG_ERROR = "ERROR";
+    private static final String KEY_ROTATION = "ROTATION";
+
     private ActivityHomeBinding binding;
-    private BottomNavigationHandler navigationHandler;
+    private NavigationHandler navigationHandler;
+    private MenuHandler menuHandler;
+    private boolean isInFocus;
 
     @Override
     protected HomeViewModel createViewModel() {
@@ -75,8 +61,56 @@ public class HomeActivity extends CoreActivity<HomePresenter, HomeViewModel>
         if (savedInstanceState == null) {
             initLoginFragment();
         }
+    }
 
-        initBottomNavigation();
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        navigationHandler = new NavigationHandler(this, binding.bottomView);
+        menuHandler = new MenuHandler(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (navigationHandler.isMenuVisible()) {
+            navigationHandler.animateSlideUp();
+        } else {
+            navigationHandler.animateSlideDown();
+        }
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+
+        isInFocus = hasFocus;
+    }
+
+    @Override
+    protected void onStop() {
+        if (!isInFocus) {
+            finish();
+        }
+
+        super.onStop();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        resetActionBarTitle();
+    }
+
+    private void resetActionBarTitle() {
+        ActionBar actionBar = getSupportActionBar();
+
+        if (actionBar != null) {
+            actionBar.setTitle(R.string.app_name);
+        }
     }
 
     @Override
@@ -87,31 +121,7 @@ public class HomeActivity extends CoreActivity<HomePresenter, HomeViewModel>
     }
 
     private void initLoginFragment() {
-        getFragmentManager()
-                .beginTransaction()
-                .add(R.id.container, new LoginFragment(), TAG_LOGIN)
-                .commit();
-    }
-
-    private void initBottomNavigation() {
-        navigationHandler = new BottomNavigationHandler(this, binding.bottomView);
-    }
-
-    void insertFragment(Fragment fragment, String tag) {
-        getFragmentManager()
-                .beginTransaction()
-                .setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out)
-                .replace(R.id.container, fragment, tag)
-                .commit();
-    }
-
-    void insertFragmentWithBackStack(Fragment fragment, String tag) {
-        getFragmentManager()
-                .beginTransaction()
-                .setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out)
-                .replace(R.id.container, fragment, tag)
-                .addToBackStack(null)
-                .commit();
+        FragmentUtil.insert(this, new LoginFragment(), TAG_LOGIN);
     }
 
     @Override
@@ -122,12 +132,15 @@ public class HomeActivity extends CoreActivity<HomePresenter, HomeViewModel>
 
             subscription.add(
                     getPresenter().populateList()
-                            .flatMap(result -> Observable.defer(() -> Observable.just(initFragments())))
+                            .flatMap(result -> Observable.defer(() -> Observable.just(
+                                    navigationHandler.initFragments(
+                                            getViewModel().getPhotoList(),
+                                            getViewModel().getStoryList(),
+                                            getViewModel().getAudioList()
+                                    ))))
                             .compose(CommonUtil.getCommonTransformer())
                             .subscribe(result -> {
-                                insertFragment(photoFragment, TAG_MENU_PHOTO);
-                                navigationHandler.animateSlideUp();
-                                setLoading(false);
+                                handleSignInSuccess();
                             })
             );
         } else {
@@ -135,12 +148,10 @@ public class HomeActivity extends CoreActivity<HomePresenter, HomeViewModel>
         }
     }
 
-    private boolean initFragments() {
-        photoFragment = MenuPhotoFragmentBuilder.newMenuPhotoFragment(getViewModel().getPhotoList());
-        storyFragment = MenuStoryFragmentBuilder.newMenuStoryFragment(getViewModel().getStoryList());
-        audioFragment = MenuAudioFragmentBuilder.newMenuAudioFragment(getViewModel().getAudioList());
-
-        return true;
+    private void handleSignInSuccess() {
+        navigationHandler.initPrimaryFragment();
+        navigationHandler.animateSlideUp();
+        setLoading(false);
     }
 
     @Override
@@ -155,32 +166,24 @@ public class HomeActivity extends CoreActivity<HomePresenter, HomeViewModel>
 
     @Override
     public void setError(String message) {
-        insertFragment(
-                ErrorFragmentBuilder.newErrorFragment(message), TAG_ERROR
-        );
+        getFragmentManager().beginTransaction()
+                .setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out)
+                .replace(R.id.container, ErrorFragmentBuilder.newErrorFragment(message), TAG_ERROR)
+                .commit();
     }
 
     @Override
     public void goToPhoto(MenuPhoto item) {
-        insertFragmentWithBackStack(
-                PhotoFragmentBuilder.newPhotoFragment(
-                        item.getPhotoGroup()), TAG_PHOTO
-        );
+        menuHandler.goToPhoto(item);
     }
 
     @Override
     public void goToStory(MenuStory item) {
-        insertFragmentWithBackStack(
-                StoryFragmentBuilder.newStoryFragment(
-                        item.getChapter(), item.getTitle()), TAG_STORY
-        );
+        menuHandler.goToStory(item);
     }
 
     @Override
     public void goToAudio(MenuAudio item) {
-        insertFragmentWithBackStack(
-                AudioFragmentBuilder.newAudioFragment(
-                        item.getName()), TAG_AUDIO
-        );
+        menuHandler.goToAudio(item);
     }
 }

@@ -45,14 +45,6 @@ public class BindAdapter<T> extends RecyclerView.Adapter<BindAdapter.BindViewHol
         notifyDataSetChanged();
     }
 
-    public void addItem(T item) {
-        dataSet.add(item);
-    }
-
-    public T getItem(int position) {
-        return dataSet.get(position);
-    }
-
     public void setOnItemClickListener(OnRecyclerItemClickListener<T> listener) {
         this.listener = listener;
     }
@@ -70,11 +62,14 @@ public class BindAdapter<T> extends RecyclerView.Adapter<BindAdapter.BindViewHol
         holder.getBinding().setVariable(BR.item, dataSet.get(position));
         holder.getBinding().executePendingBindings();
 
+        View root = holder.getBinding().getRoot();
+
         if (listener != null) {
-            holder.getBinding().getRoot().setOnClickListener(view ->
+            // todo add throttle
+            root.setOnClickListener(view ->
                     listener.onItemClick(position, dataSet.get(position)));
         } else {
-            holder.getBinding().getRoot().setOnClickListener(null);
+            root.setOnClickListener(null);
         }
     }
 

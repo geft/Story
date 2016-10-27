@@ -36,9 +36,6 @@ public abstract class CoreActivity<P extends CorePresenter, VM extends CoreViewM
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Thread.setDefaultUncaughtExceptionHandler((thread, throwable) ->
-                Log.e(TAG, "uncaughtException: " + throwable.getMessage(), throwable));
-
         initWindowStyle();
         initLeakCanary();
         initFirebase();
@@ -85,7 +82,6 @@ public abstract class CoreActivity<P extends CorePresenter, VM extends CoreViewM
         if (authStateListener != null) {
             firebaseAuth.removeAuthStateListener(authStateListener);
         }
-
 
         super.onDestroy();
     }

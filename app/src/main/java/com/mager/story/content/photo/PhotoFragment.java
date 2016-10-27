@@ -12,8 +12,9 @@ import com.google.firebase.storage.StorageReference;
 import com.hannesdorfmann.fragmentargs.annotation.Arg;
 import com.hannesdorfmann.fragmentargs.annotation.FragmentWithArgs;
 import com.mager.story.R;
-import com.mager.story.constant.EnumConstant;
+import com.mager.story.StoryApplication;
 import com.mager.story.constant.EnumConstant.PhotoGroup;
+import com.mager.story.constant.EnumConstant.PhotoType;
 import com.mager.story.core.CoreFragment;
 import com.mager.story.core.recyclerView.BindAdapter;
 import com.mager.story.core.recyclerView.OnRecyclerItemClickListener;
@@ -37,8 +38,10 @@ public class PhotoFragment
         implements OnRecyclerItemClickListener<PhotoItem> {
 
     private static String TAG_DIALOG = "DIALOG";
+
     @Arg
     String photoGroup;
+
     private FragmentRecyclerViewBinding binding;
     private LoadingInterface loadingInterface;
 
@@ -56,6 +59,7 @@ public class PhotoFragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_recycler_view, container, false);
+
         return binding.getRoot();
     }
 
@@ -72,7 +76,7 @@ public class PhotoFragment
         adapter.setOnItemClickListener(this);
 
         binding.recyclerView.setBindItems(getViewModel().getItems());
-        binding.recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), getSpanCount()));
+        binding.recyclerView.setLayoutManager(new GridLayoutManager(StoryApplication.getInstance(), getSpanCount()));
         binding.recyclerView.setAdapter(adapter);
         binding.recyclerView.requestLayout();
     }
@@ -80,26 +84,32 @@ public class PhotoFragment
     private void populateData(@PhotoGroup String photoGroup) {
         loadingInterface.setLoading(true);
 
-        new PhotoDownloader(this, loadingInterface)
+        new PhotoDownloader(this, loadingInterface, subscription)
                 .populatePhotos(photoGroup);
     }
 
     private int getSpanCount() {
-        return ViewUtil.calculateSpanCount(getActivity(), ResourceUtil.getDimenInDp(R.dimen.photo_size));
+        return ViewUtil.calculateSpanCount(
+                StoryApplication.getInstance(),
+                ResourceUtil.getDimenInDp(R.dimen.photo_size));
     }
 
     @Override
     public void onItemClick(int position, PhotoItem item) {
+        PhotoDialog dialog = new PhotoDialog();
+        dialog.show(getFragmentManager(), TAG_DIALOG);
+
         FirebaseUtil firebaseUtil = new FirebaseUtil();
         StorageReference storage = firebaseUtil.getStorage(PHOTO).child(item.getGroup());
 
         String fullName = item.getName()
-                .replace(EnumConstant.PhotoType.THUMB, EnumConstant.PhotoType.FULL);
+                .replace(PhotoType.THUMB, PhotoType.FULL);
 
         storage.child(fullName).getDownloadUrl().addOnCompleteListener(getActivity(), task -> {
             if (task.isSuccessful()) {
-                PhotoDialog dialog = PhotoDialogBuilder.newPhotoDialog(task.getResult().toString());
-                dialog.show(getFragmentManager(), TAG_DIALOG);
+                dialog.loadImage(task.getResult().toString());
+            } else {
+                loadingInterface.setError(ResourceUtil.getString(R.string.photo_load_error_multiple));
             }
         });
     }

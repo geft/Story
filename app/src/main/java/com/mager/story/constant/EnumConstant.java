@@ -27,6 +27,12 @@ public class EnumConstant {
 
     @StringDef
     @Retention(RetentionPolicy.SOURCE)
+    public @interface DialogStyle {
+        String FULL_SCREEN = "FULL_SCREEN";
+    }
+
+    @StringDef
+    @Retention(RetentionPolicy.SOURCE)
     public @interface SnackBarType {
         String NORMAL = "NORMAL";
         String ERROR = "ERROR";

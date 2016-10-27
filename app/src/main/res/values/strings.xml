@@ -23,7 +23,8 @@
     <string name="menu_coming_soon">Coming Soon</string>
 
     <string name="photo_title">Photo</string>
-    <string name="photo_load_error">Error loading photo</string>
+    <string name="photo_load_error_single">Error loading photo</string>
+    <string name="photo_load_error_multiple">Error loading photos</string>
 
     <string name="story_title">Story</string>
     <string name="story_header_format">%1$s - %2$s</string>
