@@ -24,6 +24,7 @@ import static com.mager.story.constant.EnumConstant.PhotoType;
  */
 
 class PhotoDownloader {
+    private static String IMAGE_EXT = "jpg";
     private String TAG = this.getClass().getName();
 
     private PhotoFragment fragment;
@@ -65,7 +66,7 @@ class PhotoDownloader {
         for (int i = 0; i < count; i++) {
             String type = PhotoType.THUMB;
             String prefix = (i < 9) ? "0" : "";
-            String suffix = ".jpg";
+            String suffix = IMAGE_EXT;
 
             PhotoItem item = new PhotoItem();
             item.setName(type + prefix + Integer.toString(i + 1) + suffix);
@@ -78,17 +79,11 @@ class PhotoDownloader {
 
     private void downloadPhotos(List<PhotoItem> list) {
         for (PhotoItem item : list) {
-            String name = item.getName();
-
             try {
                 storage.child(item.getName()).getDownloadUrl()
                         .addOnCompleteListener(fragment.getActivity(), task -> {
                             if (task.isSuccessful()) {
-                                try {
-                                    item.setUrl(task.getResult().toString());
-                                } catch (Exception e) {
-                                    Log.d(TAG, "Failed to download " + name);
-                                }
+                                item.setUrl(task.getResult().toString());
                             } else {
                                 setError();
                             }

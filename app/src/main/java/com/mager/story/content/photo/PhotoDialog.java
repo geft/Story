@@ -1,16 +1,21 @@
 package com.mager.story.content.photo;
 
 import android.app.Dialog;
+import android.app.DialogFragment;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
+import com.hannesdorfmann.fragmentargs.annotation.Arg;
+import com.hannesdorfmann.fragmentargs.annotation.FragmentWithArgs;
 import com.mager.story.R;
 import com.mager.story.databinding.DialogPhotoBinding;
 
@@ -22,41 +27,45 @@ import static android.view.WindowManager.LayoutParams.FLAG_SECURE;
  * Created by Gerry on 11/10/2016.
  */
 
-class PhotoDialog extends Dialog {
+@FragmentWithArgs
+public class PhotoDialog extends DialogFragment {
+
+    @Arg
+    String url;
 
     private DialogPhotoBinding binding;
-    private String url;
 
-    PhotoDialog(Context context, String url) {
-        super(context, android.R.style.Theme_DeviceDefault_Light_NoActionBar_Fullscreen);
+    @Override
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        setStyle(STYLE_NO_TITLE, android.R.style.Theme_DeviceDefault_Light_NoActionBar_Fullscreen);
 
-        this.url = url;
-        initBinding();
+        return super.onCreateDialog(savedInstanceState);
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        binding = DataBindingUtil.inflate(inflater, R.layout.dialog_photo, null, false);
+
+        return binding.getRoot();
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onAttach(Context context) {
+        super.onAttach(context);
 
-        initFlags();
-        initImage();
+        getActivity().getWindow().addFlags(FLAG_SECURE);
     }
 
-    private void initFlags() {
-        if (getWindow() != null) {
-            getWindow().addFlags(FLAG_SECURE);
-        }
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        loadImage();
     }
 
-    private void initBinding() {
-        LayoutInflater inflater = LayoutInflater.from(getContext());
-        binding = DataBindingUtil.inflate(inflater, R.layout.dialog_photo, null, false);
-        setContentView(binding.getRoot());
-    }
-
-    private void initImage() {
-        Glide
-                .with(getContext())
+    private void loadImage() {
+        Glide.with(getActivity())
                 .load(url)
                 .listener(new RequestListener<String, GlideDrawable>() {
                     @Override

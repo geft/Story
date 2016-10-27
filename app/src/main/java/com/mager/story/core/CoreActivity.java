@@ -46,7 +46,12 @@ public abstract class CoreActivity<P extends CorePresenter, VM extends CoreViewM
 
         subscription = new CompositeSubscription();
 
-        viewModel = createViewModel();
+        if (savedInstanceState != null) {
+            viewModel = Parcels.unwrap(savedInstanceState.getParcelable(PARCEL));
+        } else {
+            viewModel = createViewModel();
+        }
+
         presenter = createPresenter(viewModel);
         presenter.setSubscription(subscription);
 
@@ -103,15 +108,6 @@ public abstract class CoreActivity<P extends CorePresenter, VM extends CoreViewM
         }
 
         super.onSaveInstanceState(outState);
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-
-        if (savedInstanceState != null) {
-            viewModel = Parcels.unwrap(savedInstanceState.getParcelable(PARCEL));
-        }
     }
 
     protected abstract VM createViewModel();

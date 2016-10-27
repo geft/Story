@@ -38,12 +38,14 @@ public class ErrorFragment extends CoreFragment<ErrorPresenter, ErrorViewModel> 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_error, container, false);
+        binding.setViewModel(getViewModel());
+
         return binding.getRoot();
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    public void onStart() {
+        super.onStart();
 
         getPresenter().setMessage(message);
     }

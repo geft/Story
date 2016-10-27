@@ -43,6 +43,7 @@ public class HomeActivity extends CoreActivity<HomePresenter, HomeViewModel>
     static final String TAG_STORY = "STORY";
     static final String TAG_AUDIO = "AUDIO";
     static final String TAG_ERROR = "ERROR";
+    static final String KEY_ROTATION = "ROTATION";
     MenuPhotoFragment photoFragment;
     MenuStoryFragment storyFragment;
     MenuAudioFragment audioFragment;
@@ -71,8 +72,18 @@ public class HomeActivity extends CoreActivity<HomePresenter, HomeViewModel>
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        initLoginFragment();
+        if (savedInstanceState == null) {
+            initLoginFragment();
+        }
+
         initBottomNavigation();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putBoolean(KEY_ROTATION, true);
+
+        super.onSaveInstanceState(outState);
     }
 
     private void initLoginFragment() {

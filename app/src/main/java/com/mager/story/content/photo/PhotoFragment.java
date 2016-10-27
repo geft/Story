@@ -1,6 +1,5 @@
 package com.mager.story.content.photo;
 
-import android.app.Dialog;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -37,9 +36,9 @@ public class PhotoFragment
         extends CoreFragment<PhotoPresenter, PhotoViewModel>
         implements OnRecyclerItemClickListener<PhotoItem> {
 
+    private static String TAG_DIALOG = "DIALOG";
     @Arg
     String photoGroup;
-
     private FragmentRecyclerViewBinding binding;
     private LoadingInterface loadingInterface;
 
@@ -99,8 +98,8 @@ public class PhotoFragment
 
         storage.child(fullName).getDownloadUrl().addOnCompleteListener(getActivity(), task -> {
             if (task.isSuccessful()) {
-                Dialog dialog = new PhotoDialog(getActivity(), task.getResult().toString());
-                dialog.show();
+                PhotoDialog dialog = PhotoDialogBuilder.newPhotoDialog(task.getResult().toString());
+                dialog.show(getFragmentManager(), TAG_DIALOG);
             }
         });
     }
