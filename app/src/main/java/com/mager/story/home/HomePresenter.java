@@ -35,4 +35,8 @@ class HomePresenter extends CorePresenter<HomeViewModel> {
     void setLoading(boolean loading) {
         getViewModel().setLoading(loading);
     }
+
+    void setShowBottomView(boolean show) {
+        getViewModel().setShowBottomView(show);
+    }
 }

@@ -5,7 +5,6 @@ import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
-import android.view.View;
 
 import com.mager.story.Henson;
 import com.mager.story.R;
@@ -83,13 +82,9 @@ public class HomeActivity extends CoreActivity<HomePresenter, HomeViewModel>
     }
 
     private void initNavigationState() {
-        if (isLoggedIn) {
-            binding.bottomView.setVisibility(View.VISIBLE);
-        } else {
-            binding.bottomView.setVisibility(View.GONE);
-        }
+        getPresenter().setShowBottomView(isLoggedIn);
 
-        if (selectedItem != null) {
+        if (isLoggedIn && selectedItem != null) {
             navigationHandler.clickItem(selectedItem);
         }
     }

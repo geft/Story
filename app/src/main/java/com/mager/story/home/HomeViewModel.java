@@ -10,6 +10,7 @@ import com.mager.story.menu.story.MenuStory;
 
 import org.parceler.Parcel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,10 +21,17 @@ import java.util.List;
 public class HomeViewModel extends CoreViewModel {
 
     protected boolean loading;
+    protected boolean showBottomView;
 
     List<MenuPhoto> photoList;
     List<MenuStory> storyList;
     List<MenuAudio> audioList;
+
+    HomeViewModel() {
+        photoList = new ArrayList<>();
+        storyList = new ArrayList<>();
+        audioList = new ArrayList<>();
+    }
 
     @Bindable
     public boolean isLoading() {
@@ -33,6 +41,16 @@ public class HomeViewModel extends CoreViewModel {
     public void setLoading(boolean loading) {
         this.loading = loading;
         notifyPropertyChanged(BR.loading);
+    }
+
+    @Bindable
+    public boolean isShowBottomView() {
+        return showBottomView;
+    }
+
+    public void setShowBottomView(boolean showBottomView) {
+        this.showBottomView = showBottomView;
+        notifyPropertyChanged(BR.showBottomView);
     }
 
     public List<MenuAudio> getAudioList() {

@@ -1,8 +1,8 @@
 package com.mager.story.home;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v7.app.AppCompatActivity;
 
 import com.f2prateek.dart.HensonNavigable;
 
@@ -11,12 +11,12 @@ import com.f2prateek.dart.HensonNavigable;
  */
 
 @HensonNavigable
-public class DummyActivity extends Activity {
+public class DummyActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        new Handler().postDelayed(this::finish, 500);
+        new Handler().postDelayed(this::finish, 200);
     }
 }
