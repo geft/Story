@@ -1,10 +1,13 @@
 package com.mager.story.home;
 
+import android.content.ComponentCallbacks2;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
+import android.view.View;
 
+import com.mager.story.Henson;
 import com.mager.story.R;
 import com.mager.story.constant.EnumConstant.SnackBarType;
 import com.mager.story.core.CoreActivity;
@@ -25,16 +28,19 @@ import rx.Observable;
  */
 
 public class HomeActivity extends CoreActivity<HomePresenter, HomeViewModel>
-        implements LoginInterface, LoadingInterface, MenuInterface {
+        implements ComponentCallbacks2, LoginInterface, LoadingInterface, MenuInterface {
 
     private static final String TAG_LOGIN = "LOGIN";
     private static final String TAG_ERROR = "ERROR";
-    private static final String KEY_ROTATION = "ROTATION";
+    private static final String KEY_LOGGED_IN = "LOGGED_IN";
+    private static final String KEY_SELECTED_ITEM = "SELECTED_ITEM";
 
     private ActivityHomeBinding binding;
     private NavigationHandler navigationHandler;
     private MenuHandler menuHandler;
-    private boolean isInFocus;
+
+    private boolean isLoggedIn;
+    private String selectedItem;
 
     @Override
     protected HomeViewModel createViewModel() {
@@ -58,7 +64,10 @@ public class HomeActivity extends CoreActivity<HomePresenter, HomeViewModel>
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (savedInstanceState == null) {
+        if (savedInstanceState != null) {
+            isLoggedIn = savedInstanceState.getBoolean(KEY_LOGGED_IN);
+            selectedItem = savedInstanceState.getString(KEY_SELECTED_ITEM);
+        } else {
             initLoginFragment();
         }
     }
@@ -67,36 +76,30 @@ public class HomeActivity extends CoreActivity<HomePresenter, HomeViewModel>
     protected void onStart() {
         super.onStart();
 
-        navigationHandler = new NavigationHandler(this, binding.bottomView);
         menuHandler = new MenuHandler(this);
+        navigationHandler = new NavigationHandler(this, binding.bottomView);
+
+        initNavigationState();
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        // todo fix this
-        if (!FragmentUtil.isFragmentVisible(this, TAG_LOGIN)) {
-            navigationHandler.animateSlideUp();
+    private void initNavigationState() {
+        if (isLoggedIn) {
+            binding.bottomView.setVisibility(View.VISIBLE);
         } else {
-            navigationHandler.animateSlideDown();
+            binding.bottomView.setVisibility(View.GONE);
+        }
+
+        if (selectedItem != null) {
+            navigationHandler.clickItem(selectedItem);
         }
     }
 
     @Override
-    public void onWindowFocusChanged(boolean hasFocus) {
-        super.onWindowFocusChanged(hasFocus);
-
-        isInFocus = hasFocus;
-    }
-
-    @Override
-    protected void onStop() {
-        if (!isInFocus) {
+    public void onTrimMemory(int level) {
+        if (level == ComponentCallbacks2.TRIM_MEMORY_UI_HIDDEN) {
+            startActivity(Henson.with(this).gotoDummyActivity().build());
             finish();
         }
-
-        super.onStop();
     }
 
     @Override
@@ -116,9 +119,14 @@ public class HomeActivity extends CoreActivity<HomePresenter, HomeViewModel>
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        outState.putBoolean(KEY_ROTATION, true);
+        outState.putBoolean(KEY_LOGGED_IN, !isLoginVisible());
+        outState.putString(KEY_SELECTED_ITEM, navigationHandler.getSelectedItem());
 
         super.onSaveInstanceState(outState);
+    }
+
+    private boolean isLoginVisible() {
+        return FragmentUtil.isFragmentVisible(this, TAG_LOGIN);
     }
 
     private void initLoginFragment() {
@@ -128,21 +136,18 @@ public class HomeActivity extends CoreActivity<HomePresenter, HomeViewModel>
     @Override
     public void sendSignInResult(boolean isSuccess) {
         if (isSuccess) {
+            CommonUtil.hideKeyboard(this);
+
             ResourceUtil.showToast(ResourceUtil.getString(R.string.auth_sign_in_success));
             getViewModel().setLoading(true);
 
             subscription.add(
                     getPresenter().populateList()
-                            .flatMap(result -> Observable.defer(() -> Observable.just(
-                                    navigationHandler.initFragments(
-                                            getViewModel().getPhotoList(),
-                                            getViewModel().getStoryList(),
-                                            getViewModel().getAudioList()
-                                    ))))
+                            .flatMap(result -> Observable.defer(() ->
+                                    Observable.just(navigationHandler.initFragments()))
+                            )
                             .compose(CommonUtil.getCommonTransformer())
-                            .subscribe(result -> {
-                                handleSignInSuccess();
-                            })
+                            .subscribe(result -> handleSignInSuccess())
             );
         } else {
             ResourceUtil.showSnackBar(binding.coordinator, R.string.auth_sign_in_fail, SnackBarType.ERROR);
@@ -150,6 +155,7 @@ public class HomeActivity extends CoreActivity<HomePresenter, HomeViewModel>
     }
 
     private void handleSignInSuccess() {
+        isLoggedIn = true;
         navigationHandler.initPrimaryFragment();
         navigationHandler.animateSlideUp();
         setLoading(false);
@@ -167,10 +173,7 @@ public class HomeActivity extends CoreActivity<HomePresenter, HomeViewModel>
 
     @Override
     public void setError(String message) {
-        getFragmentManager().beginTransaction()
-                .setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out)
-                .replace(R.id.container, ErrorFragmentBuilder.newErrorFragment(message), TAG_ERROR)
-                .commit();
+        FragmentUtil.replace(this, ErrorFragmentBuilder.newErrorFragment(message), TAG_ERROR);
     }
 
     @Override

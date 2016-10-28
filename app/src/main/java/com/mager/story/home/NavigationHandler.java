@@ -1,23 +1,21 @@
 package com.mager.story.home;
 
+import android.app.Fragment;
 import android.support.design.widget.BottomNavigationView;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
 import com.mager.story.R;
-import com.mager.story.menu.audio.MenuAudio;
 import com.mager.story.menu.audio.MenuAudioFragment;
 import com.mager.story.menu.audio.MenuAudioFragmentBuilder;
-import com.mager.story.menu.photo.MenuPhoto;
 import com.mager.story.menu.photo.MenuPhotoFragment;
 import com.mager.story.menu.photo.MenuPhotoFragmentBuilder;
-import com.mager.story.menu.story.MenuStory;
 import com.mager.story.menu.story.MenuStoryFragment;
 import com.mager.story.menu.story.MenuStoryFragmentBuilder;
 import com.mager.story.util.FragmentUtil;
 
-import java.util.List;
+import java.util.HashMap;
 
 /**
  * Created by Gerry on 26/10/2016.
@@ -34,17 +32,32 @@ class NavigationHandler {
     private MenuStoryFragment storyFragment;
     private MenuAudioFragment audioFragment;
 
-    NavigationHandler(HomeActivity activity, BottomNavigationView navigationView) {
-        this.activity = activity;
-        this.navigationView = navigationView;
+    private String selectedItem;
+    private HashMap<String, Integer> tabMapping;
 
+    NavigationHandler(HomeActivity homeActivity, BottomNavigationView bottomView) {
+        this.activity = homeActivity;
+        this.navigationView = bottomView;
+        this.selectedItem = TAG_MENU_PHOTO;
+        this.tabMapping = getTabMapping();
+
+        initFragments();
         initListener();
     }
 
-    boolean initFragments(List<MenuPhoto> photoList, List<MenuStory> storyList, List<MenuAudio> audioList) {
-        photoFragment = MenuPhotoFragmentBuilder.newMenuPhotoFragment(photoList);
-        storyFragment = MenuStoryFragmentBuilder.newMenuStoryFragment(storyList);
-        audioFragment = MenuAudioFragmentBuilder.newMenuAudioFragment(audioList);
+    private HashMap<String, Integer> getTabMapping() {
+        HashMap<String, Integer> hashMap = new HashMap<>();
+        hashMap.put(TAG_MENU_PHOTO, R.id.tab_photo);
+        hashMap.put(TAG_MENU_STORY, R.id.tab_story);
+        hashMap.put(TAG_MENU_AUDIO, R.id.tab_audio);
+
+        return hashMap;
+    }
+
+    boolean initFragments() {
+        photoFragment = MenuPhotoFragmentBuilder.newMenuPhotoFragment(activity.getViewModel().getPhotoList());
+        storyFragment = MenuStoryFragmentBuilder.newMenuStoryFragment(activity.getViewModel().getStoryList());
+        audioFragment = MenuAudioFragmentBuilder.newMenuAudioFragment(activity.getViewModel().getAudioList());
 
         return true;
     }
@@ -54,19 +67,38 @@ class NavigationHandler {
                 item -> {
                     switch (item.getItemId()) {
                         case R.id.tab_photo:
-                            FragmentUtil.replace(activity, photoFragment, TAG_MENU_PHOTO);
+                            selectItem(TAG_MENU_PHOTO);
                             break;
-                        case R.id.tab_story: //todo Attempt to write to field 'android.app.FragmentManagerImpl android.app.Fragment.mFragmentManager' on a null object reference
-                            FragmentUtil.replace(activity, storyFragment, TAG_MENU_STORY);
+                        case R.id.tab_story:
+                            selectItem(TAG_MENU_STORY);
                             break;
                         case R.id.tab_audio:
-                            FragmentUtil.replace(activity, audioFragment, TAG_MENU_AUDIO);
+                            selectItem(TAG_MENU_AUDIO);
                             break;
                     }
 
                     return false;
                 }
         );
+    }
+
+    private void selectItem(String tag) {
+        Fragment fragment;
+
+        switch (tag) {
+            case TAG_MENU_STORY:
+                fragment = storyFragment;
+                break;
+            case TAG_MENU_AUDIO:
+                fragment = audioFragment;
+                break;
+            default:
+                fragment = photoFragment;
+                break;
+        }
+
+        selectedItem = tag;
+        FragmentUtil.replace(activity, fragment, tag);
     }
 
     void animateSlideUp() {
@@ -113,14 +145,16 @@ class NavigationHandler {
     }
 
     void initPrimaryFragment() {
-        if (!FragmentUtil.isFragmentVisible(activity, TAG_MENU_PHOTO)) {
-            FragmentUtil.replace(activity, photoFragment, TAG_MENU_PHOTO);
+        if (!FragmentUtil.isFragmentVisible(activity, selectedItem)) {
+            selectItem(selectedItem);
         }
     }
 
-    boolean isMenuVisible() {
-        return FragmentUtil.isFragmentVisible(activity, TAG_MENU_PHOTO) ||
-                FragmentUtil.isFragmentVisible(activity, TAG_MENU_STORY) ||
-                FragmentUtil.isFragmentVisible(activity, TAG_MENU_AUDIO);
+    void clickItem(String tag) {
+        navigationView.findViewById(tabMapping.get(tag)).performClick();
+    }
+
+    String getSelectedItem() {
+        return selectedItem;
     }
 }
