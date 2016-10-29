@@ -65,6 +65,10 @@ public class ResourceUtil {
         return StoryApplication.getInstance().getString(stringRes);
     }
 
+    public static String getString(@StringRes int stringRes, String... args) {
+        return StoryApplication.getInstance().getString(stringRes, (Object[]) args);
+    }
+
     public static String getQuantityString(@PluralsRes int pluralsRes, int quantity) {
         return StoryApplication.getInstance().getResources().getQuantityString(pluralsRes, quantity);
     }

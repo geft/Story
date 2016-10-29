@@ -13,7 +13,6 @@ import com.hannesdorfmann.fragmentargs.annotation.Arg;
 import com.hannesdorfmann.fragmentargs.annotation.FragmentWithArgs;
 import com.mager.story.R;
 import com.mager.story.StoryApplication;
-import com.mager.story.constant.EnumConstant.PhotoGroup;
 import com.mager.story.constant.EnumConstant.PhotoType;
 import com.mager.story.core.CoreFragment;
 import com.mager.story.core.recyclerView.BindAdapter;
@@ -26,7 +25,7 @@ import com.mager.story.util.ViewUtil;
 
 import java.util.List;
 
-import static com.mager.story.constant.EnumConstant.MenuType.PHOTO;
+import static com.mager.story.constant.EnumConstant.FolderType.PHOTO;
 
 /**
  * Created by Gerry on 08/10/2016.
@@ -37,10 +36,13 @@ public class PhotoFragment
         extends CoreFragment<PhotoPresenter, PhotoViewModel>
         implements OnRecyclerItemClickListener<PhotoItem> {
 
-    private static String TAG_DIALOG = "DIALOG";
+    private static final String TAG_DIALOG = "DIALOG";
 
     @Arg
-    String photoGroup;
+    int count;
+
+    @Arg
+    String code;
 
     private FragmentRecyclerViewBinding binding;
     private LoadingInterface loadingInterface;
@@ -68,7 +70,7 @@ public class PhotoFragment
         super.onViewCreated(view, savedInstanceState);
 
         loadingInterface = (LoadingInterface) getActivity();
-        populateData(photoGroup);
+        populateData(code);
     }
 
     private void initAdapter() {
@@ -81,11 +83,11 @@ public class PhotoFragment
         binding.recyclerView.requestLayout();
     }
 
-    private void populateData(@PhotoGroup String photoGroup) {
+    private void populateData(String photoGroup) {
         loadingInterface.setLoading(true);
 
         new PhotoDownloader(this, loadingInterface, subscription)
-                .populatePhotos(photoGroup);
+                .populatePhotos(photoGroup, count);
     }
 
     private int getSpanCount() {
@@ -100,7 +102,7 @@ public class PhotoFragment
         dialog.show(getFragmentManager(), TAG_DIALOG);
 
         FirebaseUtil firebaseUtil = new FirebaseUtil();
-        StorageReference storage = firebaseUtil.getStorage(PHOTO).child(item.getGroup());
+        StorageReference storage = firebaseUtil.getStorageWithChild(PHOTO).child(item.getGroup());
 
         String fullName = item.getName()
                 .replace(PhotoType.THUMB, PhotoType.FULL);

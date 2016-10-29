@@ -11,7 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.mager.story.R;
-import com.mager.story.constant.EnumConstant.MenuType;
+import com.mager.story.constant.EnumConstant.FolderType;
 import com.mager.story.core.CoreFragment;
 import com.mager.story.core.recyclerView.BindAdapter;
 import com.mager.story.databinding.FragmentRecyclerViewBinding;
@@ -19,6 +19,7 @@ import com.mager.story.home.MenuInterface;
 import com.mager.story.menu.audio.MenuAudio;
 import com.mager.story.menu.photo.MenuPhoto;
 import com.mager.story.menu.story.MenuStory;
+import com.mager.story.menu.video.MenuVideo;
 
 import java.util.List;
 
@@ -67,24 +68,27 @@ public abstract class MenuFragment extends CoreFragment<MenuPresenter, MenuViewM
 
     private RecyclerView.Adapter getAdapter() {
         switch (getMenuType()) {
-            case MenuType.PHOTO:
+            case FolderType.PHOTO:
                 BindAdapter<MenuPhoto> photoAdapter = new BindAdapter<>(getActivity(), R.layout.menu_photo);
                 photoAdapter.setOnItemClickListener((position, item) -> menuInterface.goToPhoto(item));
                 return photoAdapter;
-            case MenuType.STORY:
+            case FolderType.STORY:
                 BindAdapter<MenuStory> storyAdapter = new BindAdapter<>(getActivity(), R.layout.menu_story);
                 storyAdapter.setOnItemClickListener((position, item) -> menuInterface.goToStory(item));
                 return storyAdapter;
-            case MenuType.AUDIO:
+            case FolderType.AUDIO:
                 BindAdapter<MenuAudio> audioAdapter = new BindAdapter<>(getActivity(), R.layout.menu_audio);
                 audioAdapter.setOnItemClickListener((position, item) -> menuInterface.goToAudio(item));
                 return audioAdapter;
+            case FolderType.VIDEO:
+                BindAdapter<MenuVideo> videoAdapter = new BindAdapter<>(getActivity(), R.layout.menu_video);
+                videoAdapter.setOnItemClickListener(((position, item) -> menuInterface.goToVideo(item)));
             default:
                 return new BindAdapter(getActivity(), R.layout.fragment_recycler_view);
         }
     }
 
-    @MenuType
+    @FolderType
     protected abstract String getMenuType();
 
     protected abstract List getItemList();

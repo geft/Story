@@ -23,6 +23,9 @@ public class AudioFragment extends CoreFragment<AudioPresenter, AudioViewModel> 
     @Arg
     String name;
 
+    @Arg
+    String code;
+
     private FragmentAudioBinding binding;
 
     @Override

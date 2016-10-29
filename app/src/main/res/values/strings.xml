@@ -10,6 +10,8 @@
     <string name="auth_connection_fail">Failed to connect</string>
     <string name="auth_identity_fail">Authentication failed</string>
 
+    <string name="firebase_download_fail">Error downloading data</string>
+
     <string name="home_email_error_empty">E-mail cannot be empty</string>
     <string name="home_email_error_invalid">Invalid e-mail format</string>
     <string name="home_password_error_empty">Password cannot be empty</string>

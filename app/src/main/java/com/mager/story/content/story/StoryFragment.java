@@ -29,6 +29,9 @@ public class StoryFragment
     @Arg
     String chapter;
 
+    @Arg
+    String code;
+
     private FragmentStoryBinding binding;
 
     @Override

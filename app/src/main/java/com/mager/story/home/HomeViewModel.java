@@ -4,14 +4,9 @@ import android.databinding.Bindable;
 
 import com.mager.story.BR;
 import com.mager.story.core.CoreViewModel;
-import com.mager.story.menu.audio.MenuAudio;
-import com.mager.story.menu.photo.MenuPhoto;
-import com.mager.story.menu.story.MenuStory;
+import com.mager.story.datamodel.MenuDataModel;
 
 import org.parceler.Parcel;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Gerry on 24/10/2016.
@@ -21,17 +16,10 @@ import java.util.List;
 public class HomeViewModel extends CoreViewModel {
 
     protected boolean loading;
+    protected boolean loadingProgress;
+    protected float progressValue;
     protected boolean showBottomView;
-
-    List<MenuPhoto> photoList;
-    List<MenuStory> storyList;
-    List<MenuAudio> audioList;
-
-    HomeViewModel() {
-        photoList = new ArrayList<>();
-        storyList = new ArrayList<>();
-        audioList = new ArrayList<>();
-    }
+    protected MenuDataModel menuDataModel;
 
     @Bindable
     public boolean isLoading() {
@@ -44,6 +32,26 @@ public class HomeViewModel extends CoreViewModel {
     }
 
     @Bindable
+    public boolean isLoadingProgress() {
+        return loadingProgress;
+    }
+
+    public void setLoadingProgress(boolean loadingProgress) {
+        this.loadingProgress = loadingProgress;
+        notifyPropertyChanged(BR.loadingProgress);
+    }
+
+    @Bindable
+    public float getProgressValue() {
+        return progressValue;
+    }
+
+    public void setProgressValue(float progressValue) {
+        this.progressValue = progressValue;
+        notifyPropertyChanged(BR.progressValue);
+    }
+
+    @Bindable
     public boolean isShowBottomView() {
         return showBottomView;
     }
@@ -53,27 +61,11 @@ public class HomeViewModel extends CoreViewModel {
         notifyPropertyChanged(BR.showBottomView);
     }
 
-    public List<MenuAudio> getAudioList() {
-        return audioList;
+    public MenuDataModel getMenuDataModel() {
+        return menuDataModel;
     }
 
-    public void setAudioList(List<MenuAudio> audioList) {
-        this.audioList = audioList;
-    }
-
-    public List<MenuPhoto> getPhotoList() {
-        return photoList;
-    }
-
-    public void setPhotoList(List<MenuPhoto> photoList) {
-        this.photoList = photoList;
-    }
-
-    public List<MenuStory> getStoryList() {
-        return storyList;
-    }
-
-    public void setStoryList(List<MenuStory> storyList) {
-        this.storyList = storyList;
+    public void setMenuDataModel(MenuDataModel menuDataModel) {
+        this.menuDataModel = menuDataModel;
     }
 }

@@ -3,7 +3,6 @@ package com.mager.story.content.photo;
 import android.databinding.Bindable;
 
 import com.mager.story.BR;
-import com.mager.story.constant.EnumConstant;
 import com.mager.story.core.CoreViewModel;
 
 import org.parceler.Parcel;
@@ -17,7 +16,6 @@ public class PhotoItem extends CoreViewModel {
     protected String url;
     protected String name;
 
-    @EnumConstant.PhotoGroup
     protected String group;
 
     @Bindable
@@ -44,7 +42,7 @@ public class PhotoItem extends CoreViewModel {
         return group;
     }
 
-    public void setGroup(@EnumConstant.PhotoGroup String group) {
+    public void setGroup(String group) {
         this.group = group;
     }
 }

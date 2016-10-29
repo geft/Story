@@ -2,19 +2,34 @@ package com.mager.story.home;
 
 import android.app.Fragment;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v7.app.ActionBar;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
 import com.mager.story.R;
+import com.mager.story.content.audio.AudioFragmentBuilder;
+import com.mager.story.content.photo.PhotoFragmentBuilder;
+import com.mager.story.content.story.StoryFragmentBuilder;
+import com.mager.story.content.video.VideoFragmentBuilder;
+import com.mager.story.datamodel.MenuDataModel;
+import com.mager.story.menu.MenuProvider;
+import com.mager.story.menu.audio.MenuAudio;
 import com.mager.story.menu.audio.MenuAudioFragment;
 import com.mager.story.menu.audio.MenuAudioFragmentBuilder;
+import com.mager.story.menu.photo.MenuPhoto;
 import com.mager.story.menu.photo.MenuPhotoFragment;
 import com.mager.story.menu.photo.MenuPhotoFragmentBuilder;
+import com.mager.story.menu.story.MenuStory;
 import com.mager.story.menu.story.MenuStoryFragment;
 import com.mager.story.menu.story.MenuStoryFragmentBuilder;
+import com.mager.story.menu.video.MenuVideo;
+import com.mager.story.menu.video.MenuVideoFragment;
+import com.mager.story.menu.video.MenuVideoFragmentBuilder;
 import com.mager.story.util.FragmentUtil;
+import com.mager.story.util.ResourceUtil;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -25,12 +40,18 @@ class NavigationHandler {
     private static final String TAG_MENU_PHOTO = "MENU_PHOTO";
     private static final String TAG_MENU_STORY = "MENU_STORY";
     private static final String TAG_MENU_AUDIO = "MENU_AUDIO";
+    private static final String TAG_MENU_VIDEO = "MENU_VIDEO";
+    private static final String TAG_PHOTO = "PHOTO";
+    private static final String TAG_STORY = "STORY";
+    private static final String TAG_AUDIO = "AUDIO";
+    private static final String TAG_VIDEO = "VIDEO";
 
     private BottomNavigationView navigationView;
     private HomeActivity activity;
     private MenuPhotoFragment photoFragment;
     private MenuStoryFragment storyFragment;
     private MenuAudioFragment audioFragment;
+    private MenuVideoFragment videoFragment;
 
     private String selectedItem;
     private HashMap<String, Integer> tabMapping;
@@ -40,9 +61,13 @@ class NavigationHandler {
         this.navigationView = bottomView;
         this.selectedItem = TAG_MENU_PHOTO;
         this.tabMapping = getTabMapping();
+    }
 
-        initFragments();
+    void init() {
         initListener();
+        initFragments();
+        initPrimaryFragment();
+        animateSlideUp();
     }
 
     private HashMap<String, Integer> getTabMapping() {
@@ -50,14 +75,23 @@ class NavigationHandler {
         hashMap.put(TAG_MENU_PHOTO, R.id.tab_photo);
         hashMap.put(TAG_MENU_STORY, R.id.tab_story);
         hashMap.put(TAG_MENU_AUDIO, R.id.tab_audio);
+        hashMap.put(TAG_MENU_VIDEO, R.id.tab_video);
 
         return hashMap;
     }
 
-    boolean initFragments() {
-        photoFragment = MenuPhotoFragmentBuilder.newMenuPhotoFragment(activity.getViewModel().getPhotoList());
-        storyFragment = MenuStoryFragmentBuilder.newMenuStoryFragment(activity.getViewModel().getStoryList());
-        audioFragment = MenuAudioFragmentBuilder.newMenuAudioFragment(activity.getViewModel().getAudioList());
+    private boolean initFragments() {
+        MenuProvider provider = new MenuProvider();
+        MenuDataModel menuDataModel = activity.getViewModel().getMenuDataModel();
+
+        photoFragment = MenuPhotoFragmentBuilder.newMenuPhotoFragment(
+                provider.convertDataModelToMenuPhoto(menuDataModel)
+        );
+        storyFragment = MenuStoryFragmentBuilder.newMenuStoryFragment(
+                provider.convertDataModelToMenuStory(menuDataModel)
+        );
+        audioFragment = MenuAudioFragmentBuilder.newMenuAudioFragment(new ArrayList<>());
+        videoFragment = MenuVideoFragmentBuilder.newMenuVideoFragment(new ArrayList<>());
 
         return true;
     }
@@ -75,6 +109,9 @@ class NavigationHandler {
                         case R.id.tab_audio:
                             selectItem(TAG_MENU_AUDIO);
                             break;
+                        case R.id.tab_video:
+                            selectItem(TAG_MENU_VIDEO);
+                            break;
                     }
 
                     return false;
@@ -91,6 +128,9 @@ class NavigationHandler {
                 break;
             case TAG_MENU_AUDIO:
                 fragment = audioFragment;
+                break;
+            case TAG_MENU_VIDEO:
+                fragment = videoFragment;
                 break;
             default:
                 fragment = photoFragment;
@@ -144,7 +184,7 @@ class NavigationHandler {
         });
     }
 
-    void initPrimaryFragment() {
+    private void initPrimaryFragment() {
         if (!FragmentUtil.isFragmentVisible(activity, selectedItem)) {
             selectItem(selectedItem);
         }
@@ -156,5 +196,56 @@ class NavigationHandler {
 
     String getSelectedItem() {
         return selectedItem;
+    }
+
+    boolean isMenuVisible() {
+        return FragmentUtil.isFragmentVisible(activity, TAG_MENU_PHOTO) ||
+                FragmentUtil.isFragmentVisible(activity, TAG_MENU_STORY) ||
+                FragmentUtil.isFragmentVisible(activity, TAG_MENU_AUDIO) ||
+                FragmentUtil.isFragmentVisible(activity, TAG_MENU_VIDEO);
+    }
+
+    void goToPhoto(MenuPhoto item) {
+        setTitle(item.getName());
+        FragmentUtil.replaceWithBackStack(
+                activity,
+                PhotoFragmentBuilder.newPhotoFragment(item.getCode(), item.getCount()),
+                TAG_PHOTO
+        );
+    }
+
+    void goToStory(MenuStory item) {
+        setTitle(ResourceUtil.getString(R.string.story_header_format, item.getChapter(), item.getTitle()));
+        FragmentUtil.replaceWithBackStack(
+                activity,
+                StoryFragmentBuilder.newStoryFragment(item.getChapter(), item.getCode(), item.getTitle()),
+                TAG_STORY
+        );
+    }
+
+    void goToAudio(MenuAudio item) {
+        setTitle(item.getName());
+        FragmentUtil.replaceWithBackStack(
+                activity,
+                AudioFragmentBuilder.newAudioFragment(item.getCode(), item.getName()),
+                TAG_AUDIO
+        );
+    }
+
+    void goToVideo(MenuVideo item) {
+        setTitle(item.getName());
+        FragmentUtil.replaceWithBackStack(
+                activity,
+                VideoFragmentBuilder.newVideoFragment(item.getCode(), item.getName()),
+                TAG_VIDEO
+        );
+    }
+
+    private void setTitle(String title) {
+        ActionBar actionBar = activity.getSupportActionBar();
+
+        if (actionBar != null) {
+            actionBar.setTitle(title);
+        }
     }
 }

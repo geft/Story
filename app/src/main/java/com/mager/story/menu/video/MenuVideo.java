@@ -1,4 +1,4 @@
-package com.mager.story.menu.audio;
+package com.mager.story.menu.video;
 
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
@@ -8,11 +8,12 @@ import com.mager.story.BR;
 import org.parceler.Parcel;
 
 /**
- * Created by Gerry on 21/10/2016.
+ * Created by Gerry on 29/10/2016.
  */
 
 @Parcel
-public class MenuAudio extends BaseObservable {
+public class MenuVideo extends BaseObservable {
+    protected boolean offline;
     protected String name;
     protected String code;
 
@@ -24,6 +25,16 @@ public class MenuAudio extends BaseObservable {
     public void setName(String name) {
         this.name = name;
         notifyPropertyChanged(BR.name);
+    }
+
+    @Bindable
+    public boolean isOffline() {
+        return offline;
+    }
+
+    public void setOffline(boolean offline) {
+        this.offline = offline;
+        notifyPropertyChanged(BR.offline);
     }
 
     public String getCode() {

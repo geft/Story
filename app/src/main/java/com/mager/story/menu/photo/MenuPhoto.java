@@ -5,7 +5,6 @@ import android.databinding.Bindable;
 import android.graphics.drawable.Drawable;
 
 import com.mager.story.BR;
-import com.mager.story.constant.EnumConstant;
 
 import org.parceler.Parcel;
 import org.parceler.Transient;
@@ -17,10 +16,9 @@ import org.parceler.Transient;
 @Parcel
 public class MenuPhoto extends BaseObservable {
 
+    protected int count;
     protected String name;
-
-    @EnumConstant.PhotoGroup
-    protected String photoGroup;
+    protected String code;
 
     @Transient
     private Drawable image;
@@ -35,19 +33,31 @@ public class MenuPhoto extends BaseObservable {
         notifyPropertyChanged(BR.name);
     }
 
-    public String getPhotoGroup() {
-        return photoGroup;
+    @Bindable
+    public int getCount() {
+        return count;
     }
 
-    public void setPhotoGroup(String photoGroup) {
-        this.photoGroup = photoGroup;
+    public void setCount(int count) {
+        this.count = count;
+        notifyPropertyChanged(BR.count);
     }
 
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    @Bindable
     public Drawable getImage() {
         return image;
     }
 
     public void setImage(Drawable image) {
         this.image = image;
+        notifyPropertyChanged(BR.image);
     }
 }

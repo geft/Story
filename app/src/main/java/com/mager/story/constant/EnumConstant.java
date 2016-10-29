@@ -40,10 +40,12 @@ public class EnumConstant {
 
     @StringDef
     @Retention(RetentionPolicy.SOURCE)
-    public @interface MenuType {
+    public @interface FolderType {
         String STORY = "story";
         String PHOTO = "photo";
         String AUDIO = "audio";
+        String VIDEO = "video";
+        String MENU = "menu";
     }
 
     @StringDef
@@ -55,29 +57,27 @@ public class EnumConstant {
 
     @StringDef
     @Retention(RetentionPolicy.SOURCE)
-    public @interface PhotoGroup {
-        String ONS = "ons";
-        String AIRY = "airy";
-        String SWISSBEL = "swissbel";
+    public @interface DownloadType {
+        String MENU_JSON = "MENU_JSON";
+        String MENU_PHOTO = "MENU_PHOTO";
+        String MENU_STORY = "MENU_STORY";
+        String PHOTO = "PHOTO";
+        String STORY = "STORY";
+        String AUDIO = "AUDIO";
+        String VIDEO = "VIDEO";
     }
 
     @StringDef
     @Retention(RetentionPolicy.SOURCE)
-    public @interface StoryChapter {
-        String CH0 = "Prologue";
-        String CH1 = "Chapter 1";
-        String CH2 = "Chapter 2";
-        String CH3 = "Chapter 3";
-        String CH4 = "Chapter 4";
+    public @interface FilePrefix {
+        String PHOTO = "album_";
+        String STORY = "book_";
     }
 
     @StringDef
     @Retention(RetentionPolicy.SOURCE)
-    public @interface StoryTitle {
-        String CH0 = "First Contact";
-        String CH1 = "First Date";
-        String CH2 = "First Kiss";
-        String CH3 = "First Foreplay";
-        String CH4 = "First Orgasm";
+    public @interface FileExtension {
+        String PHOTO = ".jpg";
+        String STORY = ".jpg";
     }
 }

@@ -17,6 +17,7 @@ import org.parceler.Transient;
 public class MenuStory extends BaseObservable {
     protected String chapter;
     protected String title;
+    protected String code;
 
     @Transient
     protected Drawable image;
@@ -41,11 +42,21 @@ public class MenuStory extends BaseObservable {
         notifyPropertyChanged(BR.title);
     }
 
+    @Bindable
     public Drawable getImage() {
         return image;
     }
 
     public void setImage(Drawable image) {
         this.image = image;
+        notifyPropertyChanged(BR.image);
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 }

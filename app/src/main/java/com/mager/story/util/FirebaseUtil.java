@@ -6,12 +6,10 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.mager.story.R;
-import com.mager.story.constant.EnumConstant.MenuType;
+import com.mager.story.home.DownloadInterface;
 import com.mager.story.login.LoginFragment;
 
 /**
@@ -23,12 +21,10 @@ public class FirebaseUtil {
 
     private FirebaseAuth auth;
     private StorageReference storage;
-    private DatabaseReference database;
 
     public FirebaseUtil() {
         auth = FirebaseAuth.getInstance();
         storage = FirebaseStorage.getInstance().getReference();
-        database = FirebaseDatabase.getInstance().getReference();
     }
 
     public static FirebaseAuth.AuthStateListener getFirebaseAuthListener() {
@@ -70,11 +66,12 @@ public class FirebaseUtil {
         loginFragment.sendResult(false);
     }
 
-    public StorageReference getStorage(@MenuType String menuType) {
-        return storage.child(menuType);
+    public StorageReference getStorageWithChild(String folder) {
+        return storage.child(folder);
     }
 
-    public DatabaseReference getDatabase(@MenuType String menuType) {
-        return database.child(menuType);
+    public void notifyDownloadError(DownloadInterface downloadInterface, String message) {
+        Log.e(TAG, message);
+        downloadInterface.downloadFail(ResourceUtil.getString(R.string.firebase_download_fail));
     }
 }

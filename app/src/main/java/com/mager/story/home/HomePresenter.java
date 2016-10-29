@@ -1,11 +1,7 @@
 package com.mager.story.home;
 
 import com.mager.story.core.CorePresenter;
-import com.mager.story.menu.audio.MenuAudioGenerator;
-import com.mager.story.menu.photo.MenuPhotoGenerator;
-import com.mager.story.menu.story.MenuStoryGenerator;
-
-import rx.Observable;
+import com.mager.story.datamodel.MenuDataModel;
 
 /**
  * Created by Gerry on 24/10/2016.
@@ -13,30 +9,43 @@ import rx.Observable;
 
 class HomePresenter extends CorePresenter<HomeViewModel> {
 
+    private HomeProvider provider;
+
     HomePresenter(HomeViewModel viewModel) {
         super(viewModel);
-    }
 
-    Observable<Boolean> populateList() {
-        return Observable.zip(
-                Observable.defer(() -> Observable.just(new MenuPhotoGenerator().getPhotoList())),
-                Observable.defer(() -> Observable.just(new MenuStoryGenerator().getStoryList())),
-                Observable.defer(() -> Observable.just(new MenuAudioGenerator().getAudioList())),
-                (photoList, storyList, audioList) -> {
-                    getViewModel().setPhotoList(photoList);
-                    getViewModel().setStoryList(storyList);
-                    getViewModel().setAudioList(audioList);
-
-                    return true;
-                }
-        );
+        provider = new HomeProvider();
     }
 
     void setLoading(boolean loading) {
         getViewModel().setLoading(loading);
     }
 
+    void setLoadingProgress(boolean loadingProgress) {
+        getViewModel().setLoadingProgress(loadingProgress);
+    }
+
     void setShowBottomView(boolean show) {
         getViewModel().setShowBottomView(show);
+    }
+
+    void clearMenuData() {
+        provider.clearMenuData();
+    }
+
+    boolean isMenuDataOnDeviceValid(MenuDataModel dataModel) {
+        return provider.doesMenuDataExistOnDevice() && provider.isLatestMenu(dataModel.version);
+    }
+
+    void setMenuDataModel(MenuDataModel dataModel) {
+        getViewModel().setMenuDataModel(dataModel);
+    }
+
+    void updateProgress(int averageProgress) {
+        getViewModel().setProgressValue(averageProgress);
+    }
+
+    public void saveMenuDataToDevice() {
+        provider.saveMenuData(getViewModel().getMenuDataModel());
     }
 }
