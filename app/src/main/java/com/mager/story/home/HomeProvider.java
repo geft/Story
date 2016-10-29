@@ -13,6 +13,7 @@ import com.mager.story.datamodel.MenuDataModel;
 public class HomeProvider {
 
     private static final String MENU_JSON = "MENU_JSON";
+
     @Nullable
     private MenuDataModel menuDataModel;
 
@@ -20,12 +21,17 @@ public class HomeProvider {
         menuDataModel = getMenuDataFromPrefs();
     }
 
+    @Nullable
+    public MenuDataModel getMenuDataModel() {
+        return menuDataModel;
+    }
+
     boolean isLatestMenu(int version) {
         return menuDataModel != null && version == menuDataModel.version;
     }
 
     boolean doesMenuDataExistOnDevice() {
-        return getMenuDataFromPrefs() != null;
+        return menuDataModel != null;
     }
 
     @Nullable

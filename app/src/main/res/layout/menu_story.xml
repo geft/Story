@@ -24,6 +24,7 @@
         android:layout_marginEnd="@dimen/default_padding"
         android:layout_marginStart="@dimen/default_padding"
         android:layout_marginTop="@dimen/half_padding"
+        android:background="?attr/selectableItemBackground"
         android:onClick="@{onClickListener}"
         app:cardBackgroundColor="@color/accent"
         app:cardCornerRadius="@dimen/default_radius"
@@ -32,9 +33,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="?attr/selectableItemBackground"
-            android:clickable="true">
+            android:layout_height="wrap_content">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -63,7 +62,7 @@
                     android:maxLines="1"
                     android:paddingTop="@dimen/default_padding"
                     android:text="@{item.title}"
-                    tools:text="First Kiss" />
+                    tools:text="First" />
             </RelativeLayout>
 
             <ImageView

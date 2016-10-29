@@ -4,6 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
+        <import type="android.view.View" />
+
         <variable
             name="viewModel"
             type="com.mager.story.content.story.StoryViewModel" />
@@ -16,8 +19,7 @@
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@{viewModel.nightMode ? @color/black : @color/white}"
-        android:fitsSystemWindows="true">
+        android:background="@{viewModel.nightMode ? @color/black : @color/white}">
 
         <android.support.v4.widget.NestedScrollView
             android:id="@+id/scroll_view"
@@ -25,37 +27,61 @@
             android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-            <LinearLayout
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:orientation="vertical"
-                android:padding="@dimen/default_padding">
+                android:layout_height="wrap_content">
+
+                <ProgressBar
+                    style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:indeterminate="true"
+                    android:visibility="@{viewModel.ready ? View.GONE : View.VISIBLE}"
+                    tools:visibility="gone" />
 
                 <TextView
-                    android:id="@+id/header"
+                    android:id="@+id/error_text"
                     style="@style/TextAppearance.AppCompat.Title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:fontFamily="sans-serif-condensed"
-                    android:text="@{@string/story_header_format(viewModel.chapter, viewModel.title)}"
-                    android:textColor="@{viewModel.nightMode ? @color/white : @color/black}"
-                    tools:text="Chapter 1 - The Boy Who Lives" />
+                    android:visibility="gone"
+                    tools:text="Error loading content" />
 
-                <android.support.v4.widget.Space
-                    android:layout_width="wrap_content"
-                    android:layout_height="@dimen/default_padding" />
-
-                <TextView
-                    android:id="@+id/content"
-                    style="@style/TextAppearance.AppCompat.Body1"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-condensed"
-                    android:text="@{viewModel.content}"
-                    android:textColor="@{viewModel.nightMode ? @color/white : @color/black}"
-                    tools:text="@string/story_content_placeholder" />
-            </LinearLayout>
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical"
+                    android:padding="@dimen/default_padding">
+
+                    <TextView
+                        android:id="@+id/header"
+                        style="@style/TextAppearance.AppCompat.Title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif-condensed"
+                        android:text="@{@string/story_header_format(viewModel.chapter, viewModel.title)}"
+                        android:textColor="@{viewModel.nightMode ? @color/white : @color/black}"
+                        android:visibility="@{viewModel.ready ? View.VISIBLE : View.GONE}"
+                        tools:text="Chapter 1 - The Boy Who Lives" />
+
+                    <android.support.v4.widget.Space
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/default_padding" />
+
+                    <TextView
+                        android:id="@+id/content"
+                        style="@style/TextAppearance.AppCompat.Subhead"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif-light"
+                        android:text="@{viewModel.content}"
+                        android:textColor="@{viewModel.nightMode ? @color/white : @color/black}"
+                        tools:text="@string/story_content_placeholder" />
+                </LinearLayout>
+            </FrameLayout>
         </android.support.v4.widget.NestedScrollView>
 
         <android.support.design.widget.FloatingActionButton
@@ -64,9 +90,11 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/default_padding"
             android:onClick="@{onClickListener}"
+            android:visibility="@{viewModel.ready ? View.VISIBLE : View.GONE}"
             app:fabSize="normal"
             app:layout_anchor="@id/scroll_view"
             app:layout_anchorGravity="bottom|end"
+            app:layout_behavior="com.mager.story.content.story.ScrollAwareFabBehavior"
             app:srcCompat="@drawable/ic_contrast" />
     </android.support.design.widget.CoordinatorLayout>
 </layout>

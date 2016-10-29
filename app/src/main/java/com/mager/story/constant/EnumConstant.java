@@ -78,6 +78,9 @@ public class EnumConstant {
     @Retention(RetentionPolicy.SOURCE)
     public @interface FileExtension {
         String PHOTO = ".jpg";
-        String STORY = ".jpg";
+        String STORY = ".txt";
+        String AUDIO = ".mp3";
+        String VIDEO = ".webm";
+        String MENU_STORY = ".jpg";
     }
 }

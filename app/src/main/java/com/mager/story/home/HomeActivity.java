@@ -24,6 +24,8 @@ import com.mager.story.util.CommonUtil;
 import com.mager.story.util.FragmentUtil;
 import com.mager.story.util.ResourceUtil;
 
+import org.parceler.Parcels;
+
 /**
  * Created by Gerry on 24/09/2016.
  */
@@ -35,6 +37,7 @@ public class HomeActivity extends CoreActivity<HomePresenter, HomeViewModel>
     private static final String TAG_ERROR = "ERROR";
     private static final String KEY_LOGGED_IN = "LOGGED_IN";
     private static final String KEY_SELECTED_ITEM = "SELECTED_ITEM";
+    private static final String KEY_MENU_DATA = "MENU_DATA";
 
     private ActivityHomeBinding binding;
     private NavigationHandler navigationHandler;
@@ -70,6 +73,8 @@ public class HomeActivity extends CoreActivity<HomePresenter, HomeViewModel>
         if (savedInstanceState != null) {
             isLoggedIn = savedInstanceState.getBoolean(KEY_LOGGED_IN);
             selectedItem = savedInstanceState.getString(KEY_SELECTED_ITEM);
+            getPresenter().setMenuDataModel(
+                    Parcels.unwrap(savedInstanceState.getParcelable(KEY_MENU_DATA)));
         } else {
             initLoginFragment();
         }
@@ -89,6 +94,7 @@ public class HomeActivity extends CoreActivity<HomePresenter, HomeViewModel>
         getPresenter().setShowBottomView(isLoggedIn);
 
         if (isLoggedIn && selectedItem != null) {
+            navigationHandler.init();
             navigationHandler.clickItem(selectedItem);
         }
     }
@@ -106,15 +112,17 @@ public class HomeActivity extends CoreActivity<HomePresenter, HomeViewModel>
         super.onBackPressed();
 
         if (navigationHandler.isMenuVisible()) {
-            resetActionBarTitle();
+            resetActionBar();
+            navigationHandler.animateSlideUp();
         }
     }
 
-    private void resetActionBarTitle() {
+    private void resetActionBar() {
         ActionBar actionBar = getSupportActionBar();
 
         if (actionBar != null) {
             actionBar.setTitle(R.string.app_name);
+            actionBar.show();
         }
     }
 
@@ -122,6 +130,7 @@ public class HomeActivity extends CoreActivity<HomePresenter, HomeViewModel>
     protected void onSaveInstanceState(Bundle outState) {
         outState.putBoolean(KEY_LOGGED_IN, !isLoginVisible() && !isErrorVisible());
         outState.putString(KEY_SELECTED_ITEM, navigationHandler.getSelectedItem());
+        outState.putParcelable(KEY_MENU_DATA, Parcels.wrap(getViewModel().getMenuDataModel()));
 
         super.onSaveInstanceState(outState);
     }
@@ -153,7 +162,6 @@ public class HomeActivity extends CoreActivity<HomePresenter, HomeViewModel>
         isLoggedIn = true;
         navigationHandler.init();
         setLoading(false);
-        getPresenter().saveMenuDataToDevice();
         ResourceUtil.showToast(ResourceUtil.getString(R.string.auth_sign_in_success));
     }
 
@@ -226,6 +234,7 @@ public class HomeActivity extends CoreActivity<HomePresenter, HomeViewModel>
 
         if (progressPhoto == menuDataModel.photo.size() && progressStory == menuDataModel.story.size()) {
             handleMenuReady();
+            getPresenter().saveMenuDataToDevice();
         }
     }
 

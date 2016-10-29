@@ -27,7 +27,6 @@ import com.mager.story.menu.video.MenuVideo;
 import com.mager.story.menu.video.MenuVideoFragment;
 import com.mager.story.menu.video.MenuVideoFragmentBuilder;
 import com.mager.story.util.FragmentUtil;
-import com.mager.story.util.ResourceUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -99,6 +98,9 @@ class NavigationHandler {
     private void initListener() {
         navigationView.setOnNavigationItemSelectedListener(
                 item -> {
+                    showActionBar();
+                    animateSlideUp();
+
                     switch (item.getItemId()) {
                         case R.id.tab_photo:
                             selectItem(TAG_MENU_PHOTO);
@@ -117,6 +119,14 @@ class NavigationHandler {
                     return false;
                 }
         );
+    }
+
+    private void showActionBar() {
+        ActionBar actionBar = activity.getSupportActionBar();
+
+        if (actionBar != null && !actionBar.isShowing()) {
+            actionBar.show();
+        }
     }
 
     private void selectItem(String tag) {
@@ -142,6 +152,8 @@ class NavigationHandler {
     }
 
     void animateSlideUp() {
+        if (navigationView.isShown()) return;
+
         Animation animation = AnimationUtils.loadAnimation(activity, R.anim.slide_down_to_center);
         animation.setAnimationListener(new Animation.AnimationListener() {
             @Override
@@ -164,6 +176,8 @@ class NavigationHandler {
     }
 
     void animateSlideDown() {
+        if (!navigationView.isShown()) return;
+
         Animation animation = AnimationUtils.loadAnimation(activity, R.anim.slide_center_to_down);
         animation.setAnimationListener(new Animation.AnimationListener() {
             @Override
@@ -174,7 +188,6 @@ class NavigationHandler {
             @Override
             public void onAnimationEnd(Animation animation) {
                 navigationView.setVisibility(View.GONE);
-                navigationView.findViewById(R.id.tab_photo).performClick();
             }
 
             @Override
@@ -182,6 +195,8 @@ class NavigationHandler {
 
             }
         });
+
+        navigationView.startAnimation(animation);
     }
 
     private void initPrimaryFragment() {
@@ -215,12 +230,22 @@ class NavigationHandler {
     }
 
     void goToStory(MenuStory item) {
-        setTitle(ResourceUtil.getString(R.string.story_header_format, item.getChapter(), item.getTitle()));
+        hideActionBar();
+        animateSlideDown();
+
         FragmentUtil.replaceWithBackStack(
                 activity,
                 StoryFragmentBuilder.newStoryFragment(item.getChapter(), item.getCode(), item.getTitle()),
                 TAG_STORY
         );
+    }
+
+    private void hideActionBar() {
+        ActionBar actionBar = activity.getSupportActionBar();
+
+        if (actionBar != null && actionBar.isShowing()) {
+            actionBar.hide();
+        }
     }
 
     void goToAudio(MenuAudio item) {

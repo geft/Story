@@ -16,6 +16,7 @@ public class StoryViewModel extends CoreViewModel {
     protected String title;
     protected String chapter;
     protected String content;
+    protected boolean ready;
     protected boolean isNightMode;
 
     @Bindable
@@ -46,6 +47,16 @@ public class StoryViewModel extends CoreViewModel {
     public void setContent(String content) {
         this.content = content;
         notifyPropertyChanged(BR.content);
+    }
+
+    @Bindable
+    public boolean isReady() {
+        return ready;
+    }
+
+    public void setReady(boolean ready) {
+        this.ready = ready;
+        notifyPropertyChanged(BR.ready);
     }
 
     @Bindable

@@ -37,7 +37,7 @@ class HomePresenter extends CorePresenter<HomeViewModel> {
         getViewModel().setMenuDataModel(dataModel);
     }
 
-    public void saveMenuDataToDevice() {
+    void saveMenuDataToDevice() {
         provider.saveMenuData(getViewModel().getMenuDataModel());
     }
 }

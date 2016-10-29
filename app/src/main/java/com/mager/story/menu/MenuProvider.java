@@ -48,7 +48,7 @@ public class MenuProvider {
             item.setTitle(story.title);
             item.setChapter(story.chapter);
             item.setImage(getDrawableFromFile(
-                    FilePrefix.STORY, story.code, FileExtension.STORY
+                    FilePrefix.STORY, story.code, FileExtension.MENU_STORY
             ));
 
             storyList.add(item);
