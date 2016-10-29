@@ -19,7 +19,9 @@ import com.mager.story.home.LoadingInterface;
  */
 
 @FragmentWithArgs
-public class StoryFragment extends CoreFragment<StoryPresenter, StoryViewModel> {
+public class StoryFragment
+        extends CoreFragment<StoryPresenter, StoryViewModel>
+        implements View.OnClickListener {
 
     @Arg
     String title;
@@ -43,6 +45,9 @@ public class StoryFragment extends CoreFragment<StoryPresenter, StoryViewModel> 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_story, container, false);
+        binding.setViewModel(getViewModel());
+        binding.setOnClickListener(this);
+
         return binding.getRoot();
     }
 
@@ -52,5 +57,12 @@ public class StoryFragment extends CoreFragment<StoryPresenter, StoryViewModel> 
 
         LoadingInterface loadingInterface = (LoadingInterface) getActivity();
         getPresenter().populateData(title, chapter, loadingInterface);
+    }
+
+    @Override
+    public void onClick(View view) {
+        if (view.equals(binding.fab)) {
+            getPresenter().toggleNightMode();
+        }
     }
 }

@@ -17,7 +17,9 @@ class StoryPresenter extends CorePresenter<StoryViewModel> {
         getViewModel().setTitle(title);
         getViewModel().setChapter(chapter);
         loadingInterface.setLoading(true);
+    }
 
-
+    public void toggleNightMode() {
+        getViewModel().setNightMode(!getViewModel().isNightMode());
     }
 }

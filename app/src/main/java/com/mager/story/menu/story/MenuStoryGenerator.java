@@ -19,7 +19,7 @@ public class MenuStoryGenerator {
     public List<MenuStory> getStoryList() {
         List<MenuStory> list = new ArrayList<>();
 
-        list.add(getMenuStory(StoryChapter.CH0, R.drawable.book_prologue));
+        list.add(getMenuStory(StoryChapter.CH0, R.drawable.book_ch0));
         list.add(getMenuStory(StoryChapter.CH1, R.drawable.book_ch1));
         list.add(getMenuStory(StoryChapter.CH2, R.drawable.book_ch2));
         list.add(getMenuStory(StoryChapter.CH3, R.drawable.book_ch3));
