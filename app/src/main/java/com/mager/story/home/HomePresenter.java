@@ -21,10 +21,6 @@ class HomePresenter extends CorePresenter<HomeViewModel> {
         getViewModel().setLoading(loading);
     }
 
-    void setLoadingProgress(boolean loadingProgress) {
-        getViewModel().setLoadingProgress(loadingProgress);
-    }
-
     void setShowBottomView(boolean show) {
         getViewModel().setShowBottomView(show);
     }
@@ -39,10 +35,6 @@ class HomePresenter extends CorePresenter<HomeViewModel> {
 
     void setMenuDataModel(MenuDataModel dataModel) {
         getViewModel().setMenuDataModel(dataModel);
-    }
-
-    void updateProgress(int averageProgress) {
-        getViewModel().setProgressValue(averageProgress);
     }
 
     public void saveMenuDataToDevice() {

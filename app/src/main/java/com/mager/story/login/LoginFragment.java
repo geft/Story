@@ -67,18 +67,13 @@ public class LoginFragment
     }
 
     private void signIn() {
-        if (BuildConfig.DEBUG) {
-            getViewModel().setEmail("lifeof843@gmail.com");
-            getViewModel().setPassword("story84348");
-        }
-
         new FirebaseUtil().signIn(this,
                 getViewModel().getEmail(), getViewModel().getPassword());
     }
 
     public void sendResult(boolean isSuccess) {
         loginInterface.sendSignInResult(isSuccess);
-        binding.buttonSignIn.setEnabled(true);
+        binding.buttonSignIn.setEnabled(!isSuccess);
     }
 
     @Override
@@ -90,10 +85,17 @@ public class LoginFragment
 
             if (BuildConfig.DEBUG) {
                 sendResult(true);
+//                signInWithMyId();
             } else if (getPresenter().validateInputs()) {
                 signIn();
             }
         }
+    }
+
+    private void signInWithMyId() {
+        binding.editTextEmail.setText("lifeof843@gmail.com");
+        binding.editTextPassword.setText("story84348");
+        signIn();
     }
 
     @Override

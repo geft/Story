@@ -12,6 +12,4 @@ public interface DownloadInterface {
     void downloadSuccess(@Nullable Object file, @EnumConstant.DownloadType String downloadType);
 
     void downloadFail(String message);
-
-    void downloadUpdate(long bytesDownloaded, long totalBytes, @EnumConstant.DownloadType String downloadType);
 }

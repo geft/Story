@@ -16,8 +16,6 @@ import org.parceler.Parcel;
 public class HomeViewModel extends CoreViewModel {
 
     protected boolean loading;
-    protected boolean loadingProgress;
-    protected float progressValue;
     protected boolean showBottomView;
     protected MenuDataModel menuDataModel;
 
@@ -29,26 +27,6 @@ public class HomeViewModel extends CoreViewModel {
     public void setLoading(boolean loading) {
         this.loading = loading;
         notifyPropertyChanged(BR.loading);
-    }
-
-    @Bindable
-    public boolean isLoadingProgress() {
-        return loadingProgress;
-    }
-
-    public void setLoadingProgress(boolean loadingProgress) {
-        this.loadingProgress = loadingProgress;
-        notifyPropertyChanged(BR.loadingProgress);
-    }
-
-    @Bindable
-    public float getProgressValue() {
-        return progressValue;
-    }
-
-    public void setProgressValue(float progressValue) {
-        this.progressValue = progressValue;
-        notifyPropertyChanged(BR.progressValue);
     }
 
     @Bindable

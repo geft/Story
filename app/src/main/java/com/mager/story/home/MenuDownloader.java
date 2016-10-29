@@ -62,9 +62,6 @@ class MenuDownloader {
             File file = createFileInDirectory(FolderType.MENU, name);
 
             firebaseUtil.getStorageWithChild(FolderType.MENU).child(name).getFile(file)
-                    .addOnProgressListener(taskSnapshot -> downloadInterface.downloadUpdate(
-                            taskSnapshot.getBytesTransferred(),
-                            taskSnapshot.getTotalByteCount(), downloadType))
                     .addOnFailureListener(e -> firebaseUtil.notifyDownloadError(downloadInterface, e.getMessage()))
                     .addOnSuccessListener(activity, task -> downloadInterface.downloadSuccess(null, downloadType));
         } catch (Exception e) {

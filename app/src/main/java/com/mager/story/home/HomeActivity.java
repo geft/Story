@@ -42,8 +42,8 @@ public class HomeActivity extends CoreActivity<HomePresenter, HomeViewModel>
 
     private boolean isLoggedIn;
     private String selectedItem;
-    private float progressPhoto;
-    private float progressStory;
+    private int progressPhoto;
+    private int progressStory;
 
     @Override
     protected HomeViewModel createViewModel() {
@@ -143,7 +143,6 @@ public class HomeActivity extends CoreActivity<HomePresenter, HomeViewModel>
         if (isSuccess) {
             CommonUtil.hideKeyboard(this);
             getViewModel().setLoading(true);
-            getViewModel().setLoadingProgress(true);
             menuDownloader.getMenuDataModel();
         } else {
             ResourceUtil.showSnackBar(binding.coordinator, R.string.auth_sign_in_fail, SnackBarType.ERROR);
@@ -154,7 +153,6 @@ public class HomeActivity extends CoreActivity<HomePresenter, HomeViewModel>
         isLoggedIn = true;
         navigationHandler.init();
         setLoading(false);
-        getPresenter().setLoadingProgress(false);
         getPresenter().saveMenuDataToDevice();
         ResourceUtil.showToast(ResourceUtil.getString(R.string.auth_sign_in_success));
     }
@@ -172,8 +170,6 @@ public class HomeActivity extends CoreActivity<HomePresenter, HomeViewModel>
     @Override
     public void setError(String message) {
         getPresenter().setLoading(false);
-        getPresenter().setLoadingProgress(false);
-
         FragmentUtil.replace(this, ErrorFragmentBuilder.newErrorFragment(message), TAG_ERROR);
     }
 
@@ -204,9 +200,11 @@ public class HomeActivity extends CoreActivity<HomePresenter, HomeViewModel>
                 handleMenuJsonComplete((MenuDataModel) file);
                 break;
             case DownloadType.MENU_PHOTO:
+                progressPhoto++;
                 evaluateMenuProgress();
                 break;
             case DownloadType.MENU_STORY:
+                progressStory++;
                 evaluateMenuProgress();
                 break;
         }
@@ -224,7 +222,9 @@ public class HomeActivity extends CoreActivity<HomePresenter, HomeViewModel>
     }
 
     private void evaluateMenuProgress() {
-        if (progressPhoto == 1 && progressStory == 1) {
+        MenuDataModel menuDataModel = getViewModel().getMenuDataModel();
+
+        if (progressPhoto == menuDataModel.photo.size() && progressStory == menuDataModel.story.size()) {
             handleMenuReady();
         }
     }
@@ -232,23 +232,5 @@ public class HomeActivity extends CoreActivity<HomePresenter, HomeViewModel>
     @Override
     public void downloadFail(String message) {
         setError(message);
-    }
-
-    @Override
-    public void downloadUpdate(long bytesDownloaded, long totalBytes, @DownloadType String downloadType) {
-        if (totalBytes <= 0) totalBytes = 1;
-        float percentage = bytesDownloaded / totalBytes;
-
-        switch (downloadType) {
-            case DownloadType.MENU_PHOTO:
-                progressPhoto = percentage;
-                break;
-            case DownloadType.MENU_STORY:
-                progressStory = percentage;
-                break;
-        }
-
-        int averageProgress = (int) (progressPhoto + progressStory) / 2 * 100;
-        getPresenter().updateProgress(averageProgress);
     }
 }
