@@ -1,4 +1,4 @@
-package com.mager.story.home;
+package com.mager.story.login;
 
 import android.support.annotation.NonNull;
 
@@ -6,6 +6,7 @@ import com.google.gson.Gson;
 import com.mager.story.StoryApplication;
 import com.mager.story.constant.EnumConstant;
 import com.mager.story.constant.EnumConstant.FolderType;
+import com.mager.story.core.callback.DownloadInterface;
 import com.mager.story.datamodel.MenuDataModel;
 import com.mager.story.util.FirebaseUtil;
 
@@ -21,15 +22,13 @@ class MenuDownloader {
     private static final String FILE_MENU_JSON = "menu.json";
     private static final String EXT = ".jpg";
 
-    private HomeActivity activity;
     private MenuDataModel dataModel;
     private FirebaseUtil firebaseUtil;
     private DownloadInterface downloadInterface;
 
-    public MenuDownloader(HomeActivity activity, FirebaseUtil firebaseUtil) {
-        this.activity = activity;
+    public MenuDownloader(DownloadInterface downloadInterface, FirebaseUtil firebaseUtil) {
         this.firebaseUtil = firebaseUtil;
-        this.downloadInterface = activity;
+        this.downloadInterface = downloadInterface;
     }
 
     void initMenuImageDownload(MenuDataModel dataModel) {
@@ -63,7 +62,7 @@ class MenuDownloader {
 
             firebaseUtil.getStorageWithChild(FolderType.MENU).child(name).getFile(file)
                     .addOnFailureListener(e -> firebaseUtil.notifyDownloadError(downloadInterface, e.getMessage()))
-                    .addOnSuccessListener(activity, task -> downloadInterface.downloadSuccess(null, downloadType));
+                    .addOnSuccessListener(task -> downloadInterface.downloadSuccess(null, downloadType));
         } catch (Exception e) {
             firebaseUtil.notifyDownloadError(downloadInterface, e.getMessage());
         }
@@ -71,7 +70,7 @@ class MenuDownloader {
 
     void getMenuDataModel() {
         firebaseUtil.getStorageWithChild(FILE_MENU_JSON).getBytes(MAX_SIZE_JSON)
-                .addOnCompleteListener(activity, task -> {
+                .addOnCompleteListener(task -> {
                     try {
                         String json = new String(task.getResult(), StandardCharsets.UTF_8);
                         downloadInterface.downloadSuccess(

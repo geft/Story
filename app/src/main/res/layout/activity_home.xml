@@ -35,7 +35,6 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:background="@color/primary"
-                android:visibility="@{viewModel.showBottomView ? View.VISIBLE : View.GONE}"
                 app:itemBackground="@color/primary"
                 app:itemIconTint="@drawable/bottom_view_selector"
                 app:itemTextColor="@drawable/bottom_view_selector"

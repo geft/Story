@@ -10,8 +10,8 @@ import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.mager.story.R;
-import com.mager.story.home.DownloadInterface;
-import com.mager.story.login.LoginFragment;
+import com.mager.story.core.callback.DownloadInterface;
+import com.mager.story.core.callback.LoginInterface;
 
 import java.util.List;
 
@@ -63,7 +63,7 @@ public class FirebaseUtil {
         }
     }
 
-    public void signIn(LoginFragment loginFragment, String email, String password) {
+    public void signIn(LoginInterface loginInterface, String email, String password) {
         FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(task -> {
                     Log.d(TAG, "signInWithEmail:onComplete:" + task.isSuccessful());
@@ -71,24 +71,24 @@ public class FirebaseUtil {
                     if (task.isSuccessful()) {
                         FirebaseUser user = auth.getCurrentUser();
                         if (user != null) {
-                            handleSignInSuccess(loginFragment, user);
+                            handleSignInSuccess(loginInterface, user);
                         } else {
-                            handleSignInFailure(loginFragment, task);
+                            handleSignInFailure(loginInterface, task);
                         }
                     } else {
-                        handleSignInFailure(loginFragment, task);
+                        handleSignInFailure(loginInterface, task);
                     }
                 });
     }
 
-    private void handleSignInSuccess(LoginFragment loginFragment, FirebaseUser user) {
-        Log.d(TAG, loginFragment.getString(R.string.auth_signed_in_format, user.getEmail()));
-        loginFragment.sendResult(true);
+    private void handleSignInSuccess(LoginInterface loginInterface, FirebaseUser user) {
+        Log.d(TAG, ResourceUtil.getString(R.string.auth_signed_in_format, user.getEmail()));
+        loginInterface.sendSignInResult(true);
     }
 
-    private void handleSignInFailure(LoginFragment loginFragment, Task<AuthResult> task) {
+    private void handleSignInFailure(LoginInterface loginInterface, Task<AuthResult> task) {
         Log.w(TAG, "signInWithEmail:failed", task.getException());
-        loginFragment.sendResult(false);
+        loginInterface.sendSignInResult(false);
     }
 
     public StorageReference getStorageWithChild(String folder) {

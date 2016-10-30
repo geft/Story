@@ -16,8 +16,6 @@ import org.parceler.Parcel;
 public class HomeViewModel extends CoreViewModel {
 
     protected boolean loading;
-    protected boolean showBottomView;
-    protected boolean isLoggedIn;
     protected String selectedItem;
     protected MenuDataModel menuDataModel;
 
@@ -29,24 +27,6 @@ public class HomeViewModel extends CoreViewModel {
     public void setLoading(boolean loading) {
         this.loading = loading;
         notifyPropertyChanged(BR.loading);
-    }
-
-    @Bindable
-    public boolean isShowBottomView() {
-        return showBottomView;
-    }
-
-    public void setShowBottomView(boolean showBottomView) {
-        this.showBottomView = showBottomView;
-        notifyPropertyChanged(BR.showBottomView);
-    }
-
-    public boolean isLoggedIn() {
-        return isLoggedIn;
-    }
-
-    public void setLoggedIn(boolean loggedIn) {
-        isLoggedIn = loggedIn;
     }
 
     public String getSelectedItem() {

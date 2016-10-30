@@ -1,4 +1,4 @@
-package com.mager.story.home;
+package com.mager.story.core.callback;
 
 import android.support.annotation.Nullable;
 

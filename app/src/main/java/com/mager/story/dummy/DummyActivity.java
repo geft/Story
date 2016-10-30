@@ -1,4 +1,4 @@
-package com.mager.story.home;
+package com.mager.story.dummy;
 
 import android.os.Bundle;
 import android.os.Handler;

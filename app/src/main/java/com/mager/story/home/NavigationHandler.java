@@ -60,9 +60,11 @@ class NavigationHandler {
         this.navigationView = bottomView;
         this.selectedItem = TAG_MENU_PHOTO;
         this.tabMapping = getTabMapping();
+
+        init();
     }
 
-    void init() {
+    private void init() {
         initListener();
         initFragments();
         initPrimaryFragment();
@@ -175,7 +177,7 @@ class NavigationHandler {
         navigationView.startAnimation(animation);
     }
 
-    void hideNavigation() {
+    private void hideNavigation() {
         if (!navigationView.isShown()) return;
 
         navigationView.setVisibility(View.GONE);

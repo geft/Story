@@ -1,4 +1,4 @@
-package com.mager.story.home;
+package com.mager.story.core.callback;
 
 import com.mager.story.menu.audio.MenuAudio;
 import com.mager.story.menu.photo.MenuPhoto;

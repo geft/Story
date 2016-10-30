@@ -3,8 +3,8 @@ package com.mager.story.content.story;
 import com.mager.story.constant.EnumConstant.DownloadType;
 import com.mager.story.constant.EnumConstant.FileExtension;
 import com.mager.story.constant.EnumConstant.FolderType;
-import com.mager.story.home.DownloadInterface;
-import com.mager.story.home.LoadingInterface;
+import com.mager.story.core.callback.DownloadInterface;
+import com.mager.story.core.callback.LoadingInterface;
 import com.mager.story.util.FirebaseUtil;
 
 import java.nio.charset.Charset;

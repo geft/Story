@@ -3,7 +3,7 @@ package com.mager.story.content.photo;
 import com.google.firebase.storage.StorageReference;
 import com.mager.story.R;
 import com.mager.story.constant.EnumConstant.FolderType;
-import com.mager.story.home.LoadingInterface;
+import com.mager.story.core.callback.LoadingInterface;
 import com.mager.story.util.CommonUtil;
 import com.mager.story.util.FirebaseUtil;
 import com.mager.story.util.ResourceUtil;

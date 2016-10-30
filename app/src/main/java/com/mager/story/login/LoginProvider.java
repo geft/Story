@@ -1,4 +1,4 @@
-package com.mager.story.home;
+package com.mager.story.login;
 
 import android.support.annotation.Nullable;
 
@@ -10,14 +10,14 @@ import com.mager.story.datamodel.MenuDataModel;
  * Created by Gerry on 29/10/2016.
  */
 
-public class HomeProvider {
+class LoginProvider {
 
     private static final String MENU_JSON = "MENU_JSON";
 
     @Nullable
     private MenuDataModel menuDataModel;
 
-    public HomeProvider() {
+    public LoginProvider() {
         menuDataModel = getMenuDataFromPrefs();
     }
 

@@ -4,6 +4,7 @@ import android.databinding.Bindable;
 
 import com.mager.story.BR;
 import com.mager.story.core.CoreViewModel;
+import com.mager.story.datamodel.MenuDataModel;
 
 import org.parceler.Parcel;
 
@@ -14,8 +15,21 @@ import org.parceler.Parcel;
 @Parcel
 public class LoginViewModel extends CoreViewModel {
 
+    protected boolean loading;
     protected String email;
     protected String password;
+
+    protected MenuDataModel menuDataModel;
+
+    @Bindable
+    public boolean isLoading() {
+        return loading;
+    }
+
+    public void setLoading(boolean loading) {
+        this.loading = loading;
+        notifyPropertyChanged(BR.loading);
+    }
 
     @Bindable
     public String getEmail() {
@@ -35,5 +49,13 @@ public class LoginViewModel extends CoreViewModel {
     public void setPassword(String password) {
         this.password = password;
         notifyPropertyChanged(BR.password);
+    }
+
+    public MenuDataModel getMenuDataModel() {
+        return menuDataModel;
+    }
+
+    public void setMenuDataModel(MenuDataModel menuDataModel) {
+        this.menuDataModel = menuDataModel;
     }
 }

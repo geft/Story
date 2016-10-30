@@ -13,9 +13,9 @@ import com.hannesdorfmann.fragmentargs.annotation.FragmentWithArgs;
 import com.mager.story.R;
 import com.mager.story.constant.EnumConstant;
 import com.mager.story.core.CoreFragment;
+import com.mager.story.core.callback.DownloadInterface;
+import com.mager.story.core.callback.LoadingInterface;
 import com.mager.story.databinding.FragmentStoryBinding;
-import com.mager.story.home.DownloadInterface;
-import com.mager.story.home.LoadingInterface;
 import com.mager.story.util.ResourceUtil;
 
 /**

@@ -5,6 +5,7 @@ import com.mager.story.R;
 import com.mager.story.common.CustomValidator;
 import com.mager.story.constant.RegexConstant;
 import com.mager.story.core.CorePresenter;
+import com.mager.story.datamodel.MenuDataModel;
 import com.mager.story.util.ResourceUtil;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
@@ -14,11 +15,14 @@ import com.rengwuxian.materialedittext.MaterialEditText;
 
 class LoginPresenter extends CorePresenter<LoginViewModel> {
 
+    private LoginProvider provider;
     private MaterialEditText emailInput;
     private MaterialEditText passwordInput;
 
     LoginPresenter(LoginViewModel viewModel) {
         super(viewModel);
+
+        provider = new LoginProvider();
     }
 
     void initEmailInput(MaterialEditText editText) {
@@ -44,8 +48,23 @@ class LoginPresenter extends CorePresenter<LoginViewModel> {
         return BuildConfig.DEBUG || emailInput.validate() && passwordInput.validate();
     }
 
-    @Override
-    protected LoginViewModel getViewModel() {
-        return new LoginViewModel();
+    public void setLoading(boolean loading) {
+        getViewModel().setLoading(loading);
+    }
+
+    void clearMenuData() {
+        provider.clearMenuData();
+    }
+
+    boolean isMenuDataOnDeviceValid(MenuDataModel dataModel) {
+        return provider.doesMenuDataExistOnDevice() && provider.isLatestMenu(dataModel.version);
+    }
+
+    void setMenuDataModel(MenuDataModel dataModel) {
+        getViewModel().setMenuDataModel(dataModel);
+    }
+
+    void saveMenuDataToDevice() {
+        provider.saveMenuData(getViewModel().getMenuDataModel());
     }
 }

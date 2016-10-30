@@ -1,4 +1,4 @@
-package com.mager.story.home;
+package com.mager.story.core.callback;
 
 /**
  * Created by Gerry on 25/10/2016.
