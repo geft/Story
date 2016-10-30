@@ -1,13 +1,11 @@
 package com.mager.story.home;
 
-import android.content.ComponentCallbacks2;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 
-import com.mager.story.Henson;
 import com.mager.story.R;
 import com.mager.story.constant.EnumConstant.DownloadType;
 import com.mager.story.constant.EnumConstant.SnackBarType;
@@ -24,27 +22,20 @@ import com.mager.story.util.CommonUtil;
 import com.mager.story.util.FragmentUtil;
 import com.mager.story.util.ResourceUtil;
 
-import org.parceler.Parcels;
-
 /**
  * Created by Gerry on 24/09/2016.
  */
 
 public class HomeActivity extends CoreActivity<HomePresenter, HomeViewModel>
-        implements ComponentCallbacks2, LoginInterface, LoadingInterface, MenuInterface, DownloadInterface {
+        implements LoginInterface, LoadingInterface, MenuInterface, DownloadInterface {
 
     private static final String TAG_LOGIN = "LOGIN";
     private static final String TAG_ERROR = "ERROR";
-    private static final String KEY_LOGGED_IN = "LOGGED_IN";
-    private static final String KEY_SELECTED_ITEM = "SELECTED_ITEM";
-    private static final String KEY_MENU_DATA = "MENU_DATA";
 
     private ActivityHomeBinding binding;
     private NavigationHandler navigationHandler;
     private MenuDownloader menuDownloader;
 
-    private boolean isLoggedIn;
-    private String selectedItem;
     private int progressPhoto;
     private int progressStory;
 
@@ -70,12 +61,7 @@ public class HomeActivity extends CoreActivity<HomePresenter, HomeViewModel>
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (savedInstanceState != null) {
-            isLoggedIn = savedInstanceState.getBoolean(KEY_LOGGED_IN);
-            selectedItem = savedInstanceState.getString(KEY_SELECTED_ITEM);
-            getPresenter().setMenuDataModel(
-                    Parcels.unwrap(savedInstanceState.getParcelable(KEY_MENU_DATA)));
-        } else {
+        if (savedInstanceState == null) {
             initLoginFragment();
         }
     }
@@ -85,25 +71,17 @@ public class HomeActivity extends CoreActivity<HomePresenter, HomeViewModel>
         super.onStart();
 
         navigationHandler = new NavigationHandler(this, binding.bottomView);
-        menuDownloader = new MenuDownloader(this);
+        menuDownloader = new MenuDownloader(this, firebaseUtil);
 
         initNavigationState();
     }
 
     private void initNavigationState() {
-        getPresenter().setShowBottomView(isLoggedIn);
+        getPresenter().setShowBottomView(getViewModel().isLoggedIn());
 
-        if (isLoggedIn && selectedItem != null) {
+        if (getViewModel().isLoggedIn() && getViewModel().getSelectedItem() != null) {
             navigationHandler.init();
-            navigationHandler.clickItem(selectedItem);
-        }
-    }
-
-    @Override
-    public void onTrimMemory(int level) {
-        if (level == ComponentCallbacks2.TRIM_MEMORY_UI_HIDDEN) {
-            startActivity(Henson.with(this).gotoDummyActivity().build());
-            finish();
+            navigationHandler.clickItem(getViewModel().getSelectedItem());
         }
     }
 
@@ -128,9 +106,8 @@ public class HomeActivity extends CoreActivity<HomePresenter, HomeViewModel>
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        outState.putBoolean(KEY_LOGGED_IN, !isLoginVisible() && !isErrorVisible());
-        outState.putString(KEY_SELECTED_ITEM, navigationHandler.getSelectedItem());
-        outState.putParcelable(KEY_MENU_DATA, Parcels.wrap(getViewModel().getMenuDataModel()));
+        getPresenter().setLoggedIn(!isLoginVisible() && !isErrorVisible());
+        getPresenter().setSelectedItem(navigationHandler.getSelectedItem());
 
         super.onSaveInstanceState(outState);
     }
@@ -159,7 +136,7 @@ public class HomeActivity extends CoreActivity<HomePresenter, HomeViewModel>
     }
 
     private void handleMenuReady() {
-        isLoggedIn = true;
+        getPresenter().setLoggedIn(true);
         navigationHandler.init();
         setLoading(false);
         ResourceUtil.showToast(ResourceUtil.getString(R.string.auth_sign_in_success));

@@ -34,6 +34,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
+                android:background="@color/primary"
                 android:visibility="@{viewModel.showBottomView ? View.VISIBLE : View.GONE}"
                 app:itemBackground="@color/primary"
                 app:itemIconTint="@drawable/bottom_view_selector"
@@ -44,7 +45,8 @@
                 android:id="@+id/container"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_above="@id/bottom_view" />
+                android:layout_above="@id/bottom_view"
+                android:elevation="@dimen/elevation_menu" />
         </RelativeLayout>
     </android.support.design.widget.CoordinatorLayout>
 

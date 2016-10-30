@@ -65,6 +65,7 @@ public class EnumConstant {
         String STORY = "STORY";
         String AUDIO = "AUDIO";
         String VIDEO = "VIDEO";
+        String UNKNOWN = "UNKNOWN";
     }
 
     @StringDef

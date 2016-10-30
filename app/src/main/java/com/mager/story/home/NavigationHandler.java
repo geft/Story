@@ -175,28 +175,10 @@ class NavigationHandler {
         navigationView.startAnimation(animation);
     }
 
-    void animateSlideDown() {
+    void hideNavigation() {
         if (!navigationView.isShown()) return;
 
-        Animation animation = AnimationUtils.loadAnimation(activity, R.anim.slide_center_to_down);
-        animation.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                navigationView.setVisibility(View.GONE);
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-
-            }
-        });
-
-        navigationView.startAnimation(animation);
+        navigationView.setVisibility(View.GONE);
     }
 
     private void initPrimaryFragment() {
@@ -230,14 +212,14 @@ class NavigationHandler {
     }
 
     void goToStory(MenuStory item) {
-        hideActionBar();
-        animateSlideDown();
-
         FragmentUtil.replaceWithBackStack(
                 activity,
                 StoryFragmentBuilder.newStoryFragment(item.getChapter(), item.getCode(), item.getTitle()),
                 TAG_STORY
         );
+
+        hideActionBar();
+        hideNavigation();
     }
 
     private void hideActionBar() {

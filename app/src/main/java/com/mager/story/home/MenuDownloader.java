@@ -26,9 +26,9 @@ class MenuDownloader {
     private FirebaseUtil firebaseUtil;
     private DownloadInterface downloadInterface;
 
-    public MenuDownloader(HomeActivity activity) {
+    public MenuDownloader(HomeActivity activity, FirebaseUtil firebaseUtil) {
         this.activity = activity;
-        this.firebaseUtil = new FirebaseUtil();
+        this.firebaseUtil = firebaseUtil;
         this.downloadInterface = activity;
     }
 

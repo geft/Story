@@ -40,4 +40,12 @@ class HomePresenter extends CorePresenter<HomeViewModel> {
     void saveMenuDataToDevice() {
         provider.saveMenuData(getViewModel().getMenuDataModel());
     }
+
+    public void setLoggedIn(boolean loggedIn) {
+        getViewModel().setLoggedIn(loggedIn);
+    }
+
+    public void setSelectedItem(String selectedItem) {
+        getViewModel().setSelectedItem(selectedItem);
+    }
 }

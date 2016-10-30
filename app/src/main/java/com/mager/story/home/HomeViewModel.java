@@ -17,6 +17,8 @@ public class HomeViewModel extends CoreViewModel {
 
     protected boolean loading;
     protected boolean showBottomView;
+    protected boolean isLoggedIn;
+    protected String selectedItem;
     protected MenuDataModel menuDataModel;
 
     @Bindable
@@ -37,6 +39,22 @@ public class HomeViewModel extends CoreViewModel {
     public void setShowBottomView(boolean showBottomView) {
         this.showBottomView = showBottomView;
         notifyPropertyChanged(BR.showBottomView);
+    }
+
+    public boolean isLoggedIn() {
+        return isLoggedIn;
+    }
+
+    public void setLoggedIn(boolean loggedIn) {
+        isLoggedIn = loggedIn;
+    }
+
+    public String getSelectedItem() {
+        return selectedItem;
+    }
+
+    public void setSelectedItem(String selectedItem) {
+        this.selectedItem = selectedItem;
     }
 
     public MenuDataModel getMenuDataModel() {

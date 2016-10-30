@@ -21,6 +21,16 @@
         android:layout_height="match_parent"
         android:background="@{viewModel.nightMode ? @color/black : @color/white}">
 
+        <TextView
+            android:id="@+id/error_text"
+            style="@style/TextAppearance.AppCompat.Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="sans-serif-condensed"
+            android:visibility="gone"
+            tools:text="Error loading content" />
+
         <android.support.v4.widget.NestedScrollView
             android:id="@+id/scroll_view"
             android:layout_width="match_parent"
@@ -38,16 +48,6 @@
                     android:indeterminate="true"
                     android:visibility="@{viewModel.ready ? View.GONE : View.VISIBLE}"
                     tools:visibility="gone" />
-
-                <TextView
-                    android:id="@+id/error_text"
-                    style="@style/TextAppearance.AppCompat.Title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:fontFamily="sans-serif-condensed"
-                    android:visibility="gone"
-                    tools:text="Error loading content" />
 
                 <LinearLayout
                     android:layout_width="match_parent"

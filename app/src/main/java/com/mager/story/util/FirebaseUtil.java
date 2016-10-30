@@ -6,11 +6,14 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.mager.story.R;
 import com.mager.story.home.DownloadInterface;
 import com.mager.story.login.LoginFragment;
+
+import java.util.List;
 
 /**
  * Created by Gerry on 25/09/2016.
@@ -27,6 +30,13 @@ public class FirebaseUtil {
         storage = FirebaseStorage.getInstance().getReference();
     }
 
+    public FirebaseUtil(StorageReference storage) {
+        this.auth = FirebaseAuth.getInstance();
+        this.storage = storage;
+
+        resumeDownloads();
+    }
+
     public static FirebaseAuth.AuthStateListener getFirebaseAuthListener() {
         return firebaseAuth -> {
             FirebaseUser user = firebaseAuth.getCurrentUser();
@@ -36,6 +46,21 @@ public class FirebaseUtil {
                 Log.d(TAG, "onAuthStateChanged:signed_out");
             }
         };
+    }
+
+    private void resumeDownloads() {
+        List<FileDownloadTask> tasks = storage.getActiveDownloadTasks();
+
+        try {
+            for (FileDownloadTask task : tasks) {
+                task
+                        .addOnSuccessListener(successTask -> {
+                        })
+                        .addOnFailureListener(e -> Log.e(TAG, e.getMessage()));
+            }
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+        }
     }
 
     public void signIn(LoginFragment loginFragment, String email, String password) {
