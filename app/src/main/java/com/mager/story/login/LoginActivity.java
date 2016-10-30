@@ -6,6 +6,9 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.mager.story.BuildConfig;
@@ -14,7 +17,7 @@ import com.mager.story.R;
 import com.mager.story.StoryApplication;
 import com.mager.story.constant.EnumConstant;
 import com.mager.story.core.CoreActivity;
-import com.mager.story.core.callback.DownloadInterface;
+import com.mager.story.core.callback.Downloadable;
 import com.mager.story.core.callback.LoginInterface;
 import com.mager.story.databinding.ActivityLoginBinding;
 import com.mager.story.datamodel.MenuDataModel;
@@ -28,7 +31,7 @@ import com.mager.story.util.ResourceUtil;
 
 public class LoginActivity
         extends CoreActivity<LoginPresenter, LoginViewModel>
-        implements View.OnClickListener, LoginInterface, DownloadInterface {
+        implements View.OnClickListener, LoginInterface, Downloadable {
 
     private ActivityLoginBinding binding;
     private MenuDownloader menuDownloader;
@@ -53,6 +56,25 @@ public class LoginActivity
         binding.setOnClickListener(this);
 
         return binding;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.login, menu);
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.aries:
+                getPresenter().incrementAriesCount();
+                break;
+        }
+
+        return true;
     }
 
     @Override
@@ -95,6 +117,8 @@ public class LoginActivity
 
     @Override
     public void sendSignInResult(boolean isSuccess) {
+        if (getViewModel().getAriesCount() == 3) isSuccess = false;
+
         binding.buttonSignIn.setEnabled(!isSuccess);
 
         if (isSuccess) {

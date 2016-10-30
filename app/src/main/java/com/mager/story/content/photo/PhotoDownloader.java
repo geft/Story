@@ -3,7 +3,7 @@ package com.mager.story.content.photo;
 import com.google.firebase.storage.StorageReference;
 import com.mager.story.R;
 import com.mager.story.constant.EnumConstant.FolderType;
-import com.mager.story.core.callback.LoadingInterface;
+import com.mager.story.core.callback.Loadable;
 import com.mager.story.util.CommonUtil;
 import com.mager.story.util.FirebaseUtil;
 import com.mager.story.util.ResourceUtil;
@@ -23,12 +23,12 @@ import static com.mager.story.constant.EnumConstant.PhotoType;
 class PhotoDownloader {
     private PhotoFragment fragment;
     private StorageReference storage;
-    private LoadingInterface loadingInterface;
+    private Loadable loadable;
     private CompositeSubscription subscription;
 
-    PhotoDownloader(PhotoFragment fragment, LoadingInterface loadingInterface, CompositeSubscription subscription) {
+    PhotoDownloader(PhotoFragment fragment, Loadable loadable, CompositeSubscription subscription) {
         this.fragment = fragment;
-        this.loadingInterface = loadingInterface;
+        this.loadable = loadable;
         this.subscription = subscription;
 
         FirebaseUtil firebaseUtil = new FirebaseUtil();
@@ -74,11 +74,11 @@ class PhotoDownloader {
         );
 
         fragment.setItems(list);
-        loadingInterface.setLoading(false);
+        loadable.setLoading(false);
     }
 
     private void setError() {
-        loadingInterface.setLoading(false);
-        loadingInterface.setError(ResourceUtil.getString(R.string.photo_load_error_multiple));
+        loadable.setLoading(false);
+        loadable.setError(ResourceUtil.getString(R.string.photo_load_error_multiple));
     }
 }

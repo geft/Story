@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">Mager</string>
 
+    <string name="activity_login">Login</string>
+    <string name="activity_home">Home</string>
+
     <string name="auth_edit_text_email_hint">Enter email</string>
     <string name="auth_edit_text_password_hint">Enter password</string>
     <string name="auth_signed_in_format">User is signed in: %s</string>
@@ -11,6 +14,8 @@
     <string name="auth_identity_fail">Authentication failed</string>
 
     <string name="firebase_download_fail">Error downloading data</string>
+
+    <string name="login_aries">Aries</string>
 
     <string name="home_email_error_empty">E-mail cannot be empty</string>
     <string name="home_email_error_invalid">Invalid e-mail format</string>

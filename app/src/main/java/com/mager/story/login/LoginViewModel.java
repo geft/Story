@@ -16,6 +16,7 @@ import org.parceler.Parcel;
 public class LoginViewModel extends CoreViewModel {
 
     protected boolean loading;
+    protected int ariesCount;
     protected String email;
     protected String password;
 
@@ -29,6 +30,14 @@ public class LoginViewModel extends CoreViewModel {
     public void setLoading(boolean loading) {
         this.loading = loading;
         notifyPropertyChanged(BR.loading);
+    }
+
+    public int getAriesCount() {
+        return ariesCount;
+    }
+
+    public void setAriesCount(int ariesCount) {
+        this.ariesCount = ariesCount;
     }
 
     @Bindable

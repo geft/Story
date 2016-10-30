@@ -10,7 +10,7 @@ import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.mager.story.R;
-import com.mager.story.core.callback.DownloadInterface;
+import com.mager.story.core.callback.Downloadable;
 import com.mager.story.core.callback.LoginInterface;
 
 import java.util.List;
@@ -95,8 +95,8 @@ public class FirebaseUtil {
         return storage.child(folder);
     }
 
-    public void notifyDownloadError(DownloadInterface downloadInterface, String message) {
+    public void notifyDownloadError(Downloadable downloadable, String message) {
         Log.e(TAG, message);
-        downloadInterface.downloadFail(ResourceUtil.getString(R.string.firebase_download_fail));
+        downloadable.downloadFail(ResourceUtil.getString(R.string.firebase_download_fail));
     }
 }

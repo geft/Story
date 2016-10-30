@@ -8,7 +8,7 @@ import com.mager.story.constant.EnumConstant;
  * Created by Gerry on 29/10/2016.
  */
 
-public interface DownloadInterface {
+public interface Downloadable {
     void downloadSuccess(@Nullable Object file, @EnumConstant.DownloadType String downloadType);
 
     void downloadFail(String message);

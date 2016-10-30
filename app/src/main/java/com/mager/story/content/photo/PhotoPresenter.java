@@ -17,4 +17,8 @@ class PhotoPresenter extends CorePresenter<PhotoViewModel> {
     void setItems(List<PhotoItem> list) {
         getViewModel().setItems(list);
     }
+
+    public void setBlocking(boolean isBlocking) {
+        getViewModel().setBlocking(isBlocking);
+    }
 }

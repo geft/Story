@@ -8,7 +8,7 @@ import android.support.v7.app.ActionBar;
 import com.f2prateek.dart.InjectExtra;
 import com.mager.story.R;
 import com.mager.story.core.CoreActivity;
-import com.mager.story.core.callback.LoadingInterface;
+import com.mager.story.core.callback.Loadable;
 import com.mager.story.core.callback.MenuInterface;
 import com.mager.story.databinding.ActivityHomeBinding;
 import com.mager.story.datamodel.MenuDataModel;
@@ -24,7 +24,7 @@ import com.mager.story.util.FragmentUtil;
  */
 
 public class HomeActivity extends CoreActivity<HomePresenter, HomeViewModel>
-        implements LoadingInterface, MenuInterface {
+        implements Loadable, MenuInterface {
 
     private static final String TAG_ERROR = "ERROR";
     @InjectExtra
@@ -80,7 +80,7 @@ public class HomeActivity extends CoreActivity<HomePresenter, HomeViewModel>
         ActionBar actionBar = getSupportActionBar();
 
         if (actionBar != null) {
-            actionBar.setTitle(R.string.app_name);
+            actionBar.setTitle(R.string.activity_home);
             actionBar.show();
         }
     }

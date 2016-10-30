@@ -13,8 +13,8 @@ import com.hannesdorfmann.fragmentargs.annotation.FragmentWithArgs;
 import com.mager.story.R;
 import com.mager.story.constant.EnumConstant;
 import com.mager.story.core.CoreFragment;
-import com.mager.story.core.callback.DownloadInterface;
-import com.mager.story.core.callback.LoadingInterface;
+import com.mager.story.core.callback.Downloadable;
+import com.mager.story.core.callback.Loadable;
 import com.mager.story.databinding.FragmentStoryBinding;
 import com.mager.story.util.ResourceUtil;
 
@@ -25,7 +25,7 @@ import com.mager.story.util.ResourceUtil;
 @FragmentWithArgs
 public class StoryFragment
         extends CoreFragment<StoryPresenter, StoryViewModel>
-        implements View.OnClickListener, DownloadInterface, LoadingInterface {
+        implements View.OnClickListener, Downloadable, Loadable {
 
     private static final String TAG_CONTENT = "CONTENT";
     @Arg

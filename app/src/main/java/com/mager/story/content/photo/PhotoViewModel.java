@@ -16,10 +16,22 @@ import java.util.List;
 
 @Parcel
 public class PhotoViewModel extends CoreViewModel {
+
+    protected boolean blocking;
     protected List<PhotoItem> items;
 
     PhotoViewModel() {
         this.items = new ArrayList<>();
+    }
+
+    @Bindable
+    public boolean isBlocking() {
+        return blocking;
+    }
+
+    public void setBlocking(boolean blocking) {
+        this.blocking = blocking;
+        notifyPropertyChanged(BR.blocking);
     }
 
     @Bindable

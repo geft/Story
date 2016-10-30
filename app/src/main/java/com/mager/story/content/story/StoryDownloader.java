@@ -3,8 +3,8 @@ package com.mager.story.content.story;
 import com.mager.story.constant.EnumConstant.DownloadType;
 import com.mager.story.constant.EnumConstant.FileExtension;
 import com.mager.story.constant.EnumConstant.FolderType;
-import com.mager.story.core.callback.DownloadInterface;
-import com.mager.story.core.callback.LoadingInterface;
+import com.mager.story.core.callback.Downloadable;
+import com.mager.story.core.callback.Loadable;
 import com.mager.story.util.FirebaseUtil;
 
 import java.nio.charset.Charset;
@@ -18,28 +18,28 @@ public class StoryDownloader {
     private static final long MAX_SIZE = 1024 * 1024;
 
     private StoryFragment fragment;
-    private DownloadInterface downloadInterface;
-    private LoadingInterface loadingInterface;
+    private Downloadable downloadable;
+    private Loadable loadable;
 
     public StoryDownloader(StoryFragment fragment, String code) {
         this.fragment = fragment;
-        this.downloadInterface = fragment;
-        this.loadingInterface = fragment;
+        this.downloadable = fragment;
+        this.loadable = fragment;
 
         downloadStory(code + FileExtension.STORY);
     }
 
     private void downloadStory(String fileName) {
-        loadingInterface.setLoading(true);
+        loadable.setLoading(true);
 
         FirebaseUtil firebaseUtil = new FirebaseUtil();
         firebaseUtil.getStorageWithChild(FolderType.STORY).child(fileName).getBytes(MAX_SIZE)
                 .addOnSuccessListener(fragment.getActivity(), bytes -> {
                     String content = new String(bytes, Charset.defaultCharset());
-                    downloadInterface.downloadSuccess(content, DownloadType.STORY);
+                    downloadable.downloadSuccess(content, DownloadType.STORY);
                 })
                 .addOnFailureListener(fragment.getActivity(), e -> {
-                    downloadInterface.downloadFail(e.getMessage());
+                    downloadable.downloadFail(e.getMessage());
                 });
     }
 }

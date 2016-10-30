@@ -14,6 +14,7 @@ import com.bumptech.glide.request.target.Target;
 import com.mager.story.R;
 import com.mager.story.constant.EnumConstant;
 import com.mager.story.core.CoreDialogFragment;
+import com.mager.story.core.callback.Blockable;
 import com.mager.story.databinding.DialogPhotoBinding;
 
 import uk.co.senab.photoview.PhotoViewAttacher;
@@ -25,12 +26,17 @@ import uk.co.senab.photoview.PhotoViewAttacher;
 public class PhotoDialog extends CoreDialogFragment {
 
     private DialogPhotoBinding binding;
+    private Blockable blockable;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setRetainInstance(true);
+    }
+
+    public void setBlockable(Blockable blockable) {
+        this.blockable = blockable;
     }
 
     @Nullable
@@ -42,6 +48,8 @@ public class PhotoDialog extends CoreDialogFragment {
     }
 
     void loadImage(String url) {
+        unBlock();
+
         Glide.with(this)
                 .load(url)
                 .listener(new RequestListener<String, GlideDrawable>() {
@@ -66,6 +74,12 @@ public class PhotoDialog extends CoreDialogFragment {
                     }
                 })
                 .into(binding.image);
+    }
+
+    private void unBlock() {
+        if (blockable != null) {
+            blockable.setBlock(false);
+        }
     }
 
     @Override

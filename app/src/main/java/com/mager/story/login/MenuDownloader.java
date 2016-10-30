@@ -6,7 +6,7 @@ import com.google.gson.Gson;
 import com.mager.story.StoryApplication;
 import com.mager.story.constant.EnumConstant;
 import com.mager.story.constant.EnumConstant.FolderType;
-import com.mager.story.core.callback.DownloadInterface;
+import com.mager.story.core.callback.Downloadable;
 import com.mager.story.datamodel.MenuDataModel;
 import com.mager.story.util.FirebaseUtil;
 
@@ -24,11 +24,11 @@ class MenuDownloader {
 
     private MenuDataModel dataModel;
     private FirebaseUtil firebaseUtil;
-    private DownloadInterface downloadInterface;
+    private Downloadable downloadable;
 
-    public MenuDownloader(DownloadInterface downloadInterface, FirebaseUtil firebaseUtil) {
+    public MenuDownloader(Downloadable downloadable, FirebaseUtil firebaseUtil) {
         this.firebaseUtil = firebaseUtil;
-        this.downloadInterface = downloadInterface;
+        this.downloadable = downloadable;
     }
 
     void initMenuImageDownload(MenuDataModel dataModel) {
@@ -61,10 +61,10 @@ class MenuDownloader {
             File file = createFileInDirectory(FolderType.MENU, name);
 
             firebaseUtil.getStorageWithChild(FolderType.MENU).child(name).getFile(file)
-                    .addOnFailureListener(e -> firebaseUtil.notifyDownloadError(downloadInterface, e.getMessage()))
-                    .addOnSuccessListener(task -> downloadInterface.downloadSuccess(null, downloadType));
+                    .addOnFailureListener(e -> firebaseUtil.notifyDownloadError(downloadable, e.getMessage()))
+                    .addOnSuccessListener(task -> downloadable.downloadSuccess(null, downloadType));
         } catch (Exception e) {
-            firebaseUtil.notifyDownloadError(downloadInterface, e.getMessage());
+            firebaseUtil.notifyDownloadError(downloadable, e.getMessage());
         }
     }
 
@@ -73,14 +73,14 @@ class MenuDownloader {
                 .addOnCompleteListener(task -> {
                     try {
                         String json = new String(task.getResult(), StandardCharsets.UTF_8);
-                        downloadInterface.downloadSuccess(
+                        downloadable.downloadSuccess(
                                 new Gson().fromJson(json, MenuDataModel.class),
                                 EnumConstant.DownloadType.MENU_JSON);
                     } catch (Exception e) {
-                        firebaseUtil.notifyDownloadError(downloadInterface, e.getMessage());
+                        firebaseUtil.notifyDownloadError(downloadable, e.getMessage());
                     }
                 })
-                .addOnFailureListener(e -> firebaseUtil.notifyDownloadError(downloadInterface, e.getMessage()));
+                .addOnFailureListener(e -> firebaseUtil.notifyDownloadError(downloadable, e.getMessage()));
     }
 
     @SuppressWarnings("ResultOfMethodCallIgnored")

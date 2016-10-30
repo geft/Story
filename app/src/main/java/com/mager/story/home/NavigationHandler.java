@@ -224,14 +224,6 @@ class NavigationHandler {
         hideNavigation();
     }
 
-    private void hideActionBar() {
-        ActionBar actionBar = activity.getSupportActionBar();
-
-        if (actionBar != null && actionBar.isShowing()) {
-            actionBar.hide();
-        }
-    }
-
     void goToAudio(MenuAudio item) {
         setTitle(item.getName());
         FragmentUtil.replaceWithBackStack(
@@ -248,6 +240,14 @@ class NavigationHandler {
                 VideoFragmentBuilder.newVideoFragment(item.getCode(), item.getName()),
                 TAG_VIDEO
         );
+    }
+
+    private void hideActionBar() {
+        ActionBar actionBar = activity.getSupportActionBar();
+
+        if (actionBar != null && actionBar.isShowing()) {
+            actionBar.hide();
+        }
     }
 
     private void setTitle(String title) {

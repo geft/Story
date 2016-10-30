@@ -15,7 +15,8 @@ import com.mager.story.R;
 import com.mager.story.StoryApplication;
 import com.mager.story.constant.EnumConstant.PhotoType;
 import com.mager.story.core.CoreFragment;
-import com.mager.story.core.callback.LoadingInterface;
+import com.mager.story.core.callback.Blockable;
+import com.mager.story.core.callback.Loadable;
 import com.mager.story.core.recyclerView.BindAdapter;
 import com.mager.story.core.recyclerView.OnRecyclerItemClickListener;
 import com.mager.story.databinding.FragmentRecyclerViewBinding;
@@ -34,7 +35,7 @@ import static com.mager.story.constant.EnumConstant.FolderType.PHOTO;
 @FragmentWithArgs
 public class PhotoFragment
         extends CoreFragment<PhotoPresenter, PhotoViewModel>
-        implements OnRecyclerItemClickListener<PhotoItem> {
+        implements OnRecyclerItemClickListener<PhotoItem>, Blockable {
 
     private static final String TAG_DIALOG = "DIALOG";
 
@@ -45,7 +46,7 @@ public class PhotoFragment
     String code;
 
     private FragmentRecyclerViewBinding binding;
-    private LoadingInterface loadingInterface;
+    private Loadable loadable;
 
     @Override
     protected PhotoViewModel createViewModel() {
@@ -69,7 +70,7 @@ public class PhotoFragment
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        loadingInterface = (LoadingInterface) getActivity();
+        loadable = (Loadable) getActivity();
         populateData(code);
     }
 
@@ -84,9 +85,9 @@ public class PhotoFragment
     }
 
     private void populateData(String photoGroup) {
-        loadingInterface.setLoading(true);
+        loadable.setLoading(true);
 
-        new PhotoDownloader(this, loadingInterface, subscription)
+        new PhotoDownloader(this, loadable, subscription)
                 .populatePhotos(photoGroup, count);
     }
 
@@ -98,7 +99,14 @@ public class PhotoFragment
 
     @Override
     public void onItemClick(int position, PhotoItem item) {
+        if (isBlocked()) {
+            return;
+        } else {
+            setBlock(true);
+        }
+
         PhotoDialog dialog = new PhotoDialog();
+        dialog.setBlockable(this);
         dialog.show(getFragmentManager(), TAG_DIALOG);
 
         FirebaseUtil firebaseUtil = new FirebaseUtil();
@@ -111,7 +119,7 @@ public class PhotoFragment
             if (task.isSuccessful()) {
                 dialog.loadImage(task.getResult().toString());
             } else {
-                loadingInterface.setError(ResourceUtil.getString(R.string.photo_load_error_multiple));
+                loadable.setError(ResourceUtil.getString(R.string.photo_load_error_multiple));
             }
         });
     }
@@ -119,5 +127,15 @@ public class PhotoFragment
     public void setItems(List<PhotoItem> list) {
         getPresenter().setItems(list);
         initAdapter();
+    }
+
+    @Override
+    public void setBlock(boolean isBlocking) {
+        getPresenter().setBlocking(isBlocking);
+    }
+
+    @Override
+    public boolean isBlocked() {
+        return getViewModel().isBlocking();
     }
 }

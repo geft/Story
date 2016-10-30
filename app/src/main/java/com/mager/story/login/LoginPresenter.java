@@ -67,4 +67,8 @@ class LoginPresenter extends CorePresenter<LoginViewModel> {
     void saveMenuDataToDevice() {
         provider.saveMenuData(getViewModel().getMenuDataModel());
     }
+
+    public void incrementAriesCount() {
+        getViewModel().setAriesCount(getViewModel().getAriesCount() + 1);
+    }
 }
