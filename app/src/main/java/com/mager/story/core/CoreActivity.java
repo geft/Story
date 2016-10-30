@@ -127,6 +127,8 @@ public abstract class CoreActivity<P extends CorePresenter, VM extends CoreViewM
     @Override
     public void onTrimMemory(int level) {
         if (level == ComponentCallbacks2.TRIM_MEMORY_UI_HIDDEN) {
+            firebaseAuth.signOut();
+
             startActivity(Henson.with(this).gotoDummyActivity().build());
             finish();
         }

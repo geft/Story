@@ -76,7 +76,6 @@ public class LoginActivity
             setLoading(true);
 
             if (BuildConfig.DEBUG) {
-//                sendResult(true);
                 signInWithMyId();
             } else if (getPresenter().validateInputs()) {
                 signIn();
