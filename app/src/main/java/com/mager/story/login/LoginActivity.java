@@ -14,7 +14,9 @@ import android.view.View;
 import com.mager.story.Henson;
 import com.mager.story.R;
 import com.mager.story.StoryApplication;
+import com.mager.story.common.CustomValidator;
 import com.mager.story.constant.EnumConstant;
+import com.mager.story.constant.RegexConstant;
 import com.mager.story.core.CoreActivity;
 import com.mager.story.core.callback.Downloadable;
 import com.mager.story.core.callback.LoginInterface;
@@ -23,6 +25,7 @@ import com.mager.story.datamodel.MenuDataModel;
 import com.mager.story.util.CommonUtil;
 import com.mager.story.util.FirebaseUtil;
 import com.mager.story.util.ResourceUtil;
+import com.rengwuxian.materialedittext.MaterialEditText;
 
 /**
  * Created by Gerry on 23/10/2016.
@@ -81,8 +84,29 @@ public class LoginActivity
         super.onCreate(savedInstanceState);
 
         menuDownloader = new MenuDownloader(this, firebaseUtil);
-        getPresenter().initEmailInput(binding.editTextEmail);
-        getPresenter().initPasswordInput(binding.editTextPassword);
+        initEmailInput(binding.editTextEmail);
+        initPasswordInput(binding.editTextPassword);
+    }
+
+    private void initEmailInput(MaterialEditText editText) {
+        getPresenter().loadEmail();
+
+        editText.addValidator(new CustomValidator(
+                RegexConstant.NONEMPTY, ResourceUtil.getString(R.string.home_email_error_empty)));
+
+        editText.addValidator(new CustomValidator(
+                RegexConstant.EMAIL_FORMAT, ResourceUtil.getString(R.string.home_email_error_invalid)));
+    }
+
+    private void initPasswordInput(MaterialEditText editText) {
+        editText.addValidator(new CustomValidator(
+                RegexConstant.NONEMPTY, ResourceUtil.getString(R.string.home_password_error_empty)));
+        editText.addValidator(new CustomValidator(
+                RegexConstant.SIX_CHAR, ResourceUtil.getString(R.string.home_password_error_minimum)));
+    }
+
+    private boolean validateInputs() {
+        return binding.editTextEmail.validate() && binding.editTextPassword.validate();
     }
 
     private void signIn() {
@@ -92,7 +116,7 @@ public class LoginActivity
 
     @Override
     public void onClick(View view) {
-        if (view.equals(binding.buttonSignIn)) {
+        if (view.equals(binding.buttonSignIn) && validateInputs()) {
             CommonUtil.hideKeyboard(this);
             setLoading(true);
             signIn();

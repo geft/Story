@@ -3,6 +3,7 @@ package com.mager.story.login;
 import android.databinding.Bindable;
 
 import com.mager.story.BR;
+import com.mager.story.BuildConfig;
 import com.mager.story.core.CoreViewModel;
 import com.mager.story.datamodel.MenuDataModel;
 
@@ -19,6 +20,7 @@ public class LoginViewModel extends CoreViewModel {
     protected int ariesCount;
     protected String email;
     protected String password;
+    protected String version = BuildConfig.VERSION_NAME;
 
     protected MenuDataModel menuDataModel;
 
