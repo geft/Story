@@ -11,7 +11,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.mager.story.BuildConfig;
 import com.mager.story.Henson;
 import com.mager.story.R;
 import com.mager.story.StoryApplication;
@@ -95,19 +94,8 @@ public class LoginActivity
     public void onClick(View view) {
         if (view.equals(binding.buttonSignIn)) {
             setLoading(true);
-
-            if (BuildConfig.DEBUG) {
-                signInWithMyId();
-            } else if (getPresenter().validateInputs()) {
-                signIn();
-            }
+            signIn();
         }
-    }
-
-    private void signInWithMyId() {
-        binding.editTextEmail.setText("lifeof843@gmail.com");
-        binding.editTextPassword.setText("story84348");
-        signIn();
     }
 
     public void setLoading(boolean loading) {
