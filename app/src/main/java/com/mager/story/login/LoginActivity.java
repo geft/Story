@@ -93,6 +93,7 @@ public class LoginActivity
     @Override
     public void onClick(View view) {
         if (view.equals(binding.buttonSignIn)) {
+            CommonUtil.hideKeyboard(this);
             setLoading(true);
             signIn();
         }
@@ -108,7 +109,6 @@ public class LoginActivity
 
         if (isSuccess) {
             getPresenter().saveEmailToDevice();
-            CommonUtil.hideKeyboard(this);
             menuDownloader.getMenuDataModel();
         } else {
             setLoading(false);

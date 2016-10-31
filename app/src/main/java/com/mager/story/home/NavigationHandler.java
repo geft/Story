@@ -150,7 +150,10 @@ class NavigationHandler {
         }
 
         selectedItem = tag;
-        FragmentUtil.replace(activity, fragment, tag);
+
+        if (!fragment.isAdded()) {
+            FragmentUtil.replace(activity, fragment, tag);
+        }
     }
 
     void animateSlideUp() {
