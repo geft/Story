@@ -69,4 +69,8 @@ public class LoginViewModel extends CoreViewModel {
     public void setMenuDataModel(MenuDataModel menuDataModel) {
         this.menuDataModel = menuDataModel;
     }
+
+    public String getVersion() {
+        return version;
+    }
 }

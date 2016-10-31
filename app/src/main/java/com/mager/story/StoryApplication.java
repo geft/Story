@@ -13,7 +13,7 @@ public class StoryApplication extends Application {
 
     public static final int ARIES_COUNT = 2;
     private static final String PREFS_NAME = "PREFS";
-
+    public static boolean OFFLINE_MODE;
     private static StoryApplication instance;
     private static SharedPreferences sharedPreferences;
 

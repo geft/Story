@@ -31,6 +31,7 @@ public abstract class MenuFragment extends CoreFragment<MenuPresenter, MenuViewM
 
     private FragmentRecyclerViewBinding binding;
     private MenuInterface menuInterface;
+    private Context context;
 
     @Nullable
     @Override
@@ -54,6 +55,7 @@ public abstract class MenuFragment extends CoreFragment<MenuPresenter, MenuViewM
 
     @Override
     public void onAttach(Context context) {
+        this.context = context;
         menuInterface = (MenuInterface) context;
 
         super.onAttach(context);
@@ -69,22 +71,22 @@ public abstract class MenuFragment extends CoreFragment<MenuPresenter, MenuViewM
     private RecyclerView.Adapter getAdapter() {
         switch (getMenuType()) {
             case FolderType.PHOTO:
-                BindAdapter<MenuPhoto> photoAdapter = new BindAdapter<>(getActivity(), R.layout.menu_photo);
+                BindAdapter<MenuPhoto> photoAdapter = new BindAdapter<>(context, R.layout.menu_photo);
                 photoAdapter.setOnItemClickListener((position, item) -> menuInterface.goToPhoto(item));
                 return photoAdapter;
             case FolderType.STORY:
-                BindAdapter<MenuStory> storyAdapter = new BindAdapter<>(getActivity(), R.layout.menu_story);
+                BindAdapter<MenuStory> storyAdapter = new BindAdapter<>(context, R.layout.menu_story);
                 storyAdapter.setOnItemClickListener((position, item) -> menuInterface.goToStory(item));
                 return storyAdapter;
             case FolderType.AUDIO:
-                BindAdapter<MenuAudio> audioAdapter = new BindAdapter<>(getActivity(), R.layout.menu_audio);
+                BindAdapter<MenuAudio> audioAdapter = new BindAdapter<>(context, R.layout.menu_audio);
                 audioAdapter.setOnItemClickListener((position, item) -> menuInterface.goToAudio(item));
                 return audioAdapter;
             case FolderType.VIDEO:
-                BindAdapter<MenuVideo> videoAdapter = new BindAdapter<>(getActivity(), R.layout.menu_video);
+                BindAdapter<MenuVideo> videoAdapter = new BindAdapter<>(context, R.layout.menu_video);
                 videoAdapter.setOnItemClickListener(((position, item) -> menuInterface.goToVideo(item)));
             default:
-                return new BindAdapter(getActivity(), R.layout.fragment_recycler_view);
+                return new BindAdapter(context, R.layout.fragment_recycler_view);
         }
     }
 

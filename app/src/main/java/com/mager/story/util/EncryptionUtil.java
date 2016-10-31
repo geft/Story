@@ -3,11 +3,10 @@ package com.mager.story.util;
 import android.support.annotation.Nullable;
 
 import java.nio.charset.Charset;
-import java.security.NoSuchAlgorithmException;
 
 import javax.crypto.Cipher;
-import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
 
 /**
  * Created by Gerry on 08/10/2016.
@@ -16,6 +15,7 @@ import javax.crypto.SecretKey;
 public class EncryptionUtil {
 
     private static final String ALGORITHM = "AES/CBC/PKCS5Padding";
+    private static final String KEY_ALGORITHM = "AES";
 
     @Nullable
     public static String MD5(String key) {
@@ -35,20 +35,12 @@ public class EncryptionUtil {
     }
 
     @Nullable
-    public static SecretKey getSecretKey() {
-        try {
-            KeyGenerator generator = KeyGenerator.getInstance(ALGORITHM);
-            generator.init(128);
-            return generator.generateKey();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-
-        return null;
+    public SecretKey getSecretKey(byte[] bytes) {
+        return new SecretKeySpec(bytes, 0, 128, KEY_ALGORITHM);
     }
 
     @Nullable
-    public static String decryptText(byte[] encryptedBytes, SecretKey key) {
+    public String decryptText(byte[] encryptedBytes, SecretKey key) {
         byte[] decryptedBytes = getDecryptedBytes(encryptedBytes, key);
 
         if (decryptedBytes != null) {
@@ -59,7 +51,7 @@ public class EncryptionUtil {
     }
 
     @Nullable
-    private static byte[] getDecryptedBytes(byte[] encryptedBytes, SecretKey key) {
+    private byte[] getDecryptedBytes(byte[] encryptedBytes, SecretKey key) {
         try {
             Cipher cipher = Cipher.getInstance(ALGORITHM);
             cipher.init(Cipher.DECRYPT_MODE, key);
