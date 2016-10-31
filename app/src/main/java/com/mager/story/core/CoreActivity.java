@@ -10,6 +10,7 @@ import com.f2prateek.dart.Dart;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.storage.FirebaseStorage;
 import com.mager.story.Henson;
+import com.mager.story.util.CommonUtil;
 import com.mager.story.util.FirebaseUtil;
 
 import org.parceler.ParcelerRuntimeException;
@@ -91,6 +92,15 @@ public abstract class CoreActivity<P extends CorePresenter, VM extends CoreViewM
     }
 
     @Override
+    protected void onStop() {
+        if (!CommonUtil.isDisplayOn(this)) {
+            exitApp();
+        }
+
+        super.onStop();
+    }
+
+    @Override
     protected void onDestroy() {
         subscription.unsubscribe();
 
@@ -116,11 +126,14 @@ public abstract class CoreActivity<P extends CorePresenter, VM extends CoreViewM
     @Override
     public void onTrimMemory(int level) {
         if (level == ComponentCallbacks2.TRIM_MEMORY_UI_HIDDEN) {
-            firebaseAuth.signOut();
-
-            startActivity(Henson.with(this).gotoDummyActivity().build());
-            finish();
+            exitApp();
         }
+    }
+
+    private void exitApp() {
+        firebaseAuth.signOut();
+        startActivity(Henson.with(this).gotoDummyActivity().build());
+        finish();
     }
 
     protected abstract VM createViewModel();

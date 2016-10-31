@@ -1,7 +1,9 @@
 package com.mager.story.util;
 
 import android.app.Activity;
-import android.view.WindowManager;
+import android.content.Context;
+import android.os.Build;
+import android.os.PowerManager;
 import android.view.inputmethod.InputMethodManager;
 
 import rx.Observable;
@@ -20,11 +22,22 @@ public class CommonUtil {
     }
 
     public static void showKeyboard(Activity activity) {
-        activity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+        InputMethodManager inputMethodManager = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.showSoftInput(activity.getCurrentFocus(), 0);
     }
 
     public static void hideKeyboard(Activity activity) {
         InputMethodManager inputMethodManager = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
+    }
+
+    public static boolean isDisplayOn(Activity activity) {
+        PowerManager powerManager = (PowerManager) activity.getSystemService(Context.POWER_SERVICE);
+
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
+            return powerManager.isScreenOn();
+        } else {
+            return powerManager.isInteractive();
+        }
     }
 }

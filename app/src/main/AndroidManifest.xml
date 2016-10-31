@@ -30,6 +30,11 @@
             android:name=".dummy.DummyActivity"
             android:excludeFromRecents="true"
             android:theme="@style/TranslucentActivity" />
+
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="8176f8eae0aaac9c026fd285b18d57e3805500b8" />
     </application>
 
+    <uses-permission android:name="android.permission.INTERNET" />
 </manifest>
