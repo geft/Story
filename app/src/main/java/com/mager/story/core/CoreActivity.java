@@ -11,7 +11,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.storage.FirebaseStorage;
 import com.mager.story.Henson;
 import com.mager.story.util.FirebaseUtil;
-import com.squareup.leakcanary.LeakCanary;
 
 import org.parceler.ParcelerRuntimeException;
 import org.parceler.Parcels;
@@ -43,7 +42,6 @@ public abstract class CoreActivity<P extends CorePresenter, VM extends CoreViewM
         super.onCreate(savedInstanceState);
 
         initWindowStyle();
-        initLeakCanary();
         initFirebaseAuth();
         initDart();
 
@@ -101,15 +99,6 @@ public abstract class CoreActivity<P extends CorePresenter, VM extends CoreViewM
         }
 
         super.onDestroy();
-    }
-
-    private void initLeakCanary() {
-        if (LeakCanary.isInAnalyzerProcess(this)) {
-            // This process is dedicated to LeakCanary for heap analysis.
-            // You should not init your app in this process.
-            return;
-        }
-        LeakCanary.install(this.getApplication());
     }
 
     @Override

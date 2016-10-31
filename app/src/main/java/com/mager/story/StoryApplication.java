@@ -4,7 +4,6 @@ import android.app.Application;
 import android.content.SharedPreferences;
 
 import com.google.firebase.FirebaseApp;
-import com.squareup.leakcanary.LeakCanary;
 
 /**
  * Created by Gerry on 23/09/2016.
@@ -33,17 +32,9 @@ public class StoryApplication extends Application {
         sharedPreferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
 
         initFirebase();
-        initLeakCanary();
     }
 
     private void initFirebase() {
         FirebaseApp.initializeApp(this);
-    }
-
-    private void initLeakCanary() {
-        if (LeakCanary.isInAnalyzerProcess(this)) {
-            return;
-        }
-        LeakCanary.install(this);
     }
 }
