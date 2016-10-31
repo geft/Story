@@ -27,6 +27,7 @@ class LoginPresenter extends CorePresenter<LoginViewModel> {
 
     void initEmailInput(MaterialEditText editText) {
         emailInput = editText;
+        getViewModel().setEmail(provider.loadEmail());
 
         editText.addValidator(new CustomValidator(
                 RegexConstant.NONEMPTY, ResourceUtil.getString(R.string.home_email_error_empty)));
@@ -53,7 +54,7 @@ class LoginPresenter extends CorePresenter<LoginViewModel> {
     }
 
     void clearMenuData() {
-        provider.clearMenuData();
+        provider.clearData();
     }
 
     boolean isMenuDataOnDeviceValid(MenuDataModel dataModel) {
@@ -70,5 +71,9 @@ class LoginPresenter extends CorePresenter<LoginViewModel> {
 
     public void incrementAriesCount() {
         getViewModel().setAriesCount(getViewModel().getAriesCount() + 1);
+    }
+
+    public void saveEmailToDevice() {
+        provider.saveEmail(getViewModel().getEmail());
     }
 }

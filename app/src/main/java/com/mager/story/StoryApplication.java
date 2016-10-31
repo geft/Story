@@ -12,6 +12,7 @@ import com.squareup.leakcanary.LeakCanary;
 
 public class StoryApplication extends Application {
 
+    public static final int ARIES_COUNT = 2;
     private static final String PREFS_NAME = "PREFS";
 
     private static StoryApplication instance;

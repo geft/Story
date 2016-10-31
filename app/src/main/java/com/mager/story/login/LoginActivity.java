@@ -94,7 +94,6 @@ public class LoginActivity
     @Override
     public void onClick(View view) {
         if (view.equals(binding.buttonSignIn)) {
-            binding.buttonSignIn.setEnabled(false);
             setLoading(true);
 
             if (BuildConfig.DEBUG) {
@@ -117,15 +116,15 @@ public class LoginActivity
 
     @Override
     public void sendSignInResult(boolean isSuccess) {
-        if (getViewModel().getAriesCount() == 3) isSuccess = false;
-
-        binding.buttonSignIn.setEnabled(!isSuccess);
+        if (getViewModel().getAriesCount() != StoryApplication.ARIES_COUNT) isSuccess = false;
 
         if (isSuccess) {
+            getPresenter().saveEmailToDevice();
             CommonUtil.hideKeyboard(this);
             menuDownloader.getMenuDataModel();
         } else {
             setLoading(false);
+            binding.editTextPassword.getText().clear();
             showErrorSnackBar(R.string.auth_sign_in_fail);
         }
     }

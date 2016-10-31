@@ -12,13 +12,14 @@ import com.mager.story.datamodel.MenuDataModel;
 
 class LoginProvider {
 
+    private static final String EMAIL = "EMAIL";
     private static final String MENU_JSON = "MENU_JSON";
 
     @Nullable
     private MenuDataModel menuDataModel;
 
     public LoginProvider() {
-        menuDataModel = getMenuDataFromPrefs();
+        menuDataModel = loadMenuDataFromPrefs();
     }
 
     @Nullable
@@ -35,16 +36,17 @@ class LoginProvider {
     }
 
     @Nullable
-    private MenuDataModel getMenuDataFromPrefs() {
+    private MenuDataModel loadMenuDataFromPrefs() {
         String json = StoryApplication.getSharedPreferences().getString(MENU_JSON, null);
         if (json == null) return null;
 
         return new Gson().fromJson(json, MenuDataModel.class);
     }
 
-    void clearMenuData() {
+    void clearData() {
         StoryApplication.getSharedPreferences().edit()
                 .remove(MENU_JSON)
+                .remove(EMAIL)
                 .apply();
     }
 
@@ -52,5 +54,16 @@ class LoginProvider {
         StoryApplication.getSharedPreferences().edit()
                 .putString(MENU_JSON, new Gson().toJson(dataModel))
                 .apply();
+    }
+
+    void saveEmail(String email) {
+        StoryApplication.getSharedPreferences().edit()
+                .putString(EMAIL, email)
+                .apply();
+    }
+
+    @Nullable
+    String loadEmail() {
+        return StoryApplication.getSharedPreferences().getString(EMAIL, null);
     }
 }

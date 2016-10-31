@@ -1,7 +1,6 @@
 <resources>
     <string name="app_name">Mager</string>
 
-    <string name="activity_login">Login</string>
     <string name="activity_home">Home</string>
 
     <string name="auth_edit_text_email_hint">Enter email</string>
