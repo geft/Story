@@ -34,7 +34,7 @@ public class CommonUtil {
     public static boolean isDisplayOn(Activity activity) {
         PowerManager powerManager = (PowerManager) activity.getSystemService(Context.POWER_SERVICE);
 
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
+        if (Build.VERSION.SDK_INT <= 19) {
             return powerManager.isScreenOn();
         } else {
             return powerManager.isInteractive();

@@ -1,7 +1,9 @@
 package com.mager.story.menu;
 
+import android.app.Activity;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -59,6 +61,16 @@ public abstract class MenuFragment extends CoreFragment<MenuPresenter, MenuViewM
         menuInterface = (MenuInterface) context;
 
         super.onAttach(context);
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        if (Build.VERSION.SDK_INT < 23) {
+            context = activity;
+            menuInterface = (MenuInterface) context;
+        }
     }
 
     private void initContent() {
