@@ -156,8 +156,7 @@ public class LoginActivity
     }
 
     private void showErrorSnackBar(@StringRes int stringRes) {
-        ResourceUtil.showSnackBar(
-                binding.getRoot(), stringRes, EnumConstant.SnackBarType.ERROR);
+        ResourceUtil.showErrorSnackBar(binding.getRoot(), ResourceUtil.getString(stringRes));
     }
 
     @Override

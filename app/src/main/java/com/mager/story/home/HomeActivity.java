@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 
 import com.f2prateek.dart.InjectExtra;
+import com.mager.story.Henson;
 import com.mager.story.R;
 import com.mager.story.core.CoreActivity;
 import com.mager.story.core.callback.Loadable;
@@ -55,12 +56,13 @@ public class HomeActivity extends CoreActivity<HomePresenter, HomeViewModel>
         super.onStart();
 
         getPresenter().setMenuDataModel(menuDataModel);
-
         navigationHandler = new NavigationHandler(this, binding.bottomView);
+
         initNavigationState();
     }
 
     private void initNavigationState() {
+
         if (getViewModel().getSelectedItem() != null) {
             navigationHandler.clickItem(getViewModel().getSelectedItem());
         }
@@ -110,12 +112,12 @@ public class HomeActivity extends CoreActivity<HomePresenter, HomeViewModel>
 
     @Override
     public void goToPhoto(MenuPhoto item) {
-        navigationHandler.goToPhoto(item);
+        startActivity(Henson.with(this).gotoPhotoActivity().menuPhoto(item).build());
     }
 
     @Override
     public void goToStory(MenuStory item) {
-        navigationHandler.goToStory(item);
+        startActivity(Henson.with(this).gotoStoryActivity().menuStory(item).build());
     }
 
     @Override

@@ -1,52 +1,65 @@
 package com.mager.story.content.story;
 
 import android.databinding.DataBindingUtil;
+import android.databinding.ViewDataBinding;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
-import com.hannesdorfmann.fragmentargs.annotation.Arg;
-import com.hannesdorfmann.fragmentargs.annotation.FragmentWithArgs;
+import com.f2prateek.dart.InjectExtra;
 import com.mager.story.R;
 import com.mager.story.constant.EnumConstant;
-import com.mager.story.core.CoreFragment;
+import com.mager.story.core.CoreActivity;
 import com.mager.story.core.callback.Downloadable;
 import com.mager.story.core.callback.Loadable;
-import com.mager.story.databinding.FragmentStoryBinding;
+import com.mager.story.databinding.ActivityStoryBinding;
+import com.mager.story.menu.story.MenuStory;
 import com.mager.story.util.ResourceUtil;
 
 /**
  * Created by Gerry on 22/10/2016.
  */
 
-@FragmentWithArgs
-public class StoryFragment
-        extends CoreFragment<StoryPresenter, StoryViewModel>
+public class StoryActivity
+        extends CoreActivity<StoryPresenter, StoryViewModel>
         implements View.OnClickListener, Downloadable, Loadable {
 
-    private static final String TAG_CONTENT = "CONTENT";
-    @Arg
-    String title;
-    @Arg
-    String chapter;
-    @Arg
-    String code;
-    private FragmentStoryBinding binding;
+    @InjectExtra
+    MenuStory menuStory;
+
+    private ActivityStoryBinding binding;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (savedInstanceState == null) {
-            new StoryDownloader(this, code);
-        } else {
-            getPresenter().setContent(savedInstanceState.getString(TAG_CONTENT));
-        }
+        initViewModel();
+    }
 
-        getPresenter().setTitle(title, chapter);
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        initContent();
+        initTitle();
+    }
+
+    private void initViewModel() {
+        getPresenter().setCode(menuStory.getCode());
+        getPresenter().setTitle(menuStory.getTitle(), menuStory.getChapter());
+    }
+
+    private void initContent() {
+        if (getViewModel().getContent() == null) {
+            new StoryDownloader(this, getViewModel().getCode());
+        }
+    }
+
+    private void initTitle() {
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().hide();
+        }
     }
 
     @Override
@@ -59,20 +72,13 @@ public class StoryFragment
         return new StoryPresenter(viewModel);
     }
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_story, container, false);
+    protected ViewDataBinding initBinding(StoryViewModel viewModel) {
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_story);
         binding.setViewModel(getViewModel());
         binding.setOnClickListener(this);
 
-        return binding.getRoot();
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        outState.putString(TAG_CONTENT, getViewModel().getContent());
-        super.onSaveInstanceState(outState);
+        return binding;
     }
 
     @Override
@@ -85,7 +91,6 @@ public class StoryFragment
     @Override
     public void downloadSuccess(@Nullable Object file, @EnumConstant.DownloadType String downloadType) {
         getPresenter().setContent((String) file);
-        setLoading(false);
     }
 
     @Override

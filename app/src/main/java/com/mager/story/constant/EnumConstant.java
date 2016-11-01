@@ -18,6 +18,10 @@ public class EnumConstant {
     public @interface Tag {
         String LOGIN = "LOGIN";
         String DOWNLOAD = "DOWNLOAD";
+        String PHOTO = "PHOTO";
+        String STORY = "STORY";
+        String AUDIO = "AUDIO";
+        String VIDEO = "VIDEO";
     }
 
     @IntDef

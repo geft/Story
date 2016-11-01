@@ -29,4 +29,8 @@ class StoryPresenter extends CorePresenter<StoryViewModel> {
     void setLoading(boolean loading) {
         getViewModel().setReady(!loading);
     }
+
+    public void setCode(String code) {
+        getViewModel().setCode(code);
+    }
 }

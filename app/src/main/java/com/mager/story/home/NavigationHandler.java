@@ -9,18 +9,14 @@ import android.view.animation.AnimationUtils;
 
 import com.mager.story.R;
 import com.mager.story.content.audio.AudioFragmentBuilder;
-import com.mager.story.content.photo.PhotoFragmentBuilder;
-import com.mager.story.content.story.StoryFragmentBuilder;
 import com.mager.story.content.video.VideoFragmentBuilder;
 import com.mager.story.datamodel.MenuDataModel;
 import com.mager.story.menu.MenuProvider;
 import com.mager.story.menu.audio.MenuAudio;
 import com.mager.story.menu.audio.MenuAudioFragment;
 import com.mager.story.menu.audio.MenuAudioFragmentBuilder;
-import com.mager.story.menu.photo.MenuPhoto;
 import com.mager.story.menu.photo.MenuPhotoFragment;
 import com.mager.story.menu.photo.MenuPhotoFragmentBuilder;
-import com.mager.story.menu.story.MenuStory;
 import com.mager.story.menu.story.MenuStoryFragment;
 import com.mager.story.menu.story.MenuStoryFragmentBuilder;
 import com.mager.story.menu.video.MenuVideo;
@@ -40,8 +36,6 @@ class NavigationHandler {
     private static final String TAG_MENU_STORY = "MENU_STORY";
     private static final String TAG_MENU_AUDIO = "MENU_AUDIO";
     private static final String TAG_MENU_VIDEO = "MENU_VIDEO";
-    private static final String TAG_PHOTO = "PHOTO";
-    private static final String TAG_STORY = "STORY";
     private static final String TAG_AUDIO = "AUDIO";
     private static final String TAG_VIDEO = "VIDEO";
 
@@ -81,7 +75,7 @@ class NavigationHandler {
         return hashMap;
     }
 
-    private boolean initFragments() {
+    private void initFragments() {
         MenuProvider provider = new MenuProvider();
         MenuDataModel menuDataModel = activity.getViewModel().getMenuDataModel();
 
@@ -93,8 +87,6 @@ class NavigationHandler {
         );
         audioFragment = MenuAudioFragmentBuilder.newMenuAudioFragment(new ArrayList<>());
         videoFragment = MenuVideoFragmentBuilder.newMenuVideoFragment(new ArrayList<>());
-
-        return true;
     }
 
     private void initListener() {
@@ -207,26 +199,6 @@ class NavigationHandler {
                 FragmentUtil.isFragmentVisible(activity, TAG_MENU_VIDEO);
     }
 
-    void goToPhoto(MenuPhoto item) {
-        setTitle(item.getName());
-        FragmentUtil.replaceWithBackStack(
-                activity,
-                PhotoFragmentBuilder.newPhotoFragment(item.getCode(), item.getCount()),
-                TAG_PHOTO
-        );
-    }
-
-    void goToStory(MenuStory item) {
-        FragmentUtil.replaceWithBackStack(
-                activity,
-                StoryFragmentBuilder.newStoryFragment(item.getChapter(), item.getCode(), item.getTitle()),
-                TAG_STORY
-        );
-
-        hideActionBar();
-        hideNavigation();
-    }
-
     void goToAudio(MenuAudio item) {
         setTitle(item.getName());
         FragmentUtil.replaceWithBackStack(
@@ -243,14 +215,6 @@ class NavigationHandler {
                 VideoFragmentBuilder.newVideoFragment(item.getCode(), item.getName()),
                 TAG_VIDEO
         );
-    }
-
-    private void hideActionBar() {
-        ActionBar actionBar = activity.getSupportActionBar();
-
-        if (actionBar != null && actionBar.isShowing()) {
-            actionBar.hide();
-        }
     }
 
     private void setTitle(String title) {

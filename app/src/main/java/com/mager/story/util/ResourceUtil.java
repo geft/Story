@@ -25,8 +25,8 @@ public class ResourceUtil {
         Toast.makeText(StoryApplication.getInstance(), text, Toast.LENGTH_SHORT).show();
     }
 
-    public static void showSnackBar(View container, @StringRes int stringRes, @SnackBarType String type) {
-        Snackbar snackbar = Snackbar.make(container, stringRes, Snackbar.LENGTH_SHORT);
+    public static void showSnackBar(View container, String message, @SnackBarType String type) {
+        Snackbar snackbar = Snackbar.make(container, message, Snackbar.LENGTH_SHORT);
         int backgroundColor;
 
         switch (type) {
@@ -43,6 +43,10 @@ public class ResourceUtil {
         snackbar.getView().setBackgroundColor(backgroundColor);
         snackbar.setActionTextColor(getColor(R.color.white));
         snackbar.show();
+    }
+
+    public static void showErrorSnackBar(View container, String message) {
+        showSnackBar(container, message, SnackBarType.ERROR);
     }
 
     public static int getColor(@ColorRes int colorRes) {

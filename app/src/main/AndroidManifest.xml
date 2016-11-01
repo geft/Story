@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.mager.story">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:name=".StoryApplication"
         android:allowBackup="true"
@@ -27,6 +29,16 @@
             android:label="@string/activity_home" />
 
         <activity
+            android:name=".content.story.StoryActivity"
+            android:excludeFromRecents="true"
+            android:label="@string/story_title" />
+
+        <activity
+            android:name=".content.photo.PhotoActivity"
+            android:excludeFromRecents="true"
+            android:label="@string/photo_title" />
+
+        <activity
             android:name=".dummy.DummyActivity"
             android:excludeFromRecents="true"
             android:theme="@style/TranslucentActivity" />
@@ -35,6 +47,4 @@
             android:name="io.fabric.ApiKey"
             android:value="8176f8eae0aaac9c026fd285b18d57e3805500b8" />
     </application>
-
-    <uses-permission android:name="android.permission.INTERNET" />
 </manifest>

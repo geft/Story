@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.SharedPreferences;
 
 import com.crashlytics.android.Crashlytics;
+import com.crashlytics.android.core.CrashlyticsCore;
 import com.google.firebase.FirebaseApp;
 
 import io.fabric.sdk.android.Fabric;
@@ -31,11 +32,19 @@ public class StoryApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        Fabric.with(this, new Crashlytics());
+        initFabric();
         instance = this;
         sharedPreferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
 
         initFirebase();
+    }
+
+    private void initFabric() {
+        Crashlytics crashlyticsKit = new Crashlytics.Builder()
+                .core(new CrashlyticsCore.Builder().disabled(BuildConfig.DEBUG).build())
+                .build();
+
+        Fabric.with(this, crashlyticsKit);
     }
 
     private void initFirebase() {

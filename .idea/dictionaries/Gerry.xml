@@ -2,6 +2,7 @@
   <dictionary name="Gerry">
     <words>
       <w>blockable</w>
+      <w>crashlytics</w>
       <w>firebase</w>
     </words>
   </dictionary>

@@ -1,6 +1,7 @@
 package com.mager.story.content.photo;
 
 import com.mager.story.core.CorePresenter;
+import com.mager.story.menu.photo.MenuPhoto;
 
 import java.util.List;
 
@@ -20,5 +21,15 @@ class PhotoPresenter extends CorePresenter<PhotoViewModel> {
 
     public void setBlocking(boolean isBlocking) {
         getViewModel().setBlocking(isBlocking);
+    }
+
+    public void setLoading(boolean loading) {
+        getViewModel().setLoading(loading);
+    }
+
+    public void initViewModel(MenuPhoto menuPhoto) {
+        getViewModel().setCode(menuPhoto.getCode());
+        getViewModel().setCount(menuPhoto.getCount());
+        getViewModel().setName(menuPhoto.getName());
     }
 }

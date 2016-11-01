@@ -13,11 +13,20 @@ import org.parceler.Parcel;
 
 @Parcel
 public class StoryViewModel extends CoreViewModel {
+    protected String code;
     protected String title;
     protected String chapter;
     protected String content;
     protected boolean ready;
     protected boolean isNightMode;
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
 
     @Bindable
     public String getChapter() {

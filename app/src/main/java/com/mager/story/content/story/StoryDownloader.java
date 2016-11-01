@@ -1,5 +1,7 @@
 package com.mager.story.content.story;
 
+import android.app.Activity;
+
 import com.mager.story.constant.EnumConstant.DownloadType;
 import com.mager.story.constant.EnumConstant.FileExtension;
 import com.mager.story.constant.EnumConstant.FolderType;
@@ -15,16 +17,16 @@ import java.nio.charset.Charset;
 
 public class StoryDownloader {
 
-    private static final long MAX_SIZE = 1024 * 1024;
+    private static final long MAX_SIZE = 256 * 1024;
 
-    private StoryFragment fragment;
+    private Activity activity;
     private Downloadable downloadable;
     private Loadable loadable;
 
-    public StoryDownloader(StoryFragment fragment, String code) {
-        this.fragment = fragment;
-        this.downloadable = fragment;
-        this.loadable = fragment;
+    public StoryDownloader(StoryActivity activity, String code) {
+        this.activity = activity;
+        this.downloadable = activity;
+        this.loadable = activity;
 
         downloadStory(code + FileExtension.STORY);
     }
@@ -34,11 +36,12 @@ public class StoryDownloader {
 
         FirebaseUtil firebaseUtil = new FirebaseUtil();
         firebaseUtil.getStorageWithChild(FolderType.STORY).child(fileName).getBytes(MAX_SIZE)
-                .addOnSuccessListener(fragment.getActivity(), bytes -> {
+                .addOnSuccessListener(activity, bytes -> {
                     String content = new String(bytes, Charset.defaultCharset());
                     downloadable.downloadSuccess(content, DownloadType.STORY);
+                    loadable.setLoading(false);
                 })
-                .addOnFailureListener(fragment.getActivity(), e -> {
+                .addOnFailureListener(activity, e -> {
                     downloadable.downloadFail(e.getMessage());
                 });
     }

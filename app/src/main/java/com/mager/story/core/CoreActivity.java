@@ -4,13 +4,13 @@ import android.content.ComponentCallbacks2;
 import android.databinding.ViewDataBinding;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 
 import com.f2prateek.dart.Dart;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.storage.FirebaseStorage;
 import com.mager.story.Henson;
 import com.mager.story.util.CommonUtil;
+import com.mager.story.util.CrashUtil;
 import com.mager.story.util.FirebaseUtil;
 
 import org.parceler.ParcelerRuntimeException;
@@ -117,7 +117,7 @@ public abstract class CoreActivity<P extends CorePresenter, VM extends CoreViewM
             outState.putString(STORAGE, FirebaseStorage.getInstance().toString());
             outState.putParcelable(PARCEL, Parcels.wrap(viewModel));
         } catch (ParcelerRuntimeException e) {
-            Log.w(TAG, "Unable to parcel " + viewModel.getClass().getCanonicalName());
+            CrashUtil.logWarning(TAG, "Unable to parcel " + viewModel.getClass().getCanonicalName());
         }
 
         super.onSaveInstanceState(outState);
