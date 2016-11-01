@@ -1,9 +1,5 @@
 package com.mager.story.util;
 
-import android.util.Log;
-
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.storage.FileDownloadTask;
@@ -21,8 +17,6 @@ import java.util.List;
  */
 
 public class FirebaseUtil {
-    private static final String TAG = "Firebase";
-
     private FirebaseAuth auth;
     private StorageReference storage;
 
@@ -57,29 +51,31 @@ public class FirebaseUtil {
                 task
                         .addOnSuccessListener(successTask -> {
                         })
-                        .addOnFailureListener(e -> Log.e(TAG, e.getMessage()));
+                        .addOnFailureListener(e -> CrashUtil.logWarning(Tag.DOWNLOAD, e.getMessage()));
             }
         } catch (Exception e) {
-            Log.e(TAG, e.getMessage());
+            CrashUtil.logError(Tag.DOWNLOAD, ResourceUtil.getString(R.string.firebase_download_fail), e);
         }
     }
 
     public void signIn(LoginInterface loginInterface, String email, String password) {
-        FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(task -> {
-                    Log.d(TAG, "signInWithEmail:onComplete:" + task.isSuccessful());
-
-                    if (task.isSuccessful()) {
-                        FirebaseUser user = auth.getCurrentUser();
-                        if (user != null) {
-                            handleSignInSuccess(loginInterface, user);
+        try {
+            FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            FirebaseUser user = auth.getCurrentUser();
+                            if (user != null) {
+                                handleSignInSuccess(loginInterface, user);
+                            } else {
+                                handleSignInFailure(loginInterface);
+                            }
                         } else {
-                            handleSignInFailure(loginInterface, task);
+                            handleSignInFailure(loginInterface);
                         }
-                    } else {
-                        handleSignInFailure(loginInterface, task);
-                    }
-                });
+                    });
+        } catch (Exception e) {
+            CrashUtil.logWarning(Tag.LOGIN, e.getMessage());
+        }
     }
 
     private void handleSignInSuccess(LoginInterface loginInterface, FirebaseUser user) {
@@ -87,8 +83,7 @@ public class FirebaseUtil {
         loginInterface.sendSignInResult(true);
     }
 
-    private void handleSignInFailure(LoginInterface loginInterface, Task<AuthResult> task) {
-        Log.d(TAG, "handleSignInFailure: " + task.getResult());
+    private void handleSignInFailure(LoginInterface loginInterface) {
         CrashUtil.logWarning(Tag.LOGIN, ResourceUtil.getString(
                 R.string.auth_sign_in_fail_format,
                 loginInterface.getEmail(),
