@@ -6,6 +6,6 @@ package com.mager.story.constant;
 
 public class RegexConstant {
     public static final String NONEMPTY = "^.+$";
-    public static final String EMAIL_FORMAT = "^[\\w\\d]+@gmail\\.com$";
+    public static final String EMAIL_FORMAT = "^.+@gmail\\.com$";
     public static final String SIX_CHAR = "^.{6,}$";
 }

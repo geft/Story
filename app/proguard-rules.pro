@@ -52,6 +52,10 @@
   *;
 }
 
+# Crashlytics
+-keepattributes *Annotation*
+-keepattributes SourceFile,LineNumberTable
+
 # Gson
 -keepattributes Signature
 -keepattributes *Annotation*

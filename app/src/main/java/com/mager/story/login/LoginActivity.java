@@ -93,7 +93,6 @@ public class LoginActivity
 
         editText.addValidator(new CustomValidator(
                 RegexConstant.NONEMPTY, ResourceUtil.getString(R.string.home_email_error_empty)));
-
         editText.addValidator(new CustomValidator(
                 RegexConstant.EMAIL_FORMAT, ResourceUtil.getString(R.string.home_email_error_invalid)));
     }
