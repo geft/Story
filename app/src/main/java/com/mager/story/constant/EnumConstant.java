@@ -13,6 +13,13 @@ import java.lang.annotation.RetentionPolicy;
 
 public class EnumConstant {
 
+    @StringDef
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface Tag {
+        String LOGIN = "LOGIN";
+        String DOWNLOAD = "DOWNLOAD";
+    }
+
     @IntDef
     @Retention(RetentionPolicy.SOURCE)
     public @interface RequestCode {

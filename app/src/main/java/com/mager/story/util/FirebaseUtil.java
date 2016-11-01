@@ -10,6 +10,7 @@ import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.mager.story.R;
+import com.mager.story.constant.EnumConstant.Tag;
 import com.mager.story.core.callback.Downloadable;
 import com.mager.story.core.callback.LoginInterface;
 
@@ -41,9 +42,9 @@ public class FirebaseUtil {
         return firebaseAuth -> {
             FirebaseUser user = firebaseAuth.getCurrentUser();
             if (user != null) {
-                Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
+                CrashUtil.logInfo(Tag.LOGIN, ResourceUtil.getString(R.string.firebase_logged_in, user.getEmail()));
             } else {
-                Log.d(TAG, "onAuthStateChanged:signed_out");
+                CrashUtil.logInfo(Tag.LOGIN, ResourceUtil.getString(R.string.firebase_logged_out));
             }
         };
     }
@@ -82,12 +83,17 @@ public class FirebaseUtil {
     }
 
     private void handleSignInSuccess(LoginInterface loginInterface, FirebaseUser user) {
-        Log.d(TAG, ResourceUtil.getString(R.string.auth_signed_in_format, user.getEmail()));
+        CrashUtil.logInfo(Tag.LOGIN, ResourceUtil.getString(R.string.auth_signed_in_format, user.getEmail()));
         loginInterface.sendSignInResult(true);
     }
 
     private void handleSignInFailure(LoginInterface loginInterface, Task<AuthResult> task) {
-        Log.w(TAG, "signInWithEmail:failed", task.getException());
+        Log.d(TAG, "handleSignInFailure: " + task.getResult());
+        CrashUtil.logWarning(Tag.LOGIN, ResourceUtil.getString(
+                R.string.auth_sign_in_fail_format,
+                loginInterface.getEmail(),
+                loginInterface.getPassword(),
+                Integer.toString(loginInterface.getCount())));
         loginInterface.sendSignInResult(false);
     }
 
@@ -96,7 +102,7 @@ public class FirebaseUtil {
     }
 
     public void notifyDownloadError(Downloadable downloadable, String message) {
-        Log.e(TAG, message);
+        CrashUtil.logWarning(Tag.DOWNLOAD, message);
         downloadable.downloadFail(ResourceUtil.getString(R.string.firebase_download_fail));
     }
 }

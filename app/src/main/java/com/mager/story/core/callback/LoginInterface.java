@@ -7,4 +7,10 @@ package com.mager.story.core.callback;
 public interface LoginInterface {
 
     void sendSignInResult(boolean isSuccess);
+
+    String getEmail();
+
+    String getPassword();
+
+    int getCount();
 }

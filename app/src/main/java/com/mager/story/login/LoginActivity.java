@@ -140,6 +140,21 @@ public class LoginActivity
         }
     }
 
+    @Override
+    public String getEmail() {
+        return getViewModel().getEmail();
+    }
+
+    @Override
+    public String getPassword() {
+        return getViewModel().getPassword();
+    }
+
+    @Override
+    public int getCount() {
+        return getViewModel().getAriesCount();
+    }
+
     private void showErrorSnackBar(@StringRes int stringRes) {
         ResourceUtil.showSnackBar(
                 binding.getRoot(), stringRes, EnumConstant.SnackBarType.ERROR);

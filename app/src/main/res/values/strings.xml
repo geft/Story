@@ -6,12 +6,14 @@
     <string name="auth_edit_text_email_hint">Enter email</string>
     <string name="auth_edit_text_password_hint">Enter password</string>
     <string name="auth_signed_in_format">User is signed in: %s</string>
-    <string name="auth_signed_out">User is signed out</string>
     <string name="auth_sign_in_success">Successfully signed in</string>
     <string name="auth_sign_in_fail">Failed to sign in</string>
+    <string name="auth_sign_in_fail_format">Failed to sign in with email = %s, password = %s, count = %s</string>
     <string name="auth_connection_fail">Failed to connect</string>
     <string name="auth_identity_fail">Authentication failed</string>
 
+    <string name="firebase_logged_in">User %s is logged in</string>
+    <string name="firebase_logged_out">User is logged out</string>
     <string name="firebase_download_fail">Error downloading data</string>
 
     <string name="login_aries">Aries</string>

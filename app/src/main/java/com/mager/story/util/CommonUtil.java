@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
 import android.os.PowerManager;
+import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
 import rx.Observable;
@@ -28,9 +29,14 @@ public class CommonUtil {
 
     public static void hideKeyboard(Activity activity) {
         InputMethodManager inputMethodManager = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
-        inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
+        View currentFocus = activity.getCurrentFocus();
+
+        if (currentFocus != null) {
+            inputMethodManager.hideSoftInputFromWindow(currentFocus.getWindowToken(), 0);
+        }
     }
 
+    @SuppressWarnings("deprecation")
     public static boolean isDisplayOn(Activity activity) {
         PowerManager powerManager = (PowerManager) activity.getSystemService(Context.POWER_SERVICE);
 
