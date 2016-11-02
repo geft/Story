@@ -25,7 +25,7 @@ public abstract class CoreDialogFragment extends DialogFragment {
     }
 
     private void setFlags() {
-        Window window = getDialog().getWindow();
+        Window window = getActivity().getWindow();
 
         if (window != null) {
             window.addFlags(FLAG_SECURE);
