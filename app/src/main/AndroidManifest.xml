@@ -39,6 +39,11 @@
             android:label="@string/photo_title" />
 
         <activity
+            android:name=".content.video.VideoActivity"
+            android:excludeFromRecents="true"
+            android:label="@string/video_title" />
+
+        <activity
             android:name=".dummy.DummyActivity"
             android:excludeFromRecents="true"
             android:theme="@style/TranslucentActivity" />

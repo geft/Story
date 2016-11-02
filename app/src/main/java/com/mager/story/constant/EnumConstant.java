@@ -72,11 +72,9 @@ public class EnumConstant {
         String MENU_JSON = "MENU_JSON";
         String MENU_PHOTO = "MENU_PHOTO";
         String MENU_STORY = "MENU_STORY";
-        String PHOTO = "PHOTO";
         String STORY = "STORY";
         String AUDIO = "AUDIO";
         String VIDEO = "VIDEO";
-        String UNKNOWN = "UNKNOWN";
     }
 
     @StringDef

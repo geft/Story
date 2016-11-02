@@ -5,6 +5,7 @@ import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -83,23 +84,44 @@ public abstract class MenuFragment extends CoreFragment<MenuPresenter, MenuViewM
     private RecyclerView.Adapter getAdapter() {
         switch (getMenuType()) {
             case FolderType.PHOTO:
-                BindAdapter<MenuPhoto> photoAdapter = new BindAdapter<>(context, R.layout.menu_photo);
-                photoAdapter.setOnItemClickListener((position, item) -> menuInterface.goToPhoto(item));
-                return photoAdapter;
+                return getPhotoAdapter();
             case FolderType.STORY:
-                BindAdapter<MenuStory> storyAdapter = new BindAdapter<>(context, R.layout.menu_story);
-                storyAdapter.setOnItemClickListener((position, item) -> menuInterface.goToStory(item));
-                return storyAdapter;
+                return getStoryAdapter();
             case FolderType.AUDIO:
-                BindAdapter<MenuAudio> audioAdapter = new BindAdapter<>(context, R.layout.menu_audio);
-                audioAdapter.setOnItemClickListener((position, item) -> menuInterface.goToAudio(item));
-                return audioAdapter;
+                return getAudioAdapter();
             case FolderType.VIDEO:
-                BindAdapter<MenuVideo> videoAdapter = new BindAdapter<>(context, R.layout.menu_video);
-                videoAdapter.setOnItemClickListener(((position, item) -> menuInterface.goToVideo(item)));
+                return getVideoAdapter();
             default:
                 return new BindAdapter(context, R.layout.fragment_recycler_view);
         }
+    }
+
+    @NonNull
+    private RecyclerView.Adapter getPhotoAdapter() {
+        BindAdapter<MenuPhoto> photoAdapter = new BindAdapter<>(context, R.layout.menu_photo);
+        photoAdapter.setOnItemClickListener((position, item) -> menuInterface.goToPhoto(item));
+        return photoAdapter;
+    }
+
+    @NonNull
+    private RecyclerView.Adapter getStoryAdapter() {
+        BindAdapter<MenuStory> storyAdapter = new BindAdapter<>(context, R.layout.menu_story);
+        storyAdapter.setOnItemClickListener((position, item) -> menuInterface.goToStory(item));
+        return storyAdapter;
+    }
+
+    @NonNull
+    private RecyclerView.Adapter getAudioAdapter() {
+        BindAdapter<MenuAudio> audioAdapter = new BindAdapter<>(context, R.layout.menu_audio);
+        audioAdapter.setOnItemClickListener((position, item) -> menuInterface.goToAudio(item));
+        return audioAdapter;
+    }
+
+    @NonNull
+    private RecyclerView.Adapter getVideoAdapter() {
+        BindAdapter<MenuVideo> videoAdapter = new BindAdapter<>(context, R.layout.menu_video);
+        videoAdapter.setOnItemClickListener(((position, item) -> menuInterface.goToVideo(item)));
+        return videoAdapter;
     }
 
     @FolderType

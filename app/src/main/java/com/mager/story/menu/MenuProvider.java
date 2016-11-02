@@ -10,6 +10,7 @@ import com.mager.story.constant.EnumConstant.FolderType;
 import com.mager.story.datamodel.MenuDataModel;
 import com.mager.story.menu.photo.MenuPhoto;
 import com.mager.story.menu.story.MenuStory;
+import com.mager.story.menu.video.MenuVideo;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -55,6 +56,20 @@ public class MenuProvider {
         }
 
         return storyList;
+    }
+
+    public List<MenuVideo> convertDataModelToMenuVideo(MenuDataModel dataModel) {
+        List<MenuVideo> videoList = new ArrayList<>();
+
+        for (MenuDataModel.Video video : dataModel.video) {
+            MenuVideo item = new MenuVideo();
+            item.setCode(video.code);
+            item.setName(video.name);
+
+            videoList.add(item);
+        }
+
+        return videoList;
     }
 
     @Nullable

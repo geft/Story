@@ -2,14 +2,12 @@ package com.mager.story.home;
 
 import android.app.Fragment;
 import android.support.design.widget.BottomNavigationView;
-import android.support.v7.app.ActionBar;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
 import com.mager.story.R;
 import com.mager.story.content.audio.AudioFragmentBuilder;
-import com.mager.story.content.video.VideoFragmentBuilder;
 import com.mager.story.datamodel.MenuDataModel;
 import com.mager.story.menu.MenuProvider;
 import com.mager.story.menu.audio.MenuAudio;
@@ -19,7 +17,6 @@ import com.mager.story.menu.photo.MenuPhotoFragment;
 import com.mager.story.menu.photo.MenuPhotoFragmentBuilder;
 import com.mager.story.menu.story.MenuStoryFragment;
 import com.mager.story.menu.story.MenuStoryFragmentBuilder;
-import com.mager.story.menu.video.MenuVideo;
 import com.mager.story.menu.video.MenuVideoFragment;
 import com.mager.story.menu.video.MenuVideoFragmentBuilder;
 import com.mager.story.util.FragmentUtil;
@@ -37,7 +34,6 @@ class NavigationHandler {
     private static final String TAG_MENU_AUDIO = "MENU_AUDIO";
     private static final String TAG_MENU_VIDEO = "MENU_VIDEO";
     private static final String TAG_AUDIO = "AUDIO";
-    private static final String TAG_VIDEO = "VIDEO";
 
     private BottomNavigationView navigationView;
     private HomeActivity activity;
@@ -86,15 +82,14 @@ class NavigationHandler {
                 provider.convertDataModelToMenuStory(menuDataModel)
         );
         audioFragment = MenuAudioFragmentBuilder.newMenuAudioFragment(new ArrayList<>());
-        videoFragment = MenuVideoFragmentBuilder.newMenuVideoFragment(new ArrayList<>());
+        videoFragment = MenuVideoFragmentBuilder.newMenuVideoFragment(
+                provider.convertDataModelToMenuVideo(menuDataModel)
+        );
     }
 
     private void initListener() {
         navigationView.setOnNavigationItemSelectedListener(
                 item -> {
-                    showActionBar();
-                    animateSlideUp();
-
                     switch (item.getItemId()) {
                         case R.id.tab_photo:
                             selectItem(TAG_MENU_PHOTO);
@@ -113,14 +108,6 @@ class NavigationHandler {
                     return false;
                 }
         );
-    }
-
-    private void showActionBar() {
-        ActionBar actionBar = activity.getSupportActionBar();
-
-        if (actionBar != null && !actionBar.isShowing()) {
-            actionBar.show();
-        }
     }
 
     private void selectItem(String tag) {
@@ -148,7 +135,7 @@ class NavigationHandler {
         }
     }
 
-    void animateSlideUp() {
+    private void animateSlideUp() {
         if (navigationView.isShown()) return;
 
         Animation animation = AnimationUtils.loadAnimation(activity, R.anim.slide_down_to_center);
@@ -172,12 +159,6 @@ class NavigationHandler {
         navigationView.startAnimation(animation);
     }
 
-    private void hideNavigation() {
-        if (!navigationView.isShown()) return;
-
-        navigationView.setVisibility(View.GONE);
-    }
-
     private void initPrimaryFragment() {
         if (!FragmentUtil.isFragmentVisible(activity, selectedItem)) {
             selectItem(selectedItem);
@@ -192,36 +173,11 @@ class NavigationHandler {
         return selectedItem;
     }
 
-    boolean isMenuVisible() {
-        return FragmentUtil.isFragmentVisible(activity, TAG_MENU_PHOTO) ||
-                FragmentUtil.isFragmentVisible(activity, TAG_MENU_STORY) ||
-                FragmentUtil.isFragmentVisible(activity, TAG_MENU_AUDIO) ||
-                FragmentUtil.isFragmentVisible(activity, TAG_MENU_VIDEO);
-    }
-
     void goToAudio(MenuAudio item) {
-        setTitle(item.getName());
         FragmentUtil.replaceWithBackStack(
                 activity,
                 AudioFragmentBuilder.newAudioFragment(item.getCode(), item.getName()),
                 TAG_AUDIO
         );
-    }
-
-    void goToVideo(MenuVideo item) {
-        setTitle(item.getName());
-        FragmentUtil.replaceWithBackStack(
-                activity,
-                VideoFragmentBuilder.newVideoFragment(item.getCode(), item.getName()),
-                TAG_VIDEO
-        );
-    }
-
-    private void setTitle(String title) {
-        ActionBar actionBar = activity.getSupportActionBar();
-
-        if (actionBar != null) {
-            actionBar.setTitle(title);
-        }
     }
 }

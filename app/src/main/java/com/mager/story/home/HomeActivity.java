@@ -3,7 +3,6 @@ package com.mager.story.home;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
 
 import com.f2prateek.dart.InjectExtra;
 import com.mager.story.Henson;
@@ -13,12 +12,11 @@ import com.mager.story.core.callback.Loadable;
 import com.mager.story.core.callback.MenuInterface;
 import com.mager.story.databinding.ActivityHomeBinding;
 import com.mager.story.datamodel.MenuDataModel;
-import com.mager.story.error.ErrorFragmentBuilder;
 import com.mager.story.menu.audio.MenuAudio;
 import com.mager.story.menu.photo.MenuPhoto;
 import com.mager.story.menu.story.MenuStory;
 import com.mager.story.menu.video.MenuVideo;
-import com.mager.story.util.FragmentUtil;
+import com.mager.story.util.ResourceUtil;
 
 /**
  * Created by Gerry on 24/09/2016.
@@ -27,7 +25,6 @@ import com.mager.story.util.FragmentUtil;
 public class HomeActivity extends CoreActivity<HomePresenter, HomeViewModel>
         implements Loadable, MenuInterface {
 
-    private static final String TAG_ERROR = "ERROR";
     @InjectExtra
     MenuDataModel menuDataModel;
     private ActivityHomeBinding binding;
@@ -69,25 +66,6 @@ public class HomeActivity extends CoreActivity<HomePresenter, HomeViewModel>
     }
 
     @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-
-        if (navigationHandler.isMenuVisible()) {
-            resetActionBar();
-            navigationHandler.animateSlideUp();
-        }
-    }
-
-    private void resetActionBar() {
-        ActionBar actionBar = getSupportActionBar();
-
-        if (actionBar != null) {
-            actionBar.setTitle(R.string.activity_home);
-            actionBar.show();
-        }
-    }
-
-    @Override
     protected void onSaveInstanceState(Bundle outState) {
         getPresenter().setSelectedItem(navigationHandler.getSelectedItem());
 
@@ -107,7 +85,7 @@ public class HomeActivity extends CoreActivity<HomePresenter, HomeViewModel>
     @Override
     public void setError(String message) {
         getPresenter().setLoading(false);
-        FragmentUtil.replace(this, ErrorFragmentBuilder.newErrorFragment(message), TAG_ERROR);
+        ResourceUtil.showErrorSnackBar(binding.getRoot(), message);
     }
 
     @Override
@@ -127,6 +105,6 @@ public class HomeActivity extends CoreActivity<HomePresenter, HomeViewModel>
 
     @Override
     public void goToVideo(MenuVideo item) {
-        navigationHandler.goToVideo(item);
+        startActivity(Henson.with(this).gotoVideoActivity().menuVideo(item).build());
     }
 }

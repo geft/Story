@@ -3,8 +3,7 @@ package com.mager.story.menu.video;
 import com.hannesdorfmann.fragmentargs.annotation.Arg;
 import com.hannesdorfmann.fragmentargs.annotation.FragmentWithArgs;
 import com.hannesdorfmann.fragmentargs.bundler.ParcelerArgsBundler;
-import com.mager.story.constant.EnumConstant;
-import com.mager.story.datamodel.MenuDataModel;
+import com.mager.story.constant.EnumConstant.FolderType;
 import com.mager.story.menu.MenuFragment;
 
 import java.util.List;
@@ -17,11 +16,11 @@ import java.util.List;
 public class MenuVideoFragment extends MenuFragment {
 
     @Arg(bundler = ParcelerArgsBundler.class)
-    List<MenuDataModel.Video> videoList;
+    List<MenuVideo> videoList;
 
     @Override
     protected String getMenuType() {
-        return EnumConstant.FolderType.VIDEO;
+        return FolderType.VIDEO;
     }
 
     @Override

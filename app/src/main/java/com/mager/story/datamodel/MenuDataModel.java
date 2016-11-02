@@ -8,6 +8,10 @@ import java.util.List;
 @Parcel
 public class MenuDataModel {
     public int version;
+    public int versionPhoto;
+    public int versionStory;
+    public int versionAudio;
+    public int versionVideo;
     public List<Photo> photo = new ArrayList<>();
     public List<Story> story = new ArrayList<>();
     public List<Audio> audio = new ArrayList<>();
