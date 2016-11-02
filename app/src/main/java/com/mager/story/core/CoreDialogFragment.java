@@ -2,11 +2,12 @@ package com.mager.story.core;
 
 import android.app.DialogFragment;
 import android.os.Bundle;
+import android.view.Window;
 
 import com.hannesdorfmann.fragmentargs.FragmentArgs;
 import com.mager.story.constant.EnumConstant.DialogStyle;
 
-import static android.view.Display.FLAG_SECURE;
+import static android.view.WindowManager.LayoutParams.FLAG_SECURE;
 
 /**
  * Created by Gerry on 28/10/2016.
@@ -24,7 +25,11 @@ public abstract class CoreDialogFragment extends DialogFragment {
     }
 
     private void setFlags() {
-        getActivity().getWindow().addFlags(FLAG_SECURE);
+        Window window = getDialog().getWindow();
+
+        if (window != null) {
+            window.addFlags(FLAG_SECURE);
+        }
     }
 
     private void setDialogStyle() {
