@@ -76,7 +76,7 @@ public abstract class CoreActivity<P extends CorePresenter, VM extends CoreViewM
     }
 
     private void initWindowStyle() {
-        getWindow().setFlags(FLAG_SECURE, FLAG_SECURE);
+        getWindow().addFlags(FLAG_SECURE);
     }
 
     private void initFirebaseAuth() {
