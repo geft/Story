@@ -29,7 +29,6 @@ public class VideoActivity
     MenuVideo menuVideo;
 
     private ActivityVideoBinding binding;
-    private VideoDownloader downloader;
     private VideoPlayer player;
 
     @Override
@@ -54,7 +53,7 @@ public class VideoActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        downloader = new VideoDownloader(this, menuVideo.getCode());
+        new VideoDownloader(this, menuVideo.getCode());
         player = new VideoPlayer(this, binding);
     }
 
