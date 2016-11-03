@@ -1,6 +1,7 @@
 package com.mager.story.content.story;
 
 import android.databinding.Bindable;
+import android.databinding.ObservableBoolean;
 
 import com.mager.story.BR;
 import com.mager.story.core.CoreViewModel;
@@ -13,12 +14,12 @@ import org.parceler.Parcel;
 
 @Parcel
 public class StoryViewModel extends CoreViewModel {
+    public ObservableBoolean ready = new ObservableBoolean();
+    public ObservableBoolean isNightMode = new ObservableBoolean();
     protected String code;
     protected String title;
     protected String chapter;
     protected String content;
-    protected boolean ready;
-    protected boolean isNightMode;
 
     public String getCode() {
         return code;
@@ -56,25 +57,5 @@ public class StoryViewModel extends CoreViewModel {
     public void setContent(String content) {
         this.content = content;
         notifyPropertyChanged(BR.content);
-    }
-
-    @Bindable
-    public boolean isReady() {
-        return ready;
-    }
-
-    public void setReady(boolean ready) {
-        this.ready = ready;
-        notifyPropertyChanged(BR.ready);
-    }
-
-    @Bindable
-    public boolean isNightMode() {
-        return isNightMode;
-    }
-
-    public void setNightMode(boolean nightMode) {
-        isNightMode = nightMode;
-        notifyPropertyChanged(BR.nightMode);
     }
 }

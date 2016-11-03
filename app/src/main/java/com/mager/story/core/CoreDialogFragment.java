@@ -1,5 +1,6 @@
 package com.mager.story.core;
 
+import android.app.Dialog;
 import android.app.DialogFragment;
 import android.os.Bundle;
 import android.view.Window;
@@ -20,16 +21,17 @@ public abstract class CoreDialogFragment extends DialogFragment {
         super.onCreate(savedInstanceState);
 
         FragmentArgs.inject(this);
-        setFlags();
         setDialogStyle();
     }
 
-    private void setFlags() {
-        Window window = getActivity().getWindow();
-
+    @Override
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        Dialog dialog = super.onCreateDialog(savedInstanceState);
+        Window window = dialog.getWindow();
         if (window != null) {
             window.addFlags(FLAG_SECURE);
         }
+        return dialog;
     }
 
     private void setDialogStyle() {

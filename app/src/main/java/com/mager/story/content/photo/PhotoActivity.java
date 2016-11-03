@@ -3,6 +3,7 @@ package com.mager.story.content.photo;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.GridLayoutManager;
 
 import com.f2prateek.dart.InjectExtra;
@@ -20,8 +21,6 @@ import com.mager.story.util.CrashUtil;
 import com.mager.story.util.ResourceUtil;
 import com.mager.story.util.ViewUtil;
 
-import java.util.List;
-
 /**
  * Created by Gerry on 08/10/2016.
  */
@@ -30,11 +29,10 @@ public class PhotoActivity
         extends CoreActivity<PhotoPresenter, PhotoViewModel>
         implements OnRecyclerItemClickListener<PhotoItem>, Blockable, Loadable {
 
+    private static final String TAG_DIALOG = "DIALOG";
     @InjectExtra
     MenuPhoto menuPhoto;
-
     private ActivityPhotoBinding binding;
-    private PhotoDownloader downloader;
 
     @Override
     protected PhotoViewModel createViewModel() {
@@ -64,6 +62,7 @@ public class PhotoActivity
         super.onStart();
 
         initTitle();
+        initAdapter();
         initDownloader();
     }
 
@@ -72,8 +71,8 @@ public class PhotoActivity
     }
 
     private void initDownloader() {
-        downloader = new PhotoDownloader(this, subscription);
-        downloader.populatePhotos(getViewModel().getCode(), getViewModel().getCount());
+        PhotoDownloader downloader = new PhotoDownloader(this, subscription);
+        downloader.populatePhotos(getViewModel().getItems());
     }
 
     private void initAdapter() {
@@ -94,12 +93,26 @@ public class PhotoActivity
 
     @Override
     public void onItemClick(int position, PhotoItem item) {
-        downloader.openFullPhoto(item);
+        openFullPhoto(position);
     }
 
-    public void setItems(List<PhotoItem> list) {
-        getPresenter().setItems(list);
-        initAdapter();
+    private void openFullPhoto(int position) {
+        if (isBlocked()) {
+            return;
+        }
+
+        setBlock(true);
+        PhotoDialog dialog = getPhotoDialog(position);
+        dialog.show(getFragmentManager(), TAG_DIALOG);
+    }
+
+    @NonNull
+    private PhotoDialog getPhotoDialog(int position) {
+        PhotoDialog dialog = PhotoDialogBuilder.newPhotoDialog(getViewModel().getItems(), position);
+        dialog.setBlockable(this);
+        dialog.setLoadable(this);
+
+        return dialog;
     }
 
     @Override
@@ -109,12 +122,12 @@ public class PhotoActivity
 
     @Override
     public boolean isBlocked() {
-        return getViewModel().isBlocking();
+        return getViewModel().blocking.get();
     }
 
     @Override
     public boolean isLoading() {
-        return getViewModel().isLoading();
+        return getViewModel().loading.get();
     }
 
     @Override

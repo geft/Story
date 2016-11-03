@@ -1,6 +1,8 @@
 package com.mager.story.content.photo;
 
 import android.databinding.Bindable;
+import android.databinding.ObservableBoolean;
+import android.databinding.ObservableInt;
 
 import com.mager.story.BR;
 import com.mager.story.core.CoreViewModel;
@@ -17,35 +19,15 @@ import java.util.List;
 @Parcel
 public class PhotoViewModel extends CoreViewModel {
 
-    protected boolean loading;
-    protected boolean blocking;
-    protected int count;
+    public ObservableBoolean loading = new ObservableBoolean();
+    public ObservableBoolean blocking = new ObservableBoolean();
+    public ObservableInt count = new ObservableInt();
     protected String code;
     protected String name;
     protected List<PhotoItem> items;
 
     PhotoViewModel() {
         this.items = new ArrayList<>();
-    }
-
-    @Bindable
-    public boolean isLoading() {
-        return loading;
-    }
-
-    public void setLoading(boolean loading) {
-        this.loading = loading;
-        notifyPropertyChanged(BR.loading);
-    }
-
-    @Bindable
-    public boolean isBlocking() {
-        return blocking;
-    }
-
-    public void setBlocking(boolean blocking) {
-        this.blocking = blocking;
-        notifyPropertyChanged(BR.blocking);
     }
 
     public String getCode() {
@@ -62,14 +44,6 @@ public class PhotoViewModel extends CoreViewModel {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public int getCount() {
-        return count;
-    }
-
-    public void setCount(int count) {
-        this.count = count;
     }
 
     @Bindable

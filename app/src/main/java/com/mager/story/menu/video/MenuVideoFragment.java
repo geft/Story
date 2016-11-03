@@ -1,9 +1,12 @@
 package com.mager.story.menu.video;
 
+import android.support.v7.widget.RecyclerView;
+
 import com.hannesdorfmann.fragmentargs.annotation.Arg;
 import com.hannesdorfmann.fragmentargs.annotation.FragmentWithArgs;
 import com.hannesdorfmann.fragmentargs.bundler.ParcelerArgsBundler;
-import com.mager.story.constant.EnumConstant.FolderType;
+import com.mager.story.R;
+import com.mager.story.core.recyclerView.BindAdapter;
 import com.mager.story.menu.MenuFragment;
 
 import java.util.List;
@@ -19,8 +22,10 @@ public class MenuVideoFragment extends MenuFragment {
     List<MenuVideo> videoList;
 
     @Override
-    protected String getMenuType() {
-        return FolderType.VIDEO;
+    protected RecyclerView.Adapter getAdapter() {
+        BindAdapter<MenuVideo> adapter = new BindAdapter<>(context, R.layout.menu_video);
+        adapter.setOnItemClickListener((position, item) -> menuInterface.goToVideo(item));
+        return adapter;
     }
 
     @Override

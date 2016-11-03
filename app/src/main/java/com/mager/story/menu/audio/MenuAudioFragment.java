@@ -1,9 +1,12 @@
 package com.mager.story.menu.audio;
 
+import android.support.v7.widget.RecyclerView;
+
 import com.hannesdorfmann.fragmentargs.annotation.Arg;
 import com.hannesdorfmann.fragmentargs.annotation.FragmentWithArgs;
 import com.hannesdorfmann.fragmentargs.bundler.ParcelerArgsBundler;
-import com.mager.story.constant.EnumConstant.FolderType;
+import com.mager.story.R;
+import com.mager.story.core.recyclerView.BindAdapter;
 import com.mager.story.menu.MenuFragment;
 
 import java.util.List;
@@ -19,8 +22,10 @@ public class MenuAudioFragment extends MenuFragment {
     List<MenuAudio> audioList;
 
     @Override
-    protected String getMenuType() {
-        return FolderType.AUDIO;
+    protected RecyclerView.Adapter getAdapter() {
+        BindAdapter<MenuAudio> adapter = new BindAdapter<>(context, R.layout.menu_audio);
+        adapter.setOnItemClickListener((position, item) -> menuInterface.goToAudio(item));
+        return adapter;
     }
 
     @Override

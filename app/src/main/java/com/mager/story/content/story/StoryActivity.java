@@ -4,7 +4,6 @@ import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.View;
 
 import com.f2prateek.dart.InjectExtra;
@@ -15,6 +14,8 @@ import com.mager.story.core.callback.Downloadable;
 import com.mager.story.core.callback.Loadable;
 import com.mager.story.databinding.ActivityStoryBinding;
 import com.mager.story.menu.story.MenuStory;
+import com.mager.story.util.CrashUtil;
+import com.mager.story.util.DownloadUtil;
 import com.mager.story.util.ResourceUtil;
 
 /**
@@ -52,7 +53,7 @@ public class StoryActivity
 
     private void initContent() {
         if (getViewModel().getContent() == null) {
-            new StoryDownloader(this, getViewModel().getCode());
+            DownloadUtil.downloadStory(this, this, this, getViewModel().getCode());
         }
     }
 
@@ -100,7 +101,7 @@ public class StoryActivity
 
     @Override
     public boolean isLoading() {
-        return getViewModel().isReady();
+        return getViewModel().ready.get();
     }
 
     @Override
@@ -110,10 +111,9 @@ public class StoryActivity
 
     @Override
     public void setError(String message) {
-        Log.e(this.getClass().getName(), message);
+        CrashUtil.logWarning(EnumConstant.Tag.STORY, message);
 
         setLoading(false);
-        binding.errorText.setText(ResourceUtil.getString(R.string.story_download_error));
-        binding.errorText.setVisibility(View.VISIBLE);
+        ResourceUtil.showErrorSnackBar(binding.getRoot(), ResourceUtil.getString(R.string.story_download_error));
     }
 }

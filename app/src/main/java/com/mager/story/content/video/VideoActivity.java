@@ -15,6 +15,7 @@ import com.mager.story.core.callback.Downloadable;
 import com.mager.story.core.callback.Loadable;
 import com.mager.story.databinding.ActivityVideoBinding;
 import com.mager.story.menu.video.MenuVideo;
+import com.mager.story.util.DownloadUtil;
 import com.mager.story.util.ResourceUtil;
 
 /**
@@ -53,7 +54,7 @@ public class VideoActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        new VideoDownloader(this, menuVideo.getCode());
+        DownloadUtil.downloadVideo(this, this, this, menuVideo.getCode());
         player = new VideoPlayer(this, binding);
     }
 

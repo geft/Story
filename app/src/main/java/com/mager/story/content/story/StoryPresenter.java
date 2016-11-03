@@ -18,16 +18,16 @@ class StoryPresenter extends CorePresenter<StoryViewModel> {
     }
 
     void toggleNightMode() {
-        getViewModel().setNightMode(!getViewModel().isNightMode());
+        getViewModel().isNightMode.set(!getViewModel().isNightMode.get());
     }
 
     void setContent(String content) {
         getViewModel().setContent(content);
-        getViewModel().setReady(true);
+        getViewModel().ready.set(true);
     }
 
     void setLoading(boolean loading) {
-        getViewModel().setReady(!loading);
+        getViewModel().ready.set(!loading);
     }
 
     public void setCode(String code) {

@@ -1,14 +1,12 @@
 package com.mager.story.login;
 
-import android.support.annotation.NonNull;
-
 import com.google.gson.Gson;
-import com.mager.story.StoryApplication;
 import com.mager.story.constant.EnumConstant;
 import com.mager.story.constant.EnumConstant.FolderType;
 import com.mager.story.core.callback.Downloadable;
 import com.mager.story.datamodel.MenuDataModel;
 import com.mager.story.util.CrashUtil;
+import com.mager.story.util.FileUtil;
 import com.mager.story.util.FirebaseUtil;
 
 import java.io.File;
@@ -58,7 +56,7 @@ class MenuDownloader {
     }
 
     private void downloadMenuImage(String name, String downloadType) {
-        File file = createFileInDirectory(FolderType.MENU, name);
+        File file = FileUtil.createFileInFolder(FolderType.MENU, name);
 
         firebaseUtil.getStorageWithChild(FolderType.MENU).child(name).getFile(file)
                 .addOnFailureListener((e) -> setError(e, file.getPath()))
@@ -83,15 +81,5 @@ class MenuDownloader {
     private void setError(Exception e, String path) {
         CrashUtil.logWarning(EnumConstant.Tag.LOGIN, path);
         firebaseUtil.notifyDownloadError(downloadable, e.getMessage());
-    }
-
-    @SuppressWarnings("ResultOfMethodCallIgnored")
-    @NonNull
-    private File createFileInDirectory(String folder, String name) {
-        File dir = StoryApplication.getInstance().getFilesDir();
-        File subDir = new File(dir + File.separator + folder);
-        subDir.mkdirs();
-
-        return new File(subDir, name);
     }
 }
