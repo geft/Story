@@ -13,6 +13,7 @@ import com.mager.story.R;
 import com.mager.story.constant.EnumConstant;
 import com.mager.story.core.callback.Loadable;
 import com.mager.story.databinding.DialogPhotoPagerBinding;
+import com.mager.story.util.CrashUtil;
 import com.mager.story.util.DownloadUtil;
 import com.mager.story.util.FirebaseUtil;
 import com.mager.story.util.ResourceUtil;
@@ -28,13 +29,11 @@ import static com.mager.story.constant.EnumConstant.FolderType.PHOTO;
 public class PhotoPagerAdapter extends PagerAdapter {
 
     private Context context;
-    private Loadable loadable;
     private List<PhotoItem> items;
 
-    public PhotoPagerAdapter(Context context, Loadable loadable, List<PhotoItem> items) {
+    public PhotoPagerAdapter(Context context, List<PhotoItem> items) {
         this.context = context;
         this.items = items;
-        this.loadable = loadable;
     }
 
     @Override
@@ -45,28 +44,50 @@ public class PhotoPagerAdapter extends PagerAdapter {
 
         container.addView(binding.getRoot());
 
-        downloadFullPhoto(items.get(position), binding.image);
+        downloadFullPhoto(items.get(position), binding, getLoadable(binding));
 
         return binding.getRoot();
     }
 
-    private void downloadFullPhoto(PhotoItem item, ImageView imageView) {
-        loadable.setLoading(true);
+    private Loadable getLoadable(DialogPhotoPagerBinding binding) {
+        return new Loadable() {
+            @Override
+            public boolean isLoading() {
+                return binding.progress.isShown();
+            }
+
+            @Override
+            public void setLoading(boolean loading) {
+                if (loading) {
+                    binding.progress.setVisibility(View.VISIBLE);
+                } else {
+                    binding.progress.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void setError(String message) {
+                setLoading(false);
+                CrashUtil.logWarning(EnumConstant.Tag.PHOTO, message);
+            }
+        };
+    }
+
+    private void downloadFullPhoto(PhotoItem item, DialogPhotoPagerBinding binding, Loadable loadable) {
         StorageReference storage = new FirebaseUtil().getStorageWithChild(PHOTO).child(item.getGroup());
         String fullName = item.getName().replace(EnumConstant.PhotoType.THUMB, EnumConstant.PhotoType.FULL);
 
         storage.child(fullName).getDownloadUrl()
                 .addOnCompleteListener(task -> {
-                    loadable.setLoading(false);
                     if (task.isSuccessful()) {
-                        loadImage(task.getResult().toString(), imageView);
+                        loadImage(task.getResult().toString(), binding.image, loadable);
                     } else {
                         loadable.setError(ResourceUtil.getString(R.string.photo_load_error_single));
                     }
                 });
     }
 
-    private void loadImage(String url, ImageView imageView) {
+    private void loadImage(String url, ImageView imageView, Loadable loadable) {
         DownloadUtil.downloadImage(context, loadable, url, imageView, true);
     }
 

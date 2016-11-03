@@ -16,9 +16,7 @@ import com.mager.story.R;
 import com.mager.story.constant.EnumConstant;
 import com.mager.story.core.CoreDialogFragment;
 import com.mager.story.core.callback.Blockable;
-import com.mager.story.core.callback.Loadable;
 import com.mager.story.databinding.DialogPhotoBinding;
-import com.mager.story.util.ResourceUtil;
 
 import java.util.List;
 
@@ -27,7 +25,7 @@ import java.util.List;
  */
 
 @FragmentWithArgs
-public class PhotoDialog extends CoreDialogFragment implements Loadable {
+public class PhotoDialog extends CoreDialogFragment {
 
     @Arg(bundler = ParcelerArgsBundler.class)
     List<PhotoItem> photoList;
@@ -37,14 +35,9 @@ public class PhotoDialog extends CoreDialogFragment implements Loadable {
 
     private DialogPhotoBinding binding;
     private Blockable blockable;
-    private Loadable loadable;
 
     public void setBlockable(Blockable blockable) {
         this.blockable = blockable;
-    }
-
-    public void setLoadable(Loadable loadable) {
-        this.loadable = loadable;
     }
 
     @Nullable
@@ -58,7 +51,7 @@ public class PhotoDialog extends CoreDialogFragment implements Loadable {
     }
 
     private PagerAdapter getPagerAdapter() {
-        return new PhotoPagerAdapter(getActivity(), this, photoList);
+        return new PhotoPagerAdapter(getActivity(), photoList);
     }
 
     @Override
@@ -71,20 +64,5 @@ public class PhotoDialog extends CoreDialogFragment implements Loadable {
     @Override
     protected String getDialogStyle() {
         return EnumConstant.DialogStyle.FULL_SCREEN;
-    }
-
-    @Override
-    public boolean isLoading() {
-        return loadable.isLoading();
-    }
-
-    @Override
-    public void setLoading(boolean loading) {
-        loadable.setLoading(loading);
-    }
-
-    @Override
-    public void setError(String message) {
-        ResourceUtil.showErrorSnackBar(binding.getRoot(), message);
     }
 }

@@ -110,7 +110,6 @@ public class PhotoActivity
     private PhotoDialog getPhotoDialog(int position) {
         PhotoDialog dialog = PhotoDialogBuilder.newPhotoDialog(getViewModel().getItems(), position);
         dialog.setBlockable(this);
-        dialog.setLoadable(this);
 
         return dialog;
     }
