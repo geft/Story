@@ -13,6 +13,7 @@ import com.hannesdorfmann.fragmentargs.annotation.Arg;
 import com.hannesdorfmann.fragmentargs.annotation.FragmentWithArgs;
 import com.hannesdorfmann.fragmentargs.bundler.ParcelerArgsBundler;
 import com.mager.story.R;
+import com.mager.story.common.ZoomOutPageTransformer;
 import com.mager.story.constant.EnumConstant;
 import com.mager.story.core.CoreDialogFragment;
 import com.mager.story.core.callback.Blockable;
@@ -46,6 +47,7 @@ public class PhotoDialog extends CoreDialogFragment {
         binding = DataBindingUtil.inflate(inflater, R.layout.dialog_photo, null, false);
         binding.viewPager.setAdapter(getPagerAdapter());
         binding.viewPager.setCurrentItem(primaryPosition);
+        binding.viewPager.setPageTransformer(true, new ZoomOutPageTransformer());
 
         return binding.getRoot();
     }
