@@ -4,6 +4,7 @@ import android.support.annotation.Nullable;
 
 import com.google.gson.Gson;
 import com.mager.story.StoryApplication;
+import com.mager.story.constant.EnumConstant.FolderType;
 import com.mager.story.datamodel.MenuDataModel;
 
 /**
@@ -15,28 +16,27 @@ class LoginProvider {
     private static final String EMAIL = "EMAIL";
     private static final String MENU_JSON = "MENU_JSON";
 
-    @Nullable
-    private MenuDataModel menuDataModel;
+    private MenuDataModel localData;
 
     public LoginProvider() {
-        menuDataModel = loadMenuDataFromPrefs();
+        this.localData = loadLocalData();
     }
 
-    @Nullable
-    public MenuDataModel getMenuDataModel() {
-        return menuDataModel;
+    public MenuDataModel getLocalData() {
+        return localData;
     }
 
     boolean isLatestMenu(int version) {
-        return menuDataModel != null && version == menuDataModel.version;
+        MenuDataModel localData = loadLocalData();
+        return localData != null && version == localData.version;
     }
 
     boolean doesMenuDataExistOnDevice() {
-        return menuDataModel != null;
+        return loadLocalData() != null;
     }
 
     @Nullable
-    private MenuDataModel loadMenuDataFromPrefs() {
+    private MenuDataModel loadLocalData() {
         String json = StoryApplication.getSharedPreferences().getString(MENU_JSON, null);
         if (json == null) return null;
 
@@ -65,5 +65,24 @@ class LoginProvider {
     @Nullable
     String loadEmail() {
         return StoryApplication.getSharedPreferences().getString(EMAIL, null);
+    }
+
+    boolean isLocalDataValid(MenuDataModel localData, MenuDataModel currentData, @FolderType String folderType) {
+        switch (folderType) {
+            case FolderType.PHOTO:
+                return isVersionValid(localData.versionPhoto, currentData.versionPhoto);
+            case FolderType.STORY:
+                return isVersionValid(localData.versionStory, currentData.versionStory);
+            case FolderType.AUDIO:
+                return isVersionValid(localData.versionAudio, currentData.versionAudio);
+            case FolderType.VIDEO:
+                return isVersionValid(localData.versionVideo, currentData.versionVideo);
+            default:
+                return false;
+        }
+    }
+
+    private boolean isVersionValid(int versionLocal, int versionCurrent) {
+        return versionCurrent == versionLocal;
     }
 }

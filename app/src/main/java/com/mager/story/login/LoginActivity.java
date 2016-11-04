@@ -5,7 +5,6 @@ import android.databinding.ViewDataBinding;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -23,6 +22,7 @@ import com.mager.story.core.callback.LoginInterface;
 import com.mager.story.databinding.ActivityLoginBinding;
 import com.mager.story.datamodel.MenuDataModel;
 import com.mager.story.util.CommonUtil;
+import com.mager.story.util.CrashUtil;
 import com.mager.story.util.FirebaseUtil;
 import com.mager.story.util.ResourceUtil;
 import com.rengwuxian.materialedittext.MaterialEditText;
@@ -187,6 +187,7 @@ public class LoginActivity
 
     private void handleMenuReady() {
         ResourceUtil.showToast(ResourceUtil.getString(R.string.auth_sign_in_success));
+        getPresenter().clearOutdatedData();
         goToHome();
     }
 
@@ -202,7 +203,7 @@ public class LoginActivity
     @Override
     public void downloadFail(String message) {
         setLoading(false);
-        Log.e(this.getClass().getName(), message);
+        CrashUtil.logWarning(EnumConstant.Tag.MENU, message);
         showErrorSnackBar(R.string.firebase_download_fail);
     }
 

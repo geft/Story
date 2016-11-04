@@ -17,7 +17,7 @@ public class EnumConstant {
     @Retention(RetentionPolicy.SOURCE)
     public @interface Tag {
         String LOGIN = "LOGIN";
-        String DOWNLOAD = "DOWNLOAD";
+        String MENU = "MENU";
         String PHOTO = "PHOTO";
         String STORY = "STORY";
         String AUDIO = "AUDIO";
