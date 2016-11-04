@@ -3,6 +3,7 @@ package com.mager.story.content.photo;
 import android.app.Activity;
 
 import com.mager.story.R;
+import com.mager.story.constant.EnumConstant;
 import com.mager.story.constant.EnumConstant.FolderType;
 import com.mager.story.core.callback.Loadable;
 import com.mager.story.util.CommonUtil;
@@ -30,19 +31,27 @@ class PhotoDownloader {
     }
 
     void setUrls(List<PhotoItem> list) {
+        FirebaseUtil firebaseUtil = new FirebaseUtil();
         subscription.add(
                 Observable.from(list)
-                        .map(photoItem ->
-                                new FirebaseUtil().getStorageWithChild(FolderType.PHOTO)
-                                        .child(photoItem.getName())
-                                        .getDownloadUrl()
-                                        .addOnCompleteListener(activity, task -> {
-                                            if (task.isSuccessful()) {
-                                                photoItem.setUrl(task.getResult().toString());
-                                            } else {
-                                                setError();
-                                            }
-                                        }))
+                        .map(photoItem -> {
+                            String fileName = EnumConstant.FilePrefix.PHOTO_THUMB +
+                                    photoItem.getName() + EnumConstant.FileExtension.PHOTO;
+
+                            firebaseUtil.getStorageWithChild(FolderType.PHOTO)
+                                    .child(photoItem.getGroup())
+                                    .child(fileName)
+                                    .getDownloadUrl()
+                                    .addOnCompleteListener(activity, task -> {
+                                        if (task.isSuccessful()) {
+                                            photoItem.setUrl(task.getResult().toString());
+                                        } else {
+                                            setError();
+                                        }
+                                    });
+
+                            return true;
+                        })
                         .toList()
                         .doOnError(throwable -> setError())
                         .compose(CommonUtil.getCommonTransformer())

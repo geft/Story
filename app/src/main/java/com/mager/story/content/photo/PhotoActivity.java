@@ -136,7 +136,8 @@ public class PhotoActivity
 
     @Override
     public void setError(String message) {
+        setLoading(false);
         CrashUtil.logWarning(Tag.PHOTO, message);
-        ResourceUtil.showErrorSnackBar(binding.getRoot(), message);
+        ResourceUtil.showErrorSnackBar(binding.getRoot(), ResourceUtil.getString(R.string.photo_load_error_multiple));
     }
 }
