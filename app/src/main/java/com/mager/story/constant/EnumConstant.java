@@ -62,7 +62,7 @@ public class EnumConstant {
         String MENU_STORY = "MENU_STORY";
         String PHOTO_FULL = "PHOTO_FULL";
         String PHOTO_THUMB = "PHOTO_THUMB";
-        String STORY = "MENU_STORY";
+        String STORY = "STORY";
         String AUDIO = "AUDIO";
         String VIDEO = "VIDEO";
     }

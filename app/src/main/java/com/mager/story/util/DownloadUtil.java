@@ -98,6 +98,8 @@ public class DownloadUtil {
             case DownloadType.PHOTO_FULL:
                 prefix = FilePrefix.PHOTO_FULL;
                 break;
+            case DownloadType.STORY:
+                break;
         }
 
         return prefix + code + downloadInfo.fileExtension;
