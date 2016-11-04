@@ -47,6 +47,7 @@ public class PhotoDialog extends CoreDialogFragment {
         binding = DataBindingUtil.inflate(inflater, R.layout.dialog_photo, null, false);
         binding.viewPager.setAdapter(getPagerAdapter());
         binding.viewPager.setCurrentItem(primaryPosition);
+        binding.viewPager.setOffscreenPageLimit(2);
         binding.viewPager.setPageTransformer(true, new ZoomOutPageTransformer());
 
         return binding.getRoot();

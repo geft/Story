@@ -1,9 +1,15 @@
 package com.mager.story.util;
 
 import android.app.Activity;
+import android.content.Context;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -16,11 +22,35 @@ import com.mager.story.core.callback.Downloadable;
 import com.mager.story.core.callback.Loadable;
 import com.mager.story.data.DownloadInfo;
 
+import uk.co.senab.photoview.PhotoViewAttacher;
+
 /**
  * Created by Gerry on 03/11/2016.
  */
 
 public class DownloadUtil {
+
+    public static void downloadPhotoUrlIntoImageView(Context context, Loadable loadable, String url, ImageView image, boolean usePhotoView) {
+        loadable.setLoading(true);
+
+        Glide.with(context).load(url)
+                .listener(new RequestListener<String, GlideDrawable>() {
+                    @Override
+                    public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                        loadable.setLoading(false);
+                        if (e != null) loadable.setError(e.getMessage());
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                        loadable.setLoading(false);
+                        if (usePhotoView) new PhotoViewAttacher(image);
+                        return false;
+                    }
+                })
+                .into(image);
+    }
 
     public static void downloadUriIntoPhotoItem(Activity activity, Loadable loadable, DownloadInfo downloadInfo, PhotoItem photoItem) {
         initStorageReference(loadable, getFileName(photoItem.getName(), downloadInfo), downloadInfo)
@@ -31,9 +61,6 @@ public class DownloadUtil {
                     switch (downloadInfo.downloadType) {
                         case DownloadType.PHOTO_THUMB:
                             photoItem.setUrl(task.getResult().toString());
-                            break;
-                        case DownloadType.PHOTO_FULL:
-                            photoItem.setFullUrl(task.getResult().toString());
                             break;
                     }
 

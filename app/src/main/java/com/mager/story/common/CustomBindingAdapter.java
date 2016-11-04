@@ -15,6 +15,7 @@ public class CustomBindingAdapter {
     public static void setImageUrl(ImageView view, String url) {
         Glide.with(view.getContext())
                 .load(url)
+                .crossFade()
                 .fitCenter()
                 .into(view);
     }
