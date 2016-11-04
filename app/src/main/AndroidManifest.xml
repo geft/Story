@@ -41,6 +41,12 @@
             android:label="@string/photo_title" />
 
         <activity
+            android:name=".content.audio.AudioActivity"
+            android:excludeFromRecents="true"
+            android:label="@string/audio_title"
+            android:theme="@style/Theme.AppCompat.Light.Dialog" />
+
+        <activity
             android:name=".content.video.VideoActivity"
             android:excludeFromRecents="true"
             android:label="@string/video_title"

@@ -2,6 +2,7 @@ package com.mager.story.menu.audio;
 
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
+import android.databinding.ObservableBoolean;
 
 import com.mager.story.BR;
 
@@ -13,6 +14,7 @@ import org.parceler.Parcel;
 
 @Parcel
 public class MenuAudio extends BaseObservable {
+    public ObservableBoolean offline = new ObservableBoolean();
     protected String name;
     protected String code;
 

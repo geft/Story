@@ -8,6 +8,7 @@ import com.mager.story.constant.EnumConstant.FileExtension;
 import com.mager.story.constant.EnumConstant.FilePrefix;
 import com.mager.story.constant.EnumConstant.FolderType;
 import com.mager.story.data.MenuData;
+import com.mager.story.menu.audio.MenuAudio;
 import com.mager.story.menu.photo.MenuPhoto;
 import com.mager.story.menu.story.MenuStory;
 import com.mager.story.menu.video.MenuVideo;
@@ -56,6 +57,20 @@ public class MenuProvider {
         }
 
         return storyList;
+    }
+
+    public List<MenuAudio> convertDataModelToMenuAudio(MenuData menuData) {
+        List<MenuAudio> audioList = new ArrayList<>();
+
+        for (MenuData.Audio audio : menuData.audio) {
+            MenuAudio item = new MenuAudio();
+            item.setCode(audio.code);
+            item.setName(audio.name);
+
+            audioList.add(item);
+        }
+
+        return audioList;
     }
 
     public List<MenuVideo> convertDataModelToMenuVideo(MenuData dataModel) {

@@ -7,10 +7,8 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
 import com.mager.story.R;
-import com.mager.story.content.audio.AudioFragmentBuilder;
 import com.mager.story.data.MenuData;
 import com.mager.story.menu.MenuProvider;
-import com.mager.story.menu.audio.MenuAudio;
 import com.mager.story.menu.audio.MenuAudioFragment;
 import com.mager.story.menu.audio.MenuAudioFragmentBuilder;
 import com.mager.story.menu.photo.MenuPhotoFragment;
@@ -21,7 +19,6 @@ import com.mager.story.menu.video.MenuVideoFragment;
 import com.mager.story.menu.video.MenuVideoFragmentBuilder;
 import com.mager.story.util.FragmentUtil;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -33,7 +30,6 @@ class NavigationHandler {
     private static final String TAG_MENU_STORY = "MENU_STORY";
     private static final String TAG_MENU_AUDIO = "MENU_AUDIO";
     private static final String TAG_MENU_VIDEO = "MENU_VIDEO";
-    private static final String TAG_AUDIO = "AUDIO";
 
     private BottomNavigationView navigationView;
     private HomeActivity activity;
@@ -81,7 +77,9 @@ class NavigationHandler {
         storyFragment = MenuStoryFragmentBuilder.newMenuStoryFragment(
                 provider.convertDataModelToMenuStory(menuData)
         );
-        audioFragment = MenuAudioFragmentBuilder.newMenuAudioFragment(new ArrayList<>());
+        audioFragment = MenuAudioFragmentBuilder.newMenuAudioFragment(
+                provider.convertDataModelToMenuAudio(menuData)
+        );
         videoFragment = MenuVideoFragmentBuilder.newMenuVideoFragment(
                 provider.convertDataModelToMenuVideo(menuData)
         );
@@ -171,13 +169,5 @@ class NavigationHandler {
 
     String getSelectedItem() {
         return selectedItem;
-    }
-
-    void goToAudio(MenuAudio item) {
-        FragmentUtil.replaceWithBackStack(
-                activity,
-                AudioFragmentBuilder.newAudioFragment(item.getCode(), item.getName()),
-                TAG_AUDIO
-        );
     }
 }

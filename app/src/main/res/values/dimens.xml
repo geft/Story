@@ -48,7 +48,7 @@
 
     <!-- menu -->
     <dimen name="menu_card_height">128dp</dimen>
-    <dimen name="menu_card_height_mini">64dp</dimen>
+    <dimen name="menu_card_height_small">80dp</dimen>
 
     <!-- photo -->
     <dimen name="load_icon_size">48dp</dimen>

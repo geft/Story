@@ -46,6 +46,7 @@
     </string>
 
     <string name="audio_title">Audio</string>
+    <string name="audio_download_error">Error downloading audio</string>
 
     <string name="video_title">Video</string>
     <string name="video_online">Online</string>

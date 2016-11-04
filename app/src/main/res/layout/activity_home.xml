@@ -36,16 +36,15 @@
                 android:layout_alignParentBottom="true"
                 android:background="@color/primary"
                 app:itemBackground="@color/primary"
-                app:itemIconTint="@drawable/bottom_view_selector"
-                app:itemTextColor="@drawable/bottom_view_selector"
+                app:itemIconTint="@drawable/selector_bottom_view"
+                app:itemTextColor="@drawable/selector_bottom_view"
                 app:menu="@menu/bottom_view" />
 
             <FrameLayout
                 android:id="@+id/container"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_above="@id/bottom_view"
-                android:elevation="@dimen/elevation_menu" />
+                android:layout_above="@id/bottom_view" />
         </RelativeLayout>
     </android.support.design.widget.CoordinatorLayout>
 

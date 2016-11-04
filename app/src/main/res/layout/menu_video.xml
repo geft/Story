@@ -18,8 +18,7 @@
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="@dimen/menu_card_height_mini"
-        android:layout_marginBottom="@dimen/half_padding"
+        android:layout_height="@dimen/menu_card_height_small"
         android:layout_marginEnd="@dimen/default_padding"
         android:layout_marginStart="@dimen/default_padding"
         android:layout_marginTop="@dimen/half_padding"
@@ -44,7 +43,7 @@
                 android:layout_toStartOf="@+id/offline"
                 android:ellipsize="end"
                 android:fontFamily="sans-serif-condensed"
-                android:maxLines="1"
+                android:maxLines="2"
                 android:text="@{item.name}"
                 tools:text="Video Name" />
 

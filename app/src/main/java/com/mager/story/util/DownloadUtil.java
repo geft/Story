@@ -53,19 +53,23 @@ public class DownloadUtil {
     }
 
     public static void downloadUriIntoPhotoItem(Activity activity, Loadable loadable, DownloadInfo downloadInfo, PhotoItem photoItem) {
-        initStorageReference(loadable, getFileName(photoItem.getName(), downloadInfo), downloadInfo)
-                .getDownloadUrl()
-                .addOnCompleteListener(activity, task -> {
-                    loadable.setLoading(false);
+        try {
+            initStorageReference(loadable, getFileName(photoItem.getName(), downloadInfo), downloadInfo)
+                    .getDownloadUrl()
+                    .addOnCompleteListener(activity, task -> {
+                        loadable.setLoading(false);
 
-                    switch (downloadInfo.downloadType) {
-                        case DownloadType.PHOTO_THUMB:
-                            photoItem.setUrl(task.getResult().toString());
-                            break;
-                    }
+                        switch (downloadInfo.downloadType) {
+                            case DownloadType.PHOTO_THUMB:
+                                photoItem.setUrl(task.getResult().toString());
+                                break;
+                        }
 
-                })
-                .addOnFailureListener(activity, e -> CrashUtil.logWarning(EnumConstant.Tag.PHOTO, e.getMessage()));
+                    })
+                    .addOnFailureListener(activity, e -> CrashUtil.logWarning(EnumConstant.Tag.PHOTO, e.getMessage()));
+        } catch (Exception e) {
+            CrashUtil.logWarning(EnumConstant.Tag.PHOTO, e.getMessage());
+        }
     }
 
     public static void downloadBytes(Activity activity, Loadable loadable, Downloadable downloadable, String code, DownloadInfo downloadInfo) {
@@ -104,8 +108,16 @@ public class DownloadUtil {
     @NonNull
     private static OnCompleteListener<Uri> getUriOnCompleteListener(Loadable loadable, Downloadable downloadable, DownloadInfo downloadInfo) {
         return task -> {
-            downloadable.downloadSuccess(task.getResult(), downloadInfo.downloadType);
-            loadable.setLoading(false);
+            if (task.isSuccessful()) {
+                downloadable.downloadSuccess(task.getResult(), downloadInfo.downloadType);
+                loadable.setLoading(false);
+            } else {
+                try {
+                    downloadable.downloadFail(task.getResult().toString());
+                } catch (Exception e) {
+                    downloadable.downloadFail(task.getException().getMessage());
+                }
+            }
         };
     }
 

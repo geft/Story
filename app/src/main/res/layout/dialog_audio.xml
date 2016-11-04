@@ -1,15 +1,99 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="viewModel"
+            type="com.mager.story.content.audio.AudioViewModel" />
+
+        <variable
+            name="onClickListener"
+            type="android.view.View.OnClickListener" />
+    </data>
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="100dp"
         android:orientation="vertical">
 
-        <VideoView
-            android:id="@+id/video"
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/zero" />
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:visibility="@{viewModel.loading ? View.VISIBLE : View.INVISIBLE}" />
+
+        <TextView
+            style="@style/ErrorText"
+            android:text="@string/audio_download_error"
+            android:visibility="@{viewModel.showError ? View.VISIBLE : View.GONE}"
+            tools:visibility="gone" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"
+            android:padding="@dimen/default_padding"
+            android:visibility="@{viewModel.showError ? View.GONE : View.VISIBLE}">
+
+            <FrameLayout
+                android:id="@+id/play_container"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true">
+
+                <ImageView
+                    android:id="@+id/play"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="@null"
+                    android:onClick="@{onClickListener}"
+                    android:visibility="@{viewModel.paused ? View.VISIBLE : View.INVISIBLE}"
+                    app:srcCompat="@drawable/ic_play" />
+
+                <ImageView
+                    android:id="@+id/pause"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="@null"
+                    android:onClick="@{onClickListener}"
+                    android:visibility="@{viewModel.paused ? View.INVISIBLE : View.VISIBLE}"
+                    app:srcCompat="@drawable/ic_pause" />
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/run_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                tools:text="10:00" />
+
+            <TextView
+                android:id="@+id/total_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toStartOf="@+id/play_container"
+                android:paddingEnd="@dimen/default_padding"
+                tools:text="15:00" />
+
+            <SeekBar
+                android:id="@+id/seek_bar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@id/run_time"
+                android:layout_toStartOf="@+id/total_time"
+                android:padding="@dimen/default_padding" />
+        </RelativeLayout>
 
     </RelativeLayout>
 

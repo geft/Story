@@ -70,7 +70,7 @@ public class VideoActivity
 
     @Override
     public void downloadSuccess(@Nullable Object file, @DownloadType String downloadType) {
-        if (downloadType.equalsIgnoreCase(DownloadType.VIDEO)) {
+        if (file instanceof Uri) {
             getPresenter().setReady(true);
             player.playVideo((Uri) file);
         }

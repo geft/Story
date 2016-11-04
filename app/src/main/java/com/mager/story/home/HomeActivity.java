@@ -100,7 +100,7 @@ public class HomeActivity extends CoreActivity<HomePresenter, HomeViewModel>
 
     @Override
     public void goToAudio(MenuAudio item) {
-        navigationHandler.goToAudio(item);
+        startActivity(Henson.with(this).gotoAudioActivity().menuAudio(item).build());
     }
 
     @Override

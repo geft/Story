@@ -7,7 +7,6 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.mager.story.R;
 import com.mager.story.constant.EnumConstant.Tag;
-import com.mager.story.core.callback.Downloadable;
 import com.mager.story.core.callback.LoginInterface;
 
 import java.util.List;
@@ -94,10 +93,5 @@ public class FirebaseUtil {
 
     public StorageReference getStorageWithChild(String folder) {
         return storage.child(folder);
-    }
-
-    public void notifyDownloadError(Downloadable downloadable, String message) {
-        CrashUtil.logWarning(Tag.MENU, message);
-        downloadable.downloadFail(ResourceUtil.getString(R.string.login_download_error));
     }
 }
