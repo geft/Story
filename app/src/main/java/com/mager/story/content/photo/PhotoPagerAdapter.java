@@ -1,6 +1,6 @@
 package com.mager.story.content.photo;
 
-import android.content.Context;
+import android.app.Activity;
 import android.databinding.DataBindingUtil;
 import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
@@ -10,11 +10,14 @@ import android.view.ViewGroup;
 import com.mager.story.R;
 import com.mager.story.constant.EnumConstant;
 import com.mager.story.core.callback.Loadable;
+import com.mager.story.data.DownloadInfoUtil;
 import com.mager.story.databinding.DialogPhotoPagerBinding;
 import com.mager.story.util.CrashUtil;
 import com.mager.story.util.DownloadUtil;
 
 import java.util.List;
+
+import uk.co.senab.photoview.PhotoViewAttacher;
 
 /**
  * Created by Gerry on 04/11/2016.
@@ -22,25 +25,36 @@ import java.util.List;
 
 public class PhotoPagerAdapter extends PagerAdapter {
 
-    private Context context;
+    private Activity activity;
     private List<PhotoItem> items;
 
-    public PhotoPagerAdapter(Context context, List<PhotoItem> items) {
-        this.context = context;
+    public PhotoPagerAdapter(Activity activity, List<PhotoItem> items) {
+        this.activity = activity;
         this.items = items;
     }
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-        LayoutInflater inflater = LayoutInflater.from(context);
+        LayoutInflater inflater = LayoutInflater.from(activity);
         DialogPhotoPagerBinding binding = DataBindingUtil.inflate(
                 inflater, R.layout.dialog_photo_pager, container, false);
 
+        PhotoItem item = items.get(position);
+        binding.setItem(item);
+
         container.addView(binding.getRoot());
 
-        loadFullPhoto(items.get(position), binding, getLoadable(binding));
+        downloadFullPhoto(item, binding);
 
         return binding.getRoot();
+    }
+
+    private void downloadFullPhoto(PhotoItem photoItem, DialogPhotoPagerBinding binding) {
+        DownloadUtil.downloadUriIntoPhotoItem(
+                activity,
+                getLoadable(binding),
+                DownloadInfoUtil.getPhotoInfo(photoItem, true),
+                photoItem);
     }
 
     private Loadable getLoadable(DialogPhotoPagerBinding binding) {
@@ -56,6 +70,7 @@ public class PhotoPagerAdapter extends PagerAdapter {
                     binding.progress.setVisibility(View.VISIBLE);
                 } else {
                     binding.progress.setVisibility(View.GONE);
+                    new PhotoViewAttacher(binding.image);
                 }
             }
 
@@ -65,10 +80,6 @@ public class PhotoPagerAdapter extends PagerAdapter {
                 CrashUtil.logWarning(EnumConstant.Tag.PHOTO, message);
             }
         };
-    }
-
-    private void loadFullPhoto(PhotoItem item, DialogPhotoPagerBinding binding, Loadable loadable) {
-        DownloadUtil.loadPhotoFromUrl(context, loadable, item.getUrl(), binding.image, true);
     }
 
     @Override

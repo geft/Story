@@ -3,11 +3,10 @@ package com.mager.story.content.photo;
 import android.app.Activity;
 
 import com.mager.story.R;
-import com.mager.story.constant.EnumConstant;
-import com.mager.story.constant.EnumConstant.FolderType;
 import com.mager.story.core.callback.Loadable;
+import com.mager.story.data.DownloadInfoUtil;
 import com.mager.story.util.CommonUtil;
-import com.mager.story.util.FirebaseUtil;
+import com.mager.story.util.DownloadUtil;
 import com.mager.story.util.ResourceUtil;
 
 import java.util.List;
@@ -31,29 +30,18 @@ class PhotoDownloader {
     }
 
     void setUrls(List<PhotoItem> list) {
-        FirebaseUtil firebaseUtil = new FirebaseUtil();
         subscription.add(
                 Observable.from(list)
                         .map(photoItem -> {
-                            String fileName = EnumConstant.FilePrefix.PHOTO_THUMB +
-                                    photoItem.getName() + EnumConstant.FileExtension.PHOTO;
-
-                            firebaseUtil.getStorageWithChild(FolderType.PHOTO)
-                                    .child(photoItem.getGroup())
-                                    .child(fileName)
-                                    .getDownloadUrl()
-                                    .addOnCompleteListener(activity, task -> {
-                                        if (task.isSuccessful()) {
-                                            photoItem.setUrl(task.getResult().toString());
-                                        } else {
-                                            setError();
-                                        }
-                                    });
+                            DownloadUtil.downloadUriIntoPhotoItem(
+                                    activity, loadable,
+                                    DownloadInfoUtil.getPhotoInfo(photoItem, false),
+                                    photoItem);
 
                             return true;
                         })
                         .toList()
-                        .doOnError(throwable -> setError())
+                        .doOnError(e -> setError())
                         .compose(CommonUtil.getCommonTransformer())
                         .subscribe(result -> loadable.setLoading(false))
         );

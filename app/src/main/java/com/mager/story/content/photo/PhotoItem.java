@@ -14,8 +14,8 @@ import org.parceler.Parcel;
 @Parcel
 public class PhotoItem extends CoreViewModel {
     protected String url;
+    protected String fullUrl;
     protected String name;
-
     protected String group;
 
     @Bindable
@@ -26,6 +26,16 @@ public class PhotoItem extends CoreViewModel {
     public void setUrl(String url) {
         this.url = url;
         notifyPropertyChanged(BR.url);
+    }
+
+    @Bindable
+    public String getFullUrl() {
+        return fullUrl;
+    }
+
+    public void setFullUrl(String fullUrl) {
+        this.fullUrl = fullUrl;
+        notifyPropertyChanged(BR.fullUrl);
     }
 
     @Bindable

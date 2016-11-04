@@ -1,5 +1,7 @@
 package com.mager.story.data;
 
+import android.support.annotation.Nullable;
+
 import com.mager.story.constant.EnumConstant;
 
 /**
@@ -16,6 +18,9 @@ public class DownloadInfo {
 
     @EnumConstant.DownloadType
     public String downloadType;
+
+    @Nullable
+    public String group;
 
     public long maxSize;
 }

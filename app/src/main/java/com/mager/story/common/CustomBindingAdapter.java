@@ -15,7 +15,7 @@ public class CustomBindingAdapter {
     public static void setImageUrl(ImageView view, String url) {
         Glide.with(view.getContext())
                 .load(url)
-                .centerCrop()
+                .fitCenter()
                 .into(view);
     }
 }

@@ -4,6 +4,7 @@ import com.mager.story.constant.Constants;
 import com.mager.story.constant.EnumConstant.DownloadType;
 import com.mager.story.constant.EnumConstant.FileExtension;
 import com.mager.story.constant.EnumConstant.FolderType;
+import com.mager.story.content.photo.PhotoItem;
 
 /**
  * Created by Gerry on 04/11/2016.
@@ -36,10 +37,11 @@ public class DownloadInfoUtil {
         return info;
     }
 
-    public static DownloadInfo getPhotoInfo(boolean isFull) {
+    public static DownloadInfo getPhotoInfo(PhotoItem photoItem, boolean isFull) {
         DownloadInfo info = new DownloadInfo();
         info.folderType = FolderType.PHOTO;
         info.fileExtension = FileExtension.PHOTO;
+        info.group = photoItem.getGroup();
 
         if (isFull) {
             info.downloadType = DownloadType.PHOTO_FULL;

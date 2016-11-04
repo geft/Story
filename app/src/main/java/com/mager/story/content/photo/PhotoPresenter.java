@@ -1,5 +1,6 @@
 package com.mager.story.content.photo;
 
+import com.mager.story.constant.Constants;
 import com.mager.story.core.CorePresenter;
 import com.mager.story.menu.photo.MenuPhoto;
 import com.mager.story.util.StringUtil;
@@ -37,7 +38,8 @@ class PhotoPresenter extends CorePresenter<PhotoViewModel> {
 
         for (int i = 0; i < count; i++) {
             PhotoItem item = new PhotoItem();
-            item.setName(StringUtil.padLeft("0", Integer.toString(i + 1), 2));
+            item.setName(StringUtil.padLeft(
+                    "0", Integer.toString(i + 1), Constants.PHOTO_NAME_LENGTH));
             item.setGroup(group);
             list.add(item);
         }
