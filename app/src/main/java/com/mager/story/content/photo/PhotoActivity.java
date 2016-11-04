@@ -71,8 +71,8 @@ public class PhotoActivity
     }
 
     private void initDownloader() {
-        PhotoDownloader downloader = new PhotoDownloader(this, subscription);
-        downloader.populatePhotos(getViewModel().getItems());
+        PhotoDownloader downloader = new PhotoDownloader(this, this, subscription);
+        downloader.setUrls(getViewModel().getItems());
     }
 
     private void initAdapter() {

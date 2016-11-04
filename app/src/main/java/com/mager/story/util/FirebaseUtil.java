@@ -54,7 +54,7 @@ public class FirebaseUtil {
                         .addOnFailureListener(e -> CrashUtil.logWarning(Tag.MENU, e.getMessage()));
             }
         } catch (Exception e) {
-            CrashUtil.logError(Tag.MENU, ResourceUtil.getString(R.string.firebase_download_fail), e);
+            CrashUtil.logError(Tag.MENU, ResourceUtil.getString(R.string.login_download_error), e);
         }
     }
 
@@ -98,6 +98,6 @@ public class FirebaseUtil {
 
     public void notifyDownloadError(Downloadable downloadable, String message) {
         CrashUtil.logWarning(Tag.MENU, message);
-        downloadable.downloadFail(ResourceUtil.getString(R.string.firebase_download_fail));
+        downloadable.downloadFail(ResourceUtil.getString(R.string.login_download_error));
     }
 }

@@ -9,12 +9,15 @@ import android.view.MotionEvent;
 
 import com.f2prateek.dart.InjectExtra;
 import com.mager.story.R;
+import com.mager.story.constant.EnumConstant;
 import com.mager.story.constant.EnumConstant.DownloadType;
 import com.mager.story.core.CoreActivity;
 import com.mager.story.core.callback.Downloadable;
 import com.mager.story.core.callback.Loadable;
+import com.mager.story.data.DownloadInfoUtil;
 import com.mager.story.databinding.ActivityVideoBinding;
 import com.mager.story.menu.video.MenuVideo;
+import com.mager.story.util.CrashUtil;
 import com.mager.story.util.DownloadUtil;
 import com.mager.story.util.ResourceUtil;
 
@@ -54,7 +57,8 @@ public class VideoActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        DownloadUtil.downloadVideo(this, this, this, menuVideo.getCode());
+        DownloadUtil.downloadUri(this, this, this,
+                menuVideo.getCode(), DownloadInfoUtil.getVideoInfo());
         player = new VideoPlayer(this, binding);
     }
 
@@ -74,7 +78,7 @@ public class VideoActivity
 
     @Override
     public void downloadFail(String message) {
-        setError(ResourceUtil.getString(R.string.video_download_fail));
+        setError(ResourceUtil.getString(R.string.video_download_error));
     }
 
     @Override
@@ -90,6 +94,7 @@ public class VideoActivity
     @Override
     public void setError(String message) {
         setLoading(false);
-        ResourceUtil.showErrorSnackBar(binding.getRoot(), message);
+        CrashUtil.logWarning(EnumConstant.Tag.VIDEO, message);
+        ResourceUtil.showErrorSnackBar(binding.getRoot(), ResourceUtil.getString(R.string.video_download_error));
     }
 }

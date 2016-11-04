@@ -10,8 +10,8 @@ import com.mager.story.R;
 import com.mager.story.core.CoreActivity;
 import com.mager.story.core.callback.Loadable;
 import com.mager.story.core.callback.MenuInterface;
+import com.mager.story.data.MenuData;
 import com.mager.story.databinding.ActivityHomeBinding;
-import com.mager.story.datamodel.MenuDataModel;
 import com.mager.story.menu.audio.MenuAudio;
 import com.mager.story.menu.photo.MenuPhoto;
 import com.mager.story.menu.story.MenuStory;
@@ -26,7 +26,7 @@ public class HomeActivity extends CoreActivity<HomePresenter, HomeViewModel>
         implements Loadable, MenuInterface {
 
     @InjectExtra
-    MenuDataModel menuDataModel;
+    MenuData menuData;
     private ActivityHomeBinding binding;
     private NavigationHandler navigationHandler;
 
@@ -52,7 +52,7 @@ public class HomeActivity extends CoreActivity<HomePresenter, HomeViewModel>
     protected void onStart() {
         super.onStart();
 
-        getPresenter().setMenuDataModel(menuDataModel);
+        getPresenter().setMenuDataModel(menuData);
         navigationHandler = new NavigationHandler(this, binding.bottomView);
 
         initNavigationState();

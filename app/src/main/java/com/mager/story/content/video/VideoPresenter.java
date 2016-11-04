@@ -8,15 +8,15 @@ import com.mager.story.core.CorePresenter;
 
 public class VideoPresenter extends CorePresenter<VideoViewModel> {
 
-    public VideoPresenter(VideoViewModel viewModel) {
+    VideoPresenter(VideoViewModel viewModel) {
         super(viewModel);
     }
 
-    public void setLoading(boolean loading) {
+    void setLoading(boolean loading) {
         getViewModel().setLoading(loading);
     }
 
-    public void setReady(boolean ready) {
+    void setReady(boolean ready) {
         getViewModel().setReady(ready);
     }
 }

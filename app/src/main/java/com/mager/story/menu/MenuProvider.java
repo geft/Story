@@ -7,7 +7,7 @@ import com.mager.story.StoryApplication;
 import com.mager.story.constant.EnumConstant.FileExtension;
 import com.mager.story.constant.EnumConstant.FilePrefix;
 import com.mager.story.constant.EnumConstant.FolderType;
-import com.mager.story.datamodel.MenuDataModel;
+import com.mager.story.data.MenuData;
 import com.mager.story.menu.photo.MenuPhoto;
 import com.mager.story.menu.story.MenuStory;
 import com.mager.story.menu.video.MenuVideo;
@@ -22,16 +22,16 @@ import java.util.List;
 
 public class MenuProvider {
 
-    public List<MenuPhoto> convertDataModelToMenuPhoto(MenuDataModel dataModel) {
+    public List<MenuPhoto> convertDataModelToMenuPhoto(MenuData dataModel) {
         List<MenuPhoto> photoList = new ArrayList<>();
 
-        for (MenuDataModel.Photo photo : dataModel.photo) {
+        for (MenuData.Photo photo : dataModel.photo) {
             MenuPhoto item = new MenuPhoto();
             item.setCode(photo.code);
             item.setName(photo.name);
             item.setCount(photo.count);
             item.setImage(getDrawableFromFile(
-                    FilePrefix.PHOTO, photo.code, FileExtension.PHOTO
+                    FilePrefix.MENU_PHOTO, photo.code, FileExtension.PHOTO
             ));
 
             photoList.add(item);
@@ -40,16 +40,16 @@ public class MenuProvider {
         return photoList;
     }
 
-    public List<MenuStory> convertDataModelToMenuStory(MenuDataModel dataModel) {
+    public List<MenuStory> convertDataModelToMenuStory(MenuData dataModel) {
         List<MenuStory> storyList = new ArrayList<>();
 
-        for (MenuDataModel.Story story : dataModel.story) {
+        for (MenuData.Story story : dataModel.story) {
             MenuStory item = new MenuStory();
             item.setCode(story.code);
             item.setTitle(story.title);
             item.setChapter(story.chapter);
             item.setImage(getDrawableFromFile(
-                    FilePrefix.STORY, story.code, FileExtension.MENU_STORY
+                    FilePrefix.MENU_STORY, story.code, FileExtension.PHOTO
             ));
 
             storyList.add(item);
@@ -58,10 +58,10 @@ public class MenuProvider {
         return storyList;
     }
 
-    public List<MenuVideo> convertDataModelToMenuVideo(MenuDataModel dataModel) {
+    public List<MenuVideo> convertDataModelToMenuVideo(MenuData dataModel) {
         List<MenuVideo> videoList = new ArrayList<>();
 
-        for (MenuDataModel.Video video : dataModel.video) {
+        for (MenuData.Video video : dataModel.video) {
             MenuVideo item = new MenuVideo();
             item.setCode(video.code);
             item.setName(video.name);

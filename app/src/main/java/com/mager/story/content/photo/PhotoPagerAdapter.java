@@ -6,21 +6,15 @@ import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
-import com.google.firebase.storage.StorageReference;
 import com.mager.story.R;
 import com.mager.story.constant.EnumConstant;
 import com.mager.story.core.callback.Loadable;
 import com.mager.story.databinding.DialogPhotoPagerBinding;
 import com.mager.story.util.CrashUtil;
 import com.mager.story.util.DownloadUtil;
-import com.mager.story.util.FirebaseUtil;
-import com.mager.story.util.ResourceUtil;
 
 import java.util.List;
-
-import static com.mager.story.constant.EnumConstant.FolderType.PHOTO;
 
 /**
  * Created by Gerry on 04/11/2016.
@@ -44,7 +38,7 @@ public class PhotoPagerAdapter extends PagerAdapter {
 
         container.addView(binding.getRoot());
 
-        downloadFullPhoto(items.get(position), binding, getLoadable(binding));
+        loadFullPhoto(items.get(position), binding, getLoadable(binding));
 
         return binding.getRoot();
     }
@@ -73,22 +67,8 @@ public class PhotoPagerAdapter extends PagerAdapter {
         };
     }
 
-    private void downloadFullPhoto(PhotoItem item, DialogPhotoPagerBinding binding, Loadable loadable) {
-        StorageReference storage = new FirebaseUtil().getStorageWithChild(PHOTO).child(item.getGroup());
-        String fullName = item.getName().replace(EnumConstant.PhotoType.THUMB, EnumConstant.PhotoType.FULL);
-
-        storage.child(fullName).getDownloadUrl()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        loadImage(task.getResult().toString(), binding.image, loadable);
-                    } else {
-                        loadable.setError(ResourceUtil.getString(R.string.photo_load_error_single));
-                    }
-                });
-    }
-
-    private void loadImage(String url, ImageView imageView, Loadable loadable) {
-        DownloadUtil.downloadImage(context, loadable, url, imageView, true);
+    private void loadFullPhoto(PhotoItem item, DialogPhotoPagerBinding binding, Loadable loadable) {
+        DownloadUtil.loadPhotoFromUrl(context, loadable, item.getUrl(), binding.image, true);
     }
 
     @Override

@@ -1,7 +1,7 @@
 package com.mager.story.home;
 
 import com.mager.story.core.CorePresenter;
-import com.mager.story.datamodel.MenuDataModel;
+import com.mager.story.data.MenuData;
 
 /**
  * Created by Gerry on 24/10/2016.
@@ -21,7 +21,7 @@ class HomePresenter extends CorePresenter<HomeViewModel> {
         getViewModel().setSelectedItem(selectedItem);
     }
 
-    void setMenuDataModel(MenuDataModel menuDataModel) {
-        getViewModel().setMenuDataModel(menuDataModel);
+    void setMenuDataModel(MenuData menuData) {
+        getViewModel().setMenuData(menuData);
     }
 }

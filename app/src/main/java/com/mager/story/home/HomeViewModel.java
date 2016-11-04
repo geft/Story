@@ -4,7 +4,7 @@ import android.databinding.Bindable;
 
 import com.mager.story.BR;
 import com.mager.story.core.CoreViewModel;
-import com.mager.story.datamodel.MenuDataModel;
+import com.mager.story.data.MenuData;
 
 import org.parceler.Parcel;
 
@@ -17,7 +17,7 @@ public class HomeViewModel extends CoreViewModel {
 
     protected boolean loading;
     protected String selectedItem;
-    protected MenuDataModel menuDataModel;
+    protected MenuData menuData;
 
     @Bindable
     public boolean isLoading() {
@@ -37,11 +37,11 @@ public class HomeViewModel extends CoreViewModel {
         this.selectedItem = selectedItem;
     }
 
-    public MenuDataModel getMenuDataModel() {
-        return menuDataModel;
+    public MenuData getMenuData() {
+        return menuData;
     }
 
-    public void setMenuDataModel(MenuDataModel menuDataModel) {
-        this.menuDataModel = menuDataModel;
+    public void setMenuData(MenuData menuData) {
+        this.menuData = menuData;
     }
 }

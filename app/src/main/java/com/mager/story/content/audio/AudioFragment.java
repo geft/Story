@@ -10,15 +10,16 @@ import android.view.ViewGroup;
 import com.hannesdorfmann.fragmentargs.annotation.Arg;
 import com.hannesdorfmann.fragmentargs.annotation.FragmentWithArgs;
 import com.mager.story.R;
-import com.mager.story.core.CoreFragment;
-import com.mager.story.databinding.FragmentAudioBinding;
+import com.mager.story.constant.EnumConstant;
+import com.mager.story.core.CoreDialogFragment;
+import com.mager.story.databinding.DialogAudioBinding;
 
 /**
  * Created by Gerry on 27/10/2016.
  */
 
 @FragmentWithArgs
-public class AudioFragment extends CoreFragment<AudioPresenter, AudioViewModel> {
+public class AudioFragment extends CoreDialogFragment {
 
     @Arg
     String name;
@@ -26,22 +27,12 @@ public class AudioFragment extends CoreFragment<AudioPresenter, AudioViewModel> 
     @Arg
     String code;
 
-    private FragmentAudioBinding binding;
-
-    @Override
-    protected AudioViewModel createViewModel() {
-        return new AudioViewModel();
-    }
-
-    @Override
-    protected AudioPresenter createPresenter(AudioViewModel viewModel) {
-        return new AudioPresenter(viewModel);
-    }
+    private DialogAudioBinding binding;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_audio, container, false);
+        binding = DataBindingUtil.inflate(inflater, R.layout.dialog_audio, container, false);
         return binding.getRoot();
     }
 
@@ -49,5 +40,10 @@ public class AudioFragment extends CoreFragment<AudioPresenter, AudioViewModel> 
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+    }
+
+    @Override
+    protected String getDialogStyle() {
+        return EnumConstant.DialogStyle.NORMAL;
     }
 }

@@ -5,7 +5,7 @@ import android.support.annotation.Nullable;
 import com.google.gson.Gson;
 import com.mager.story.StoryApplication;
 import com.mager.story.constant.EnumConstant.FolderType;
-import com.mager.story.datamodel.MenuDataModel;
+import com.mager.story.data.MenuData;
 
 /**
  * Created by Gerry on 29/10/2016.
@@ -16,18 +16,18 @@ class LoginProvider {
     private static final String EMAIL = "EMAIL";
     private static final String MENU_JSON = "MENU_JSON";
 
-    private MenuDataModel localData;
+    private MenuData localData;
 
     public LoginProvider() {
         this.localData = loadLocalData();
     }
 
-    public MenuDataModel getLocalData() {
+    public MenuData getLocalData() {
         return localData;
     }
 
     boolean isLatestMenu(int version) {
-        MenuDataModel localData = loadLocalData();
+        MenuData localData = loadLocalData();
         return localData != null && version == localData.version;
     }
 
@@ -36,11 +36,11 @@ class LoginProvider {
     }
 
     @Nullable
-    private MenuDataModel loadLocalData() {
+    private MenuData loadLocalData() {
         String json = StoryApplication.getSharedPreferences().getString(MENU_JSON, null);
         if (json == null) return null;
 
-        return new Gson().fromJson(json, MenuDataModel.class);
+        return new Gson().fromJson(json, MenuData.class);
     }
 
     void clearData() {
@@ -50,7 +50,7 @@ class LoginProvider {
                 .apply();
     }
 
-    void saveMenuData(MenuDataModel dataModel) {
+    void saveMenuData(MenuData dataModel) {
         StoryApplication.getSharedPreferences().edit()
                 .putString(MENU_JSON, new Gson().toJson(dataModel))
                 .apply();
@@ -67,7 +67,7 @@ class LoginProvider {
         return StoryApplication.getSharedPreferences().getString(EMAIL, null);
     }
 
-    boolean isLocalDataValid(MenuDataModel localData, MenuDataModel currentData, @FolderType String folderType) {
+    boolean isLocalDataValid(MenuData localData, MenuData currentData, @FolderType String folderType) {
         switch (folderType) {
             case FolderType.PHOTO:
                 return isVersionValid(localData.versionPhoto, currentData.versionPhoto);

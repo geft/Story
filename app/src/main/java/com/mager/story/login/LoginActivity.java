@@ -10,6 +10,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.google.gson.Gson;
 import com.mager.story.Henson;
 import com.mager.story.R;
 import com.mager.story.StoryApplication;
@@ -18,14 +19,17 @@ import com.mager.story.constant.EnumConstant;
 import com.mager.story.constant.RegexConstant;
 import com.mager.story.core.CoreActivity;
 import com.mager.story.core.callback.Downloadable;
+import com.mager.story.core.callback.Loadable;
 import com.mager.story.core.callback.LoginInterface;
+import com.mager.story.data.MenuData;
 import com.mager.story.databinding.ActivityLoginBinding;
-import com.mager.story.datamodel.MenuDataModel;
 import com.mager.story.util.CommonUtil;
 import com.mager.story.util.CrashUtil;
 import com.mager.story.util.FirebaseUtil;
 import com.mager.story.util.ResourceUtil;
 import com.rengwuxian.materialedittext.MaterialEditText;
+
+import java.nio.charset.Charset;
 
 /**
  * Created by Gerry on 23/10/2016.
@@ -33,7 +37,7 @@ import com.rengwuxian.materialedittext.MaterialEditText;
 
 public class LoginActivity
         extends CoreActivity<LoginPresenter, LoginViewModel>
-        implements View.OnClickListener, LoginInterface, Downloadable {
+        implements View.OnClickListener, LoginInterface, Loadable, Downloadable {
 
     private ActivityLoginBinding binding;
     private MenuDownloader menuDownloader;
@@ -83,7 +87,7 @@ public class LoginActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        menuDownloader = new MenuDownloader(this, firebaseUtil);
+        menuDownloader = new MenuDownloader(this, this, this);
         initEmailInput(binding.editTextEmail);
         initPasswordInput(binding.editTextPassword);
     }
@@ -122,8 +126,20 @@ public class LoginActivity
         }
     }
 
+    @Override
+    public boolean isLoading() {
+        return getViewModel().isLoading();
+    }
+
     public void setLoading(boolean loading) {
         getPresenter().setLoading(loading);
+    }
+
+    @Override
+    public void setError(String message) {
+        CrashUtil.logWarning(EnumConstant.Tag.LOGIN, message);
+        ResourceUtil.showErrorSnackBar(
+                binding.getRoot(), ResourceUtil.getString(R.string.login_download_error));
     }
 
     @Override
@@ -132,7 +148,7 @@ public class LoginActivity
 
         if (isSuccess) {
             getPresenter().saveEmailToDevice();
-            menuDownloader.getMenuDataModel();
+            menuDownloader.downloadMenuJson();
         } else {
             setLoading(false);
             binding.editTextPassword.getText().clear();
@@ -163,7 +179,9 @@ public class LoginActivity
     public void downloadSuccess(@Nullable Object file, @EnumConstant.DownloadType String downloadType) {
         switch (downloadType) {
             case EnumConstant.DownloadType.MENU_JSON:
-                handleMenuJsonComplete((MenuDataModel) file);
+                if (file == null) return;
+                String json = new String((byte[]) file, Charset.defaultCharset());
+                handleMenuJsonComplete(new Gson().fromJson(json, MenuData.class));
                 break;
             case EnumConstant.DownloadType.MENU_PHOTO:
                 progressPhoto++;
@@ -177,9 +195,9 @@ public class LoginActivity
     }
 
     private void evaluateMenuProgress() {
-        MenuDataModel menuDataModel = getViewModel().getMenuDataModel();
+        MenuData menuData = getViewModel().getMenuData();
 
-        if (progressPhoto == menuDataModel.photo.size() && progressStory == menuDataModel.story.size()) {
+        if (progressPhoto == menuData.photo.size() && progressStory == menuData.story.size()) {
             getPresenter().saveMenuDataToDevice();
             handleMenuReady();
         }
@@ -195,7 +213,7 @@ public class LoginActivity
         startActivity(
                 Henson.with(StoryApplication.getInstance())
                         .gotoHomeActivity()
-                        .menuDataModel(getViewModel().getMenuDataModel())
+                        .menuData(getViewModel().getMenuData())
                         .build()
         );
     }
@@ -204,17 +222,17 @@ public class LoginActivity
     public void downloadFail(String message) {
         setLoading(false);
         CrashUtil.logWarning(EnumConstant.Tag.MENU, message);
-        showErrorSnackBar(R.string.firebase_download_fail);
+        showErrorSnackBar(R.string.login_download_error);
     }
 
-    private void handleMenuJsonComplete(MenuDataModel dataModel) {
+    private void handleMenuJsonComplete(MenuData dataModel) {
         getPresenter().setMenuDataModel(dataModel);
 
         if (getPresenter().isMenuDataOnDeviceValid(dataModel)) {
             handleMenuReady();
         } else {
             getPresenter().clearMenuData();
-            menuDownloader.initMenuImageDownload(dataModel);
+            menuDownloader.init(dataModel);
         }
     }
 }

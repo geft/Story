@@ -14,9 +14,9 @@
 
     <string name="firebase_logged_in">User %s is logged in</string>
     <string name="firebase_logged_out">User is logged out</string>
-    <string name="firebase_download_fail">Error downloading data</string>
 
     <string name="login_aries">Aries</string>
+    <string name="login_download_error">Error downloading data</string>
 
     <string name="home_email_error_empty">E-mail cannot be empty</string>
     <string name="home_email_error_invalid">Invalid e-mail format</string>
@@ -50,7 +50,7 @@
     <string name="video_title">Video</string>
     <string name="video_online">Online</string>
     <string name="video_offline">Offline</string>
-    <string name="video_download_fail">Error downloading video</string>
+    <string name="video_download_error">Error downloading video</string>
 
     <string name="action_settings">Settings</string>
 

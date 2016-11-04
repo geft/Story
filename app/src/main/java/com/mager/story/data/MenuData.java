@@ -1,4 +1,4 @@
-package com.mager.story.datamodel;
+package com.mager.story.data;
 
 import org.parceler.Parcel;
 
@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Parcel
-public class MenuDataModel {
+public class MenuData {
     public int version;
     public int versionPhoto;
     public int versionStory;

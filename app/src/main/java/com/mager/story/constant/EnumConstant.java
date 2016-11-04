@@ -1,6 +1,5 @@
 package com.mager.story.constant;
 
-import android.Manifest;
 import android.support.annotation.IntDef;
 import android.support.annotation.StringDef;
 
@@ -18,8 +17,8 @@ public class EnumConstant {
     public @interface Tag {
         String LOGIN = "LOGIN";
         String MENU = "MENU";
-        String PHOTO = "PHOTO";
-        String STORY = "STORY";
+        String PHOTO = "MENU_PHOTO";
+        String STORY = "MENU_STORY";
         String AUDIO = "AUDIO";
         String VIDEO = "VIDEO";
     }
@@ -32,13 +31,8 @@ public class EnumConstant {
 
     @StringDef
     @Retention(RetentionPolicy.SOURCE)
-    public @interface PermissionType {
-        String PHONE = Manifest.permission.READ_PHONE_STATE;
-    }
-
-    @StringDef
-    @Retention(RetentionPolicy.SOURCE)
     public @interface DialogStyle {
+        String NORMAL = "NORMAL";
         String FULL_SCREEN = "FULL_SCREEN";
     }
 
@@ -52,6 +46,7 @@ public class EnumConstant {
     @StringDef
     @Retention(RetentionPolicy.SOURCE)
     public @interface FolderType {
+        String JSON = "json";
         String STORY = "story";
         String PHOTO = "photo";
         String AUDIO = "audio";
@@ -61,18 +56,13 @@ public class EnumConstant {
 
     @StringDef
     @Retention(RetentionPolicy.SOURCE)
-    public @interface PhotoType {
-        String THUMB = "thumb";
-        String FULL = "full";
-    }
-
-    @StringDef
-    @Retention(RetentionPolicy.SOURCE)
     public @interface DownloadType {
         String MENU_JSON = "MENU_JSON";
         String MENU_PHOTO = "MENU_PHOTO";
         String MENU_STORY = "MENU_STORY";
-        String STORY = "STORY";
+        String PHOTO_FULL = "PHOTO_FULL";
+        String PHOTO_THUMB = "PHOTO_THUMB";
+        String STORY = "MENU_STORY";
         String AUDIO = "AUDIO";
         String VIDEO = "VIDEO";
     }
@@ -80,17 +70,21 @@ public class EnumConstant {
     @StringDef
     @Retention(RetentionPolicy.SOURCE)
     public @interface FilePrefix {
-        String PHOTO = "album_";
-        String STORY = "book_";
+        String MENU_PHOTO = "album_";
+        String MENU_STORY = "book_";
+        String PHOTO_THUMB = "thumb";
+        String PHOTO_FULL = "full";
     }
 
     @StringDef
     @Retention(RetentionPolicy.SOURCE)
     public @interface FileExtension {
+        String JSON = ".json";
+        String MENU_PHOTO = ".jpg";
+        String MENU_STORY = ".jpg";
         String PHOTO = ".jpg";
         String STORY = ".txt";
-        String AUDIO = ".mp3";
+        String AUDIO = ".amr";
         String VIDEO = ".webm";
-        String MENU_STORY = ".jpg";
     }
 }

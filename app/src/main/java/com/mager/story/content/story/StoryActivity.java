@@ -3,7 +3,6 @@ package com.mager.story.content.story;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.view.View;
 
 import com.f2prateek.dart.InjectExtra;
@@ -12,11 +11,14 @@ import com.mager.story.constant.EnumConstant;
 import com.mager.story.core.CoreActivity;
 import com.mager.story.core.callback.Downloadable;
 import com.mager.story.core.callback.Loadable;
+import com.mager.story.data.DownloadInfoUtil;
 import com.mager.story.databinding.ActivityStoryBinding;
 import com.mager.story.menu.story.MenuStory;
 import com.mager.story.util.CrashUtil;
 import com.mager.story.util.DownloadUtil;
 import com.mager.story.util.ResourceUtil;
+
+import java.nio.charset.Charset;
 
 /**
  * Created by Gerry on 22/10/2016.
@@ -53,7 +55,8 @@ public class StoryActivity
 
     private void initContent() {
         if (getViewModel().getContent() == null) {
-            DownloadUtil.downloadStory(this, this, this, getViewModel().getCode());
+            DownloadUtil.downloadBytes(this, this, this,
+                    getViewModel().getCode(), DownloadInfoUtil.getStoryInfo());
         }
     }
 
@@ -90,8 +93,9 @@ public class StoryActivity
     }
 
     @Override
-    public void downloadSuccess(@Nullable Object file, @EnumConstant.DownloadType String downloadType) {
-        getPresenter().setContent((String) file);
+    public void downloadSuccess(Object file, @EnumConstant.DownloadType String downloadType) {
+        String content = new String((byte[]) file, Charset.defaultCharset());
+        getPresenter().setContent(content);
     }
 
     @Override

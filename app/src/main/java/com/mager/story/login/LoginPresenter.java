@@ -2,7 +2,7 @@ package com.mager.story.login;
 
 import com.mager.story.constant.EnumConstant.FolderType;
 import com.mager.story.core.CorePresenter;
-import com.mager.story.datamodel.MenuDataModel;
+import com.mager.story.data.MenuData;
 import com.mager.story.util.FileUtil;
 
 /**
@@ -31,16 +31,16 @@ class LoginPresenter extends CorePresenter<LoginViewModel> {
         provider.clearData();
     }
 
-    boolean isMenuDataOnDeviceValid(MenuDataModel dataModel) {
+    boolean isMenuDataOnDeviceValid(MenuData dataModel) {
         return provider.doesMenuDataExistOnDevice() && provider.isLatestMenu(dataModel.version);
     }
 
-    void setMenuDataModel(MenuDataModel dataModel) {
-        getViewModel().setMenuDataModel(dataModel);
+    void setMenuDataModel(MenuData dataModel) {
+        getViewModel().setMenuData(dataModel);
     }
 
     void saveMenuDataToDevice() {
-        provider.saveMenuData(getViewModel().getMenuDataModel());
+        provider.saveMenuData(getViewModel().getMenuData());
     }
 
     public void incrementAriesCount() {
@@ -59,8 +59,8 @@ class LoginPresenter extends CorePresenter<LoginViewModel> {
     }
 
     private void removeFolderContentIfOutdated(@FolderType String folderType) {
-        MenuDataModel localData = provider.getLocalData();
-        MenuDataModel currentData = getViewModel().getMenuDataModel();
+        MenuData localData = provider.getLocalData();
+        MenuData currentData = getViewModel().getMenuData();
 
         if (!provider.isLocalDataValid(localData, currentData, folderType)) {
             FileUtil.removeFolderContent(folderType);

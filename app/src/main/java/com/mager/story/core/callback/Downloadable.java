@@ -1,7 +1,5 @@
 package com.mager.story.core.callback;
 
-import android.support.annotation.Nullable;
-
 import com.mager.story.constant.EnumConstant;
 
 /**
@@ -9,7 +7,7 @@ import com.mager.story.constant.EnumConstant;
  */
 
 public interface Downloadable {
-    void downloadSuccess(@Nullable Object file, @EnumConstant.DownloadType String downloadType);
+    void downloadSuccess(Object file, @EnumConstant.DownloadType String downloadType);
 
     void downloadFail(String message);
 }

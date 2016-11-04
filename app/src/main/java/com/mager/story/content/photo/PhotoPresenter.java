@@ -1,8 +1,8 @@
 package com.mager.story.content.photo;
 
-import com.mager.story.constant.EnumConstant;
 import com.mager.story.core.CorePresenter;
 import com.mager.story.menu.photo.MenuPhoto;
+import com.mager.story.util.StringUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,15 +36,12 @@ class PhotoPresenter extends CorePresenter<PhotoViewModel> {
         List<PhotoItem> list = new ArrayList<>();
 
         for (int i = 0; i < count; i++) {
-            String type = EnumConstant.PhotoType.THUMB;
-            String prefix = (i < 9) ? "0" : "";
-            String extension = EnumConstant.FileExtension.PHOTO;
-
             PhotoItem item = new PhotoItem();
-            item.setName(type + prefix + Integer.toString(i + 1) + extension);
+            item.setName(StringUtil.padLeft("0", Integer.toString(i + 1), 2));
             item.setGroup(group);
             list.add(item);
         }
+
         return list;
     }
 }

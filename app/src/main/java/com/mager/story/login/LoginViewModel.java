@@ -5,7 +5,7 @@ import android.databinding.Bindable;
 import com.mager.story.BR;
 import com.mager.story.BuildConfig;
 import com.mager.story.core.CoreViewModel;
-import com.mager.story.datamodel.MenuDataModel;
+import com.mager.story.data.MenuData;
 
 import org.parceler.Parcel;
 
@@ -22,7 +22,7 @@ public class LoginViewModel extends CoreViewModel {
     protected String password;
     protected String version = BuildConfig.VERSION_NAME;
 
-    protected MenuDataModel menuDataModel;
+    protected MenuData menuData;
 
     @Bindable
     public boolean isLoading() {
@@ -62,12 +62,12 @@ public class LoginViewModel extends CoreViewModel {
         notifyPropertyChanged(BR.password);
     }
 
-    public MenuDataModel getMenuDataModel() {
-        return menuDataModel;
+    public MenuData getMenuData() {
+        return menuData;
     }
 
-    public void setMenuDataModel(MenuDataModel menuDataModel) {
-        this.menuDataModel = menuDataModel;
+    public void setMenuData(MenuData menuData) {
+        this.menuData = menuData;
     }
 
     public String getVersion() {

@@ -8,7 +8,7 @@ import android.view.animation.AnimationUtils;
 
 import com.mager.story.R;
 import com.mager.story.content.audio.AudioFragmentBuilder;
-import com.mager.story.datamodel.MenuDataModel;
+import com.mager.story.data.MenuData;
 import com.mager.story.menu.MenuProvider;
 import com.mager.story.menu.audio.MenuAudio;
 import com.mager.story.menu.audio.MenuAudioFragment;
@@ -73,17 +73,17 @@ class NavigationHandler {
 
     private void initFragments() {
         MenuProvider provider = new MenuProvider();
-        MenuDataModel menuDataModel = activity.getViewModel().getMenuDataModel();
+        MenuData menuData = activity.getViewModel().getMenuData();
 
         photoFragment = MenuPhotoFragmentBuilder.newMenuPhotoFragment(
-                provider.convertDataModelToMenuPhoto(menuDataModel)
+                provider.convertDataModelToMenuPhoto(menuData)
         );
         storyFragment = MenuStoryFragmentBuilder.newMenuStoryFragment(
-                provider.convertDataModelToMenuStory(menuDataModel)
+                provider.convertDataModelToMenuStory(menuData)
         );
         audioFragment = MenuAudioFragmentBuilder.newMenuAudioFragment(new ArrayList<>());
         videoFragment = MenuVideoFragmentBuilder.newMenuVideoFragment(
-                provider.convertDataModelToMenuVideo(menuDataModel)
+                provider.convertDataModelToMenuVideo(menuData)
         );
     }
 
