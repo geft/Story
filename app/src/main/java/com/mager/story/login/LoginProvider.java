@@ -14,7 +14,7 @@ import com.mager.story.data.MenuData;
 class LoginProvider {
 
     private static final String EMAIL = "EMAIL";
-    private static final String MENU_JSON = "MENU_JSON";
+    private static final String MENU = "MENU";
 
     private MenuData localData;
 
@@ -26,33 +26,17 @@ class LoginProvider {
         return localData;
     }
 
-    boolean isLatestMenu(int version) {
-        MenuData localData = loadLocalData();
-        return localData != null && version == localData.version;
-    }
-
-    boolean doesMenuDataExistOnDevice() {
-        return loadLocalData() != null;
-    }
-
     @Nullable
     private MenuData loadLocalData() {
-        String json = StoryApplication.getSharedPreferences().getString(MENU_JSON, null);
+        String json = StoryApplication.getSharedPreferences().getString(MENU, null);
         if (json == null) return null;
 
         return new Gson().fromJson(json, MenuData.class);
     }
 
-    void clearData() {
-        StoryApplication.getSharedPreferences().edit()
-                .remove(MENU_JSON)
-                .remove(EMAIL)
-                .apply();
-    }
-
     void saveMenuData(MenuData dataModel) {
         StoryApplication.getSharedPreferences().edit()
-                .putString(MENU_JSON, new Gson().toJson(dataModel))
+                .putString(MENU, new Gson().toJson(dataModel))
                 .apply();
     }
 
@@ -69,6 +53,8 @@ class LoginProvider {
 
     boolean isLocalDataValid(MenuData localData, MenuData currentData, @FolderType String folderType) {
         switch (folderType) {
+            case FolderType.MENU:
+                return isVersionValid(localData.versionMenu, currentData.versionMenu);
             case FolderType.PHOTO:
                 return isVersionValid(localData.versionPhoto, currentData.versionPhoto);
             case FolderType.STORY:

@@ -3,15 +3,15 @@ package com.mager.story.menu;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.Nullable;
 
-import com.mager.story.StoryApplication;
-import com.mager.story.constant.EnumConstant.FileExtension;
-import com.mager.story.constant.EnumConstant.FilePrefix;
-import com.mager.story.constant.EnumConstant.FolderType;
+import com.mager.story.constant.EnumConstant;
+import com.mager.story.data.DownloadInfo;
+import com.mager.story.data.DownloadInfoUtil;
 import com.mager.story.data.MenuData;
 import com.mager.story.menu.audio.MenuAudio;
 import com.mager.story.menu.photo.MenuPhoto;
 import com.mager.story.menu.story.MenuStory;
 import com.mager.story.menu.video.MenuVideo;
+import com.mager.story.util.FileUtil;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -32,7 +32,7 @@ public class MenuProvider {
             item.setName(photo.name);
             item.setCount(photo.count);
             item.setImage(getDrawableFromFile(
-                    FilePrefix.MENU_PHOTO, photo.code, FileExtension.PHOTO
+                    EnumConstant.DownloadType.MENU_PHOTO, photo.code
             ));
 
             photoList.add(item);
@@ -50,7 +50,7 @@ public class MenuProvider {
             item.setTitle(story.title);
             item.setChapter(story.chapter);
             item.setImage(getDrawableFromFile(
-                    FilePrefix.MENU_STORY, story.code, FileExtension.PHOTO
+                    EnumConstant.DownloadType.MENU_STORY, story.code
             ));
 
             storyList.add(item);
@@ -67,6 +67,9 @@ public class MenuProvider {
             item.setCode(audio.code);
             item.setName(audio.name);
 
+            DownloadInfo downloadInfo = DownloadInfoUtil.getAudioInfo();
+            item.offline.set(FileUtil.getFileFromCode(downloadInfo, audio.code).exists());
+
             audioList.add(item);
         }
 
@@ -80,6 +83,10 @@ public class MenuProvider {
             MenuVideo item = new MenuVideo();
             item.setCode(video.code);
             item.setName(video.name);
+            item.protect.set(video.protect);
+
+            DownloadInfo downloadInfo = DownloadInfoUtil.getVideoInfo();
+            item.offline.set(FileUtil.getFileFromCode(downloadInfo, video.code).exists());
 
             videoList.add(item);
         }
@@ -88,10 +95,10 @@ public class MenuProvider {
     }
 
     @Nullable
-    private Drawable getDrawableFromFile(String prefix, String code, String ext) {
-        return Drawable.createFromPath(
-                StoryApplication.getInstance().getFilesDir() +
-                        File.separator + FolderType.MENU + File.separator + prefix + code + ext
-        );
+    private Drawable getDrawableFromFile(@EnumConstant.DownloadType String downloadType, String code) {
+        DownloadInfo downloadInfo = DownloadInfoUtil.getMenuPhotoInfo(downloadType);
+        File file = FileUtil.getFileFromCode(downloadInfo, code);
+
+        return Drawable.createFromPath(file.getAbsolutePath());
     }
 }

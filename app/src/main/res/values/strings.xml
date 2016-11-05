@@ -17,6 +17,8 @@
 
     <string name="login_aries">Aries</string>
     <string name="login_download_error">Error downloading data</string>
+    <string name="login_menu_error">Failed to load menu data</string>
+    <string name="login_folder_removed">The following outdated folders are removed: </string>
 
     <string name="home_email_error_empty">E-mail cannot be empty</string>
     <string name="home_email_error_invalid">Invalid e-mail format</string>
@@ -52,6 +54,11 @@
     <string name="video_online">Online</string>
     <string name="video_offline">Offline</string>
     <string name="video_download_error">Error downloading video</string>
+    <string name="video_password_title">Enter video password</string>
+    <string name="video_password_positive">Enter</string>
+    <string name="video_password_negative">Cancel</string>
+    <string name="video_password_value">8d847403f50320a7dcbc07c3b9c99975e56e7924cf1c67bd938a6decc60b245a97c056c662d7842d9ec25ea8928ccf8ab70c5668230658d19fe6515823c69369</string> <!-- SHA-512 -->
+    <string name="video_password_wrong">Wrong password</string>
 
     <string name="action_settings">Settings</string>
 

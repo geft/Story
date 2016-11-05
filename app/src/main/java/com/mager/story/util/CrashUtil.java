@@ -10,9 +10,13 @@ import com.crashlytics.android.Crashlytics;
 
 public class CrashUtil {
 
+    public static void logError(Throwable throwable) {
+        Crashlytics.logException(throwable);
+    }
+
     public static void logError(String TAG, String message, Throwable throwable) {
         Crashlytics.log(Log.ERROR, TAG, message);
-        Crashlytics.logException(throwable);
+        logError(throwable);
     }
 
     public static void logWarning(String tag, String message) {

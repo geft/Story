@@ -57,9 +57,14 @@ public class VideoActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        player = new VideoPlayer(this, binding);
+
+        downloadVideoUri();
+    }
+
+    private void downloadVideoUri() {
         DownloadUtil.downloadUri(this, this, this,
                 menuVideo.getCode(), DownloadInfoUtil.getVideoInfo());
-        player = new VideoPlayer(this, binding);
     }
 
     @Override

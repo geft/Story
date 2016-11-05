@@ -2,6 +2,7 @@ package com.mager.story.menu.video;
 
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
+import android.databinding.ObservableBoolean;
 
 import com.mager.story.BR;
 
@@ -13,7 +14,8 @@ import org.parceler.Parcel;
 
 @Parcel
 public class MenuVideo extends BaseObservable {
-    protected boolean offline;
+    public ObservableBoolean offline = new ObservableBoolean();
+    public ObservableBoolean protect = new ObservableBoolean();
     protected String name;
     protected String code;
 
@@ -25,16 +27,6 @@ public class MenuVideo extends BaseObservable {
     public void setName(String name) {
         this.name = name;
         notifyPropertyChanged(BR.name);
-    }
-
-    @Bindable
-    public boolean isOffline() {
-        return offline;
-    }
-
-    public void setOffline(boolean offline) {
-        this.offline = offline;
-        notifyPropertyChanged(BR.offline);
     }
 
     public String getCode() {

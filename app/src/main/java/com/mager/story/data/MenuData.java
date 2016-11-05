@@ -8,6 +8,7 @@ import java.util.List;
 @Parcel
 public class MenuData {
     public int version;
+    public int versionMenu;
     public int versionPhoto;
     public int versionStory;
     public int versionAudio;
@@ -41,5 +42,6 @@ public class MenuData {
     public static class Video {
         public String code;
         public String name;
+        public boolean protect;
     }
 }

@@ -3,6 +3,7 @@ package com.mager.story.util;
 import android.support.annotation.Nullable;
 
 import java.nio.charset.Charset;
+import java.security.MessageDigest;
 
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
@@ -18,20 +19,37 @@ public class EncryptionUtil {
     private static final String KEY_ALGORITHM = "AES";
 
     @Nullable
-    public static String MD5(String key) {
+    public static String encrypt(String text) {
+        return getSHA512(text);
+    }
+
+    @Nullable
+    private static String getSHA512(String text) {
         try {
-            java.security.MessageDigest md = java.security.MessageDigest.getInstance("MD5");
-            byte[] array = md.digest(key.getBytes());
-            StringBuilder buffer = new StringBuilder();
-            for (byte anArray : array) {
-                buffer.append(Integer.toHexString((anArray & 0xFF) | 0x100).substring(1, 3));
-            }
-            return buffer.toString();
-        } catch (java.security.NoSuchAlgorithmException e) {
-            e.printStackTrace();
+            MessageDigest digest = MessageDigest.getInstance("SHA-512");
+            digest.update(text.getBytes("iso-8859-1"), 0, text.length());
+            return convertToHex(digest.digest());
+        } catch (Exception e) {
+            CrashUtil.logError(e);
+        }
+        return null;
+    }
+
+    private static String convertToHex(byte[] data) {
+        StringBuilder builder = new StringBuilder();
+        for (byte aData : data) {
+            int halfByte = (aData >>> 4) & 0x0F;
+            int twoHalves = 0;
+            do {
+                if ((0 <= halfByte) && (halfByte <= 9))
+                    builder.append((char) ('0' + halfByte));
+                else
+                    builder.append((char) ('a' + (halfByte - 10)));
+                halfByte = aData & 0x0F;
+            } while (twoHalves++ < 1);
         }
 
-        return null;
+        return builder.toString();
     }
 
     @Nullable

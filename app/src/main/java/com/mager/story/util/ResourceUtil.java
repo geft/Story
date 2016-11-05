@@ -1,6 +1,7 @@
 package com.mager.story.util;
 
 import android.graphics.drawable.Drawable;
+import android.support.annotation.ArrayRes;
 import android.support.annotation.ColorRes;
 import android.support.annotation.DimenRes;
 import android.support.annotation.DrawableRes;
@@ -22,7 +23,7 @@ import com.mager.story.constant.EnumConstant.SnackBarType;
 public class ResourceUtil {
 
     public static void showToast(String text) {
-        Toast.makeText(StoryApplication.getInstance(), text, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getInstance(), text, Toast.LENGTH_SHORT).show();
     }
 
     public static void showSnackBar(View container, String message, @SnackBarType String type) {
@@ -50,30 +51,38 @@ public class ResourceUtil {
     }
 
     public static int getColor(@ColorRes int colorRes) {
-        return ContextCompat.getColor(StoryApplication.getInstance(), colorRes);
+        return ContextCompat.getColor(getInstance(), colorRes);
     }
 
     public static Drawable getDrawable(@DrawableRes int drawableRes) {
-        return ContextCompat.getDrawable(StoryApplication.getInstance(), drawableRes);
+        return ContextCompat.getDrawable(getInstance(), drawableRes);
     }
 
     public static int getDimenInPx(@DimenRes int dimenRes) {
-        return (int) StoryApplication.getInstance().getResources().getDimension(dimenRes);
+        return (int) getInstance().getResources().getDimension(dimenRes);
     }
 
     public static int getDimenInDp(@DimenRes int dimenRes) {
-        return ViewUtil.pxToDp(StoryApplication.getInstance(), getDimenInPx(dimenRes));
+        return ViewUtil.pxToDp(getInstance(), getDimenInPx(dimenRes));
     }
 
     public static String getString(@StringRes int stringRes) {
-        return StoryApplication.getInstance().getString(stringRes);
+        return getInstance().getString(stringRes);
     }
 
     public static String getString(@StringRes int stringRes, String... args) {
-        return StoryApplication.getInstance().getString(stringRes, (Object[]) args);
+        return getInstance().getString(stringRes, (Object[]) args);
     }
 
     public static String getQuantityString(@PluralsRes int pluralsRes, int quantity) {
-        return StoryApplication.getInstance().getResources().getQuantityString(pluralsRes, quantity);
+        return getInstance().getResources().getQuantityString(pluralsRes, quantity);
+    }
+
+    public static String[] getStringArray(@ArrayRes int arrayRes) {
+        return getInstance().getResources().getStringArray(arrayRes);
+    }
+
+    private static StoryApplication getInstance() {
+        return StoryApplication.getInstance();
     }
 }

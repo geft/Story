@@ -6,9 +6,13 @@ import com.mager.story.constant.Constants;
 import com.mager.story.constant.EnumConstant;
 import com.mager.story.core.callback.Downloadable;
 import com.mager.story.core.callback.Loadable;
+import com.mager.story.data.DownloadInfo;
 import com.mager.story.data.DownloadInfoUtil;
 import com.mager.story.data.MenuData;
 import com.mager.story.util.DownloadUtil;
+import com.mager.story.util.FileUtil;
+
+import java.io.File;
 
 /**
  * Created by Gerry on 29/10/2016.
@@ -26,7 +30,7 @@ class MenuDownloader {
         this.downloadable = downloadable;
     }
 
-    void init(MenuData menuData) {
+    void downloadMenuPhoto(MenuData menuData) {
         initPhotoDownload(menuData);
         initStoryDownload(menuData);
     }
@@ -44,8 +48,13 @@ class MenuDownloader {
     }
 
     private void downloadMenuPhoto(String code, @EnumConstant.DownloadType String downloadType) {
-        DownloadUtil.downloadBytes(activity, loadable, downloadable, code,
-                DownloadInfoUtil.getMenuPhotoInfo(downloadType));
+        DownloadInfo downloadInfo = DownloadInfoUtil.getMenuPhotoInfo(downloadType);
+        File file = FileUtil.getFileFromCode(downloadInfo, code);
+        if (file.exists()) {
+            downloadable.downloadSuccess(null, downloadType);
+        } else {
+            DownloadUtil.downloadBytes(activity, loadable, downloadable, code, downloadInfo);
+        }
     }
 
     void downloadMenuJson() {

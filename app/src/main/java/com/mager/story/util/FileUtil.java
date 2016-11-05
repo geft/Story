@@ -3,7 +3,9 @@ package com.mager.story.util;
 import android.support.annotation.NonNull;
 
 import com.mager.story.StoryApplication;
+import com.mager.story.constant.EnumConstant;
 import com.mager.story.constant.EnumConstant.FolderType;
+import com.mager.story.data.DownloadInfo;
 
 import java.io.File;
 
@@ -12,11 +14,19 @@ import java.io.File;
  */
 
 public class FileUtil {
+    public static File getFileFromFileName(DownloadInfo downloadInfo, String fileName) {
+        File file;
+        if (downloadInfo.group != null) {
+            file = new File(getSubFolder(downloadInfo.folderType) + File.separator + downloadInfo.group, fileName);
+        } else {
+            file = new File(getSubFolder(downloadInfo.folderType), fileName);
+        }
 
-    public static boolean doesFileExist(@FolderType String folderType, String name) {
-        File file = new File(getSubFolder(folderType), name);
+        return file;
+    }
 
-        return file.exists();
+    public static File getFileFromCode(DownloadInfo downloadInfo, String code) {
+        return getFileFromFileName(downloadInfo, getFileName(code, downloadInfo));
     }
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
@@ -45,5 +55,31 @@ public class FileUtil {
 
     private static File getSubFolder(@FolderType String folderType) {
         return new File(getFilesDir() + File.separator + folderType);
+    }
+
+    @NonNull
+    public static String getFileName(String code, DownloadInfo downloadInfo) {
+        String prefix = "";
+
+        switch (downloadInfo.downloadType) {
+            case EnumConstant.DownloadType.MENU_JSON:
+                break;
+            case EnumConstant.DownloadType.MENU_PHOTO:
+                prefix = EnumConstant.FilePrefix.MENU_PHOTO;
+                break;
+            case EnumConstant.DownloadType.MENU_STORY:
+                prefix = EnumConstant.FilePrefix.MENU_STORY;
+                break;
+            case EnumConstant.DownloadType.PHOTO_THUMB:
+                prefix = EnumConstant.FilePrefix.PHOTO_THUMB;
+                break;
+            case EnumConstant.DownloadType.PHOTO_FULL:
+                prefix = EnumConstant.FilePrefix.PHOTO_FULL;
+                break;
+            case EnumConstant.DownloadType.STORY:
+                break;
+        }
+
+        return prefix + code + downloadInfo.fileExtension;
     }
 }

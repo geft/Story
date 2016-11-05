@@ -4,8 +4,16 @@
         <item>358240050857507</item>
     </string-array>
 
-    <string-array name="valid_uid">
-        <item>RiUl89dIAGecXOSyWvz1A17t6g83</item>
-        <item>LrEUGWlvMgTgG703XK9hzR7C12D2</item>
+    <!-- SHA-512 -->
+    <string-array name="valid_email">
+        <item>cb681d79a0901f796bbebe5ecce1947b388066c96775f5dcd1d80a1442c866084b49bf951af308f0ce606d7651b4a52215f157970e6b7e31153d5031ca20e39d</item>
+        <item>3c8fedc973406471cb5a648e55072188bc22133b4ac1cbe2cccb593d8044954f136b2f6fb36e8359d5e0a373e88b52eba35d0694b5b22e45d794a216aefe116d</item>
+        <item>5d3ecdd08e15ad61466ea727fc19b9d6c2b8fa44e4e227d57895fc7f74ece26a09679fd4ea8ff422981e0adfbcccdcb68b879c31857e8f1d89a0d764cf1bedf9</item>
+    </string-array>
+
+    <!-- SHA-512 -->
+    <string-array name="valid_password">
+        <item>f2f189428f97eae680e55ddb8dde712045a0e356432ca620fb542001383ace68566bb8e94b0fc3acf4653e82240552acd615fad367a0101166bf00027e6c828d</item>
+        <item>03f511361741c38b5683fbf998b032cfa03089329bce153b17dadc6d0a561d2fef3edded574d55d98c0aeb52c27010383d004d901cc38191ace089780c94eaf1</item>
     </string-array>
 </resources>

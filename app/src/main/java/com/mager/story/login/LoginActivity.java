@@ -25,7 +25,6 @@ import com.mager.story.data.MenuData;
 import com.mager.story.databinding.ActivityLoginBinding;
 import com.mager.story.util.CommonUtil;
 import com.mager.story.util.CrashUtil;
-import com.mager.story.util.FirebaseUtil;
 import com.mager.story.util.ResourceUtil;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
@@ -113,16 +112,33 @@ public class LoginActivity
     }
 
     private void signIn() {
-        new FirebaseUtil().signIn(this,
-                getViewModel().getEmail(), getViewModel().getPassword());
+        StoryApplication.setOffline(false);
+
+        firebaseUtil.signIn(this, getViewModel().getEmail(), getViewModel().getPassword());
     }
 
     @Override
     public void onClick(View view) {
         if (view.equals(binding.buttonSignIn) && validateInputs()) {
             CommonUtil.hideKeyboard(this);
-            setLoading(true);
-            signIn();
+
+            if (getPresenter().isValidOffline()) {
+                signInOffline();
+            } else {
+                setLoading(true);
+                signIn();
+            }
+        }
+    }
+
+    private void signInOffline() {
+        StoryApplication.setOffline(true);
+
+        if (getPresenter().doesMenuDataExist()) {
+            getPresenter().setLocalMenuData();
+            handleMenuReady();
+        } else {
+            ResourceUtil.showErrorSnackBar(binding.getRoot(), ResourceUtil.getString(R.string.login_menu_error));
         }
     }
 
@@ -144,7 +160,7 @@ public class LoginActivity
 
     @Override
     public void sendSignInResult(boolean isSuccess) {
-        if (getViewModel().getAriesCount() != StoryApplication.ARIES_COUNT) isSuccess = false;
+        if (!getPresenter().isValidOnline()) isSuccess = false;
 
         if (isSuccess) {
             getPresenter().saveEmailToDevice();
@@ -179,9 +195,10 @@ public class LoginActivity
     public void downloadSuccess(@Nullable Object file, @EnumConstant.DownloadType String downloadType) {
         switch (downloadType) {
             case EnumConstant.DownloadType.MENU_JSON:
-                if (file == null) return;
-                String json = new String((byte[]) file, Charset.defaultCharset());
-                handleMenuJsonComplete(new Gson().fromJson(json, MenuData.class));
+                if (file instanceof byte[]) {
+                    String json = new String((byte[]) file, Charset.defaultCharset());
+                    handleMenuJsonComplete(new Gson().fromJson(json, MenuData.class));
+                }
                 break;
             case EnumConstant.DownloadType.MENU_PHOTO:
                 progressPhoto++;
@@ -195,12 +212,15 @@ public class LoginActivity
     }
 
     private void evaluateMenuProgress() {
-        MenuData menuData = getViewModel().getMenuData();
-
-        if (progressPhoto == menuData.photo.size() && progressStory == menuData.story.size()) {
+        if (isMenuProgressReady()) {
             getPresenter().saveMenuDataToDevice();
             handleMenuReady();
         }
+    }
+
+    private boolean isMenuProgressReady() {
+        MenuData menuData = getViewModel().getMenuData();
+        return progressPhoto == menuData.photo.size() && progressStory == menuData.story.size();
     }
 
     private void handleMenuReady() {
@@ -227,12 +247,6 @@ public class LoginActivity
 
     private void handleMenuJsonComplete(MenuData dataModel) {
         getPresenter().setMenuDataModel(dataModel);
-
-        if (getPresenter().isMenuDataOnDeviceValid(dataModel)) {
-            handleMenuReady();
-        } else {
-            getPresenter().clearMenuData();
-            menuDownloader.init(dataModel);
-        }
+        menuDownloader.downloadMenuPhoto(dataModel);
     }
 }

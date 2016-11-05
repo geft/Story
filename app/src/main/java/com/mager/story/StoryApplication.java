@@ -16,8 +16,9 @@ import io.fabric.sdk.android.Fabric;
 public class StoryApplication extends Application {
 
     public static final int ARIES_COUNT = 2;
+    public static final int ARIES_COUNT_OFFLINE = 5;
     private static final String PREFS_NAME = "PREFS";
-    public static boolean OFFLINE_MODE;
+    private static boolean offline;
     private static StoryApplication instance;
     private static SharedPreferences sharedPreferences;
 
@@ -27,6 +28,14 @@ public class StoryApplication extends Application {
 
     public static SharedPreferences getSharedPreferences() {
         return sharedPreferences;
+    }
+
+    public static boolean isOffline() {
+        return offline;
+    }
+
+    public static void setOffline(boolean offline) {
+        StoryApplication.offline = offline;
     }
 
     @Override

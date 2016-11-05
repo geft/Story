@@ -16,7 +16,6 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.StorageReference;
 import com.mager.story.constant.EnumConstant;
 import com.mager.story.constant.EnumConstant.DownloadType;
-import com.mager.story.constant.EnumConstant.FilePrefix;
 import com.mager.story.content.photo.PhotoItem;
 import com.mager.story.core.callback.Downloadable;
 import com.mager.story.core.callback.Loadable;
@@ -54,7 +53,7 @@ public class DownloadUtil {
 
     public static void downloadUriIntoPhotoItem(Activity activity, Loadable loadable, DownloadInfo downloadInfo, PhotoItem photoItem) {
         try {
-            initStorageReference(loadable, getFileName(photoItem.getName(), downloadInfo), downloadInfo)
+            initStorageReference(loadable, FileUtil.getFileName(photoItem.getName(), downloadInfo), downloadInfo)
                     .getDownloadUrl()
                     .addOnCompleteListener(activity, task -> {
                         loadable.setLoading(false);
@@ -73,7 +72,7 @@ public class DownloadUtil {
     }
 
     public static void downloadBytes(Activity activity, Loadable loadable, Downloadable downloadable, String code, DownloadInfo downloadInfo) {
-        String fileName = getFileName(code, downloadInfo);
+        String fileName = FileUtil.getFileName(code, downloadInfo);
 
         initStorageReference(loadable, fileName, downloadInfo)
                 .getBytes(downloadInfo.maxSize)
@@ -82,7 +81,7 @@ public class DownloadUtil {
     }
 
     public static void downloadUri(Activity activity, Loadable loadable, Downloadable downloadable, String code, DownloadInfo downloadInfo) {
-        initStorageReference(loadable, getFileName(code, downloadInfo), downloadInfo)
+        initStorageReference(loadable, FileUtil.getFileName(code, downloadInfo), downloadInfo)
                 .getDownloadUrl()
                 .addOnCompleteListener(activity, getUriOnCompleteListener(loadable, downloadable, downloadInfo))
                 .addOnFailureListener(activity, getOnFailureListener(loadable, downloadable));
@@ -135,31 +134,5 @@ public class DownloadUtil {
                     .getStorageWithChild(downloadInfo.folderType)
                     .child(fileName);
         }
-    }
-
-    @NonNull
-    private static String getFileName(String code, DownloadInfo downloadInfo) {
-        String prefix = "";
-
-        switch (downloadInfo.downloadType) {
-            case DownloadType.MENU_JSON:
-                break;
-            case DownloadType.MENU_PHOTO:
-                prefix = FilePrefix.MENU_PHOTO;
-                break;
-            case DownloadType.MENU_STORY:
-                prefix = FilePrefix.MENU_STORY;
-                break;
-            case DownloadType.PHOTO_THUMB:
-                prefix = FilePrefix.PHOTO_THUMB;
-                break;
-            case DownloadType.PHOTO_FULL:
-                prefix = FilePrefix.PHOTO_FULL;
-                break;
-            case DownloadType.STORY:
-                break;
-        }
-
-        return prefix + code + downloadInfo.fileExtension;
     }
 }

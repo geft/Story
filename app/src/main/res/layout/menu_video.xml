@@ -5,6 +5,8 @@
 
     <data>
 
+        <import type="com.mager.story.R" />
+
         <import type="android.view.View" />
 
         <variable
@@ -23,6 +25,7 @@
         android:layout_marginStart="@dimen/default_padding"
         android:layout_marginTop="@dimen/half_padding"
         android:onClick="@{onClickListener}"
+        app:cardBackgroundColor="@{item.protect ? @color/red : @color/white}"
         app:cardCornerRadius="@dimen/default_radius"
         app:cardElevation="@dimen/elevation_rest"
         app:cardUseCompatPadding="true">
@@ -30,7 +33,6 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="?attr/selectableItemBackground"
             android:paddingEnd="@dimen/default_padding"
             android:paddingStart="@dimen/default_padding">
 
@@ -45,6 +47,7 @@
                 android:fontFamily="sans-serif-condensed"
                 android:maxLines="2"
                 android:text="@{item.name}"
+                android:textColor="@{item.protect ? @color/white : @color/black}"
                 tools:text="Video Name" />
 
             <TextView
@@ -55,6 +58,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginStart="@dimen/default_padding"
                 android:text="@{item.offline ? @string/video_offline : @string/video_online}"
+                android:textColor="@{item.protect ? @color/white : @color/black}"
                 tools:text="Offline" />
 
         </RelativeLayout>
