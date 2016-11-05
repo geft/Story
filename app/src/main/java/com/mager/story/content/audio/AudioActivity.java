@@ -13,10 +13,14 @@ import com.mager.story.core.callback.Loadable;
 import com.mager.story.data.DownloadInfoUtil;
 import com.mager.story.databinding.DialogAudioBinding;
 import com.mager.story.menu.audio.MenuAudio;
+import com.mager.story.util.CommonUtil;
 import com.mager.story.util.CrashUtil;
 import com.mager.story.util.DownloadUtil;
 
+import java.util.concurrent.TimeUnit;
+
 import nl.changer.audiowife.AudioWife;
+import rx.Observable;
 
 /**
  * Created by Gerry on 27/10/2016.
@@ -71,14 +75,16 @@ public class AudioActivity extends CoreActivity<AudioPresenter, AudioViewModel>
     @Override
     public void downloadSuccess(Object file, @EnumConstant.DownloadType String downloadType) {
         if (file instanceof Uri) {
-            audioWife = getAudioWife((Uri) file);
-            audioWife.play();
+            subscription.add(
+                    Observable.timer(100, TimeUnit.MILLISECONDS)
+                            .compose(CommonUtil.getCommonTransformer())
+                            .subscribe(timer -> initAudioWife((Uri) file))
+            );
         }
     }
 
-    private AudioWife getAudioWife(Uri file) {
-        AudioWife audioWife = AudioWife.getInstance().init(this, file);
-
+    private void initAudioWife(Uri uri) {
+        audioWife = AudioWife.getInstance().init(this, uri);
         audioWife
                 .setPauseView(binding.pause)
                 .setPlayView(binding.play)
@@ -94,7 +100,7 @@ public class AudioActivity extends CoreActivity<AudioPresenter, AudioViewModel>
                     audioWife.play();
                 });
 
-        return audioWife;
+        audioWife.play();
     }
 
     @Override

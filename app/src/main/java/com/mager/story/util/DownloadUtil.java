@@ -108,14 +108,14 @@ public class DownloadUtil {
     @NonNull
     private static OnCompleteListener<Uri> getUriOnCompleteListener(Loadable loadable, Downloadable downloadable, DownloadInfo downloadInfo) {
         return task -> {
+            loadable.setLoading(false);
             if (task.isSuccessful()) {
                 downloadable.downloadSuccess(task.getResult(), downloadInfo.downloadType);
-                loadable.setLoading(false);
             } else {
                 try {
                     downloadable.downloadFail(task.getResult().toString());
                 } catch (Exception e) {
-                    downloadable.downloadFail(task.getException().getMessage());
+                    downloadable.downloadFail(e.getMessage());
                 }
             }
         };
