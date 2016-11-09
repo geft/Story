@@ -21,6 +21,7 @@ public class EnumConstant {
         String STORY = "MENU_STORY";
         String AUDIO = "AUDIO";
         String VIDEO = "VIDEO";
+        String FILE = "FILE";
     }
 
     @IntDef

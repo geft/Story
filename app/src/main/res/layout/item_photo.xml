@@ -24,6 +24,7 @@
             android:layout_height="match_parent"
             android:adjustViewBounds="true"
             android:scaleType="centerCrop"
+            app:imagePath="@{item.path}"
             app:imageUrl="@{item.url}" />
     </RelativeLayout>
 </layout>

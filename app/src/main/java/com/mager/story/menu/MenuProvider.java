@@ -68,7 +68,7 @@ public class MenuProvider {
             item.setName(audio.name);
 
             DownloadInfo downloadInfo = DownloadInfoUtil.getAudioInfo();
-            item.offline.set(FileUtil.getFileFromCode(downloadInfo, audio.code).exists());
+            item.offline.set(FileUtil.getFileFromCode(audio.code, downloadInfo).exists());
 
             audioList.add(item);
         }
@@ -86,7 +86,7 @@ public class MenuProvider {
             item.protect.set(video.protect);
 
             DownloadInfo downloadInfo = DownloadInfoUtil.getVideoInfo();
-            item.offline.set(FileUtil.getFileFromCode(downloadInfo, video.code).exists());
+            item.offline.set(FileUtil.getFileFromCode(video.code, downloadInfo).exists());
 
             videoList.add(item);
         }
@@ -97,7 +97,7 @@ public class MenuProvider {
     @Nullable
     private Drawable getDrawableFromFile(@EnumConstant.DownloadType String downloadType, String code) {
         DownloadInfo downloadInfo = DownloadInfoUtil.getMenuPhotoInfo(downloadType);
-        File file = FileUtil.getFileFromCode(downloadInfo, code);
+        File file = FileUtil.getFileFromCode(code, downloadInfo);
 
         return Drawable.createFromPath(file.getAbsolutePath());
     }

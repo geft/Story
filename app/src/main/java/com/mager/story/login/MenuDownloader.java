@@ -49,7 +49,7 @@ class MenuDownloader {
 
     private void downloadMenuPhoto(String code, @EnumConstant.DownloadType String downloadType) {
         DownloadInfo downloadInfo = DownloadInfoUtil.getMenuPhotoInfo(downloadType);
-        File file = FileUtil.getFileFromCode(downloadInfo, code);
+        File file = FileUtil.getFileFromCode(code, downloadInfo);
         if (file.exists()) {
             downloadable.downloadSuccess(null, downloadType);
         } else {

@@ -8,6 +8,7 @@ import com.mager.story.R;
 import com.mager.story.StoryApplication;
 import com.mager.story.constant.EnumConstant;
 import com.mager.story.constant.EnumConstant.FolderType;
+import com.mager.story.constant.EnumConstant.Tag;
 import com.mager.story.data.DownloadInfo;
 
 import java.io.File;
@@ -21,7 +22,7 @@ public class FileUtil {
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
     public static void saveBytesToDevice(byte[] bytes, String code, DownloadInfo downloadInfo) {
-        File file = getFileFromCode(downloadInfo, code);
+        File file = getFileFromCode(code, downloadInfo);
 
         if (downloadInfo.group != null) {
             file.getParentFile().mkdirs();
@@ -36,16 +37,14 @@ public class FileUtil {
     }
 
     @Nullable
-    public static byte[] readBytesFromDevice(String code, DownloadInfo downloadInfo) {
-        File file = getFileFromCode(downloadInfo, code);
-
+    public static byte[] readBytesFromDevice(File file) {
         if (file.exists()) {
             try {
                 byte[] bytes = EncryptionUtil.flip(Files.toByteArray(file));
-                CrashUtil.logInfo(downloadInfo.downloadType, ResourceUtil.getString(R.string.file_load_success, file.getPath()));
+                CrashUtil.logInfo(Tag.FILE, ResourceUtil.getString(R.string.file_load_success, file.getPath()));
                 return bytes;
             } catch (IOException e) {
-                CrashUtil.logError(downloadInfo.downloadType, ResourceUtil.getString(R.string.file_load_error, file.getPath()), e);
+                CrashUtil.logError(Tag.FILE, ResourceUtil.getString(R.string.file_load_error, file.getPath()), e);
             }
         }
 
@@ -63,7 +62,7 @@ public class FileUtil {
         return file;
     }
 
-    public static File getFileFromCode(DownloadInfo downloadInfo, String code) {
+    public static File getFileFromCode(String code, DownloadInfo downloadInfo) {
         return getFileFromFileName(downloadInfo, getFileName(code, downloadInfo));
     }
 

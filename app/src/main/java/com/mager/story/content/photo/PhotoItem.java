@@ -13,19 +13,10 @@ import org.parceler.Parcel;
 
 @Parcel
 public class PhotoItem extends CoreViewModel {
-    protected String url;
     protected String name;
     protected String group;
-
-    @Bindable
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-        notifyPropertyChanged(BR.url);
-    }
+    protected String url;
+    protected String path;
 
     @Bindable
     public String getName() {
@@ -43,5 +34,25 @@ public class PhotoItem extends CoreViewModel {
 
     public void setGroup(String group) {
         this.group = group;
+    }
+
+    @Bindable
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+        notifyPropertyChanged(BR.url);
+    }
+
+    @Bindable
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+        notifyPropertyChanged(BR.path);
     }
 }

@@ -55,7 +55,7 @@ public class PhotoPagerAdapter extends PagerAdapter {
     private void downloadFullPhoto(PhotoItem photoItem, DialogPhotoPagerBinding binding) {
         DownloadInfo downloadInfo = DownloadInfoUtil.getPhotoInfo(photoItem, true);
 
-        File file = FileUtil.getFileFromCode(downloadInfo, photoItem.getName());
+        File file = FileUtil.getFileFromCode(photoItem.getName(), downloadInfo);
 
         if (file.exists()) {
             loadFileToImage(binding, getLoadable(binding), photoItem.getName(), downloadInfo);
@@ -90,8 +90,10 @@ public class PhotoPagerAdapter extends PagerAdapter {
     private void loadFileToImage(final DialogPhotoPagerBinding binding, Loadable loadable, String code, DownloadInfo downloadInfo) {
         loadable.setLoading(true);
 
+        File file = FileUtil.getFileFromCode(code, downloadInfo);
+
         Glide.with(activity)
-                .load(FileUtil.readBytesFromDevice(code, downloadInfo))
+                .load(FileUtil.readBytesFromDevice(file))
                 .asBitmap()
                 .listener(new RequestListener<byte[], Bitmap>() {
                     @Override
