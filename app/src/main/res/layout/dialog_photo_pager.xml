@@ -22,6 +22,6 @@
             android:id="@+id/error"
             style="@style/ErrorText.Inverse"
             android:text="@string/photo_load_error_single"
-            android:visibility="visible" />
+            android:visibility="gone" />
     </RelativeLayout>
 </layout>

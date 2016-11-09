@@ -2,21 +2,28 @@ package com.mager.story.content.photo;
 
 import android.app.Activity;
 import android.databinding.DataBindingUtil;
-import android.net.Uri;
+import android.graphics.Bitmap;
 import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.mager.story.R;
 import com.mager.story.constant.EnumConstant;
 import com.mager.story.core.callback.Downloadable;
 import com.mager.story.core.callback.Loadable;
+import com.mager.story.data.DownloadInfo;
 import com.mager.story.data.DownloadInfoUtil;
 import com.mager.story.databinding.DialogPhotoPagerBinding;
 import com.mager.story.util.CrashUtil;
 import com.mager.story.util.DownloadUtil;
+import com.mager.story.util.FileUtil;
+import com.mager.story.util.ResourceUtil;
 
+import java.io.File;
 import java.util.List;
 
 /**
@@ -46,21 +53,30 @@ public class PhotoPagerAdapter extends PagerAdapter {
     }
 
     private void downloadFullPhoto(PhotoItem photoItem, DialogPhotoPagerBinding binding) {
-        DownloadUtil.downloadUri(
-                activity,
-                getLoadable(binding),
-                getDownloadable(binding),
-                photoItem.getName(),
-                DownloadInfoUtil.getPhotoInfo(photoItem, true));
+        DownloadInfo downloadInfo = DownloadInfoUtil.getPhotoInfo(photoItem, true);
+
+        File file = FileUtil.getFileFromCode(downloadInfo, photoItem.getName());
+
+        if (file.exists()) {
+            loadFileToImage(binding, getLoadable(binding), photoItem.getName(), downloadInfo);
+        } else {
+            DownloadUtil.downloadBytes(
+                    activity,
+                    getLoadable(binding),
+                    getDownloadable(binding, photoItem.getName(), downloadInfo),
+                    photoItem.getName(),
+                    downloadInfo
+            );
+        }
     }
 
-    private Downloadable getDownloadable(DialogPhotoPagerBinding binding) {
+    private Downloadable getDownloadable(DialogPhotoPagerBinding binding, String code, DownloadInfo downloadInfo) {
         return new Downloadable() {
             @Override
             public void downloadSuccess(Object file, @EnumConstant.DownloadType String downloadType) {
-                if (file instanceof Uri) {
-                    DownloadUtil.downloadPhotoUrlIntoImageView(
-                            activity, getLoadable(binding), file.toString(), binding.image, true);
+                if (file instanceof byte[]) {
+                    FileUtil.saveBytesToDevice((byte[]) file, code, downloadInfo);
+                    loadFileToImage(binding, getLoadable(binding), code, downloadInfo);
                 }
             }
 
@@ -69,6 +85,29 @@ public class PhotoPagerAdapter extends PagerAdapter {
                 displayErrorMessage(message, binding);
             }
         };
+    }
+
+    private void loadFileToImage(final DialogPhotoPagerBinding binding, Loadable loadable, String code, DownloadInfo downloadInfo) {
+        loadable.setLoading(true);
+
+        Glide.with(activity)
+                .load(FileUtil.readBytesFromDevice(code, downloadInfo))
+                .asBitmap()
+                .listener(new RequestListener<byte[], Bitmap>() {
+                    @Override
+                    public boolean onException(Exception e, byte[] model, Target<Bitmap> target, boolean isFirstResource) {
+                        displayErrorMessage(ResourceUtil.getString(R.string.photo_load_error_single), binding);
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(Bitmap resource, byte[] model, Target<Bitmap> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                        loadable.setLoading(false);
+
+                        return false;
+                    }
+                })
+                .into(binding.image);
     }
 
     private void displayErrorMessage(String message, DialogPhotoPagerBinding binding) {

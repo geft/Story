@@ -29,7 +29,7 @@ import uk.co.senab.photoview.PhotoViewAttacher;
 
 public class DownloadUtil {
 
-    public static void downloadPhotoUrlIntoImageView(Context context, Loadable loadable, String url, ImageView image, boolean usePhotoView) {
+    public static void downloadUrlIntoImageView(Context context, Loadable loadable, String url, ImageView image, boolean usePhotoView) {
         loadable.setLoading(true);
 
         Glide.with(context).load(url)

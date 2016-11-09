@@ -52,6 +52,15 @@ public class EncryptionUtil {
         return builder.toString();
     }
 
+    public static byte[] flip(byte[] bytes) {
+        byte[] encrypted = new byte[bytes.length];
+
+        for (int i = 0; i < bytes.length; i++) {
+            encrypted[i] = (byte) ~bytes[i];
+        }
+        return encrypted;
+    }
+
     @Nullable
     public SecretKey getSecretKey(byte[] bytes) {
         return new SecretKeySpec(bytes, 0, 128, KEY_ALGORITHM);
