@@ -1,6 +1,7 @@
 package com.mager.story.login;
 
 import android.databinding.Bindable;
+import android.databinding.ObservableInt;
 
 import com.mager.story.BR;
 import com.mager.story.BuildConfig;
@@ -16,13 +17,15 @@ import org.parceler.Parcel;
 @Parcel
 public class LoginViewModel extends CoreViewModel {
 
-    protected boolean loading;
-    protected int ariesCount;
-    protected String email;
-    protected String password;
-    protected String version = BuildConfig.VERSION_NAME;
+    boolean loading;
+    int ariesCount;
+    ObservableInt wrongCount = new ObservableInt();
 
-    protected MenuData menuData;
+    String email;
+    String password;
+    String version = BuildConfig.VERSION_NAME;
+
+    MenuData menuData;
 
     @Bindable
     public boolean isLoading() {

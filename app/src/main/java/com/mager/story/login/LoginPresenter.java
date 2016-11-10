@@ -130,4 +130,8 @@ class LoginPresenter extends CorePresenter<LoginViewModel> {
     public void setLocalMenuData() {
         getViewModel().setMenuData(provider.getLocalData());
     }
+
+    public void incrementWrongCount() {
+        getViewModel().wrongCount.set(getViewModel().wrongCount.get() + 1);
+    }
 }

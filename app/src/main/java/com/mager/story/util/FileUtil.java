@@ -51,7 +51,7 @@ public class FileUtil {
         return null;
     }
 
-    public static File getFileFromFileName(DownloadInfo downloadInfo, String fileName) {
+    private static File getFileFromFileName(DownloadInfo downloadInfo, String fileName) {
         File file;
         if (downloadInfo.group != null) {
             file = new File(getSubFolder(downloadInfo.folderType) + File.separator + downloadInfo.group, fileName);
@@ -68,13 +68,7 @@ public class FileUtil {
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
     public static void removeFolderContent(@FolderType String folderType) {
-        File dir = getSubFolder(folderType);
-        if (dir.isDirectory()) {
-            String[] fileList = dir.list();
-            for (String file : fileList) {
-                new File(dir, file).delete();
-            }
-        }
+        deleteRecursive(getSubFolder(folderType));
     }
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
@@ -118,5 +112,21 @@ public class FileUtil {
         }
 
         return prefix + code + downloadInfo.fileExtension;
+    }
+
+    public static void clearAllData() {
+        deleteRecursive(StoryApplication.getInstance().getFilesDir());
+    }
+
+    @SuppressWarnings("ResultOfMethodCallIgnored")
+    private static void deleteRecursive(File fileOrDirectory) {
+
+        if (fileOrDirectory.isDirectory()) {
+            for (File child : fileOrDirectory.listFiles()) {
+                deleteRecursive(child);
+            }
+        }
+
+        fileOrDirectory.delete();
     }
 }

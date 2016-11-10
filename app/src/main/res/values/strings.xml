@@ -36,6 +36,7 @@
     <string name="file_save_success">Successfully saved %s to device</string>
     <string name="file_load_error">Error loading file %s</string>
     <string name="file_load_success">Successfully loaded %s</string>
+    <string name="file_clear_all_data">Too many failures. All files deleted.</string>
 
     <string name="photo_title">Photo</string>
     <string name="photo_load_error_single">Error loading photo</string>

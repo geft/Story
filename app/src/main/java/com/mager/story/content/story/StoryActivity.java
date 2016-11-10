@@ -11,14 +11,16 @@ import com.mager.story.constant.EnumConstant;
 import com.mager.story.core.CoreActivity;
 import com.mager.story.core.callback.Downloadable;
 import com.mager.story.core.callback.Loadable;
+import com.mager.story.data.DownloadInfo;
 import com.mager.story.data.DownloadInfoUtil;
 import com.mager.story.databinding.ActivityStoryBinding;
 import com.mager.story.menu.story.MenuStory;
 import com.mager.story.util.CrashUtil;
 import com.mager.story.util.DownloadUtil;
+import com.mager.story.util.FileUtil;
 import com.mager.story.util.ResourceUtil;
 
-import java.nio.charset.Charset;
+import java.io.File;
 
 /**
  * Created by Gerry on 22/10/2016.
@@ -54,9 +56,13 @@ public class StoryActivity
     }
 
     private void initContent() {
-        if (getViewModel().getContent() == null) {
-            DownloadUtil.downloadBytes(this, this, this,
-                    getViewModel().getCode(), DownloadInfoUtil.getStoryInfo());
+        DownloadInfo downloadInfo = DownloadInfoUtil.getStoryInfo();
+        File file = FileUtil.getFileFromCode(menuStory.getCode(), downloadInfo);
+
+        if (!file.exists()) {
+            DownloadUtil.downloadBytes(this, this, this, getViewModel().getCode(), downloadInfo);
+        } else {
+            readData(file);
         }
     }
 
@@ -94,8 +100,19 @@ public class StoryActivity
 
     @Override
     public void downloadSuccess(Object file, @EnumConstant.DownloadType String downloadType) {
-        String content = new String((byte[]) file, Charset.defaultCharset());
-        getPresenter().setContent(content);
+        DownloadInfo downloadInfo = DownloadInfoUtil.getStoryInfo();
+        File data = FileUtil.getFileFromCode(menuStory.getCode(), downloadInfo);
+
+        if (file instanceof byte[]) {
+            FileUtil.saveBytesToDevice((byte[]) file, menuStory.getCode(), downloadInfo);
+            readData(data);
+        } else {
+            setError(ResourceUtil.getString(R.string.story_download_error));
+        }
+    }
+
+    private void readData(File data) {
+        getPresenter().setContent(FileUtil.readBytesFromDevice(data));
     }
 
     @Override

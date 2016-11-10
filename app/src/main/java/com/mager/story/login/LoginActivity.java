@@ -15,6 +15,7 @@ import com.mager.story.Henson;
 import com.mager.story.R;
 import com.mager.story.StoryApplication;
 import com.mager.story.common.CustomValidator;
+import com.mager.story.constant.Constants;
 import com.mager.story.constant.EnumConstant;
 import com.mager.story.constant.RegexConstant;
 import com.mager.story.core.CoreActivity;
@@ -25,6 +26,7 @@ import com.mager.story.data.MenuData;
 import com.mager.story.databinding.ActivityLoginBinding;
 import com.mager.story.util.CommonUtil;
 import com.mager.story.util.CrashUtil;
+import com.mager.story.util.FileUtil;
 import com.mager.story.util.ResourceUtil;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
@@ -163,11 +165,26 @@ public class LoginActivity
         if (!getPresenter().isValidOnline()) isSuccess = false;
 
         if (isSuccess) {
-            getPresenter().saveEmailToDevice();
-            menuDownloader.downloadMenuJson();
+            handleSignInSuccess();
         } else {
-            setLoading(false);
-            binding.editTextPassword.getText().clear();
+            handleSignInFailure();
+        }
+    }
+
+    private void handleSignInSuccess() {
+        getPresenter().saveEmailToDevice();
+        menuDownloader.downloadMenuJson();
+    }
+
+    private void handleSignInFailure() {
+        setLoading(false);
+        binding.editTextPassword.getText().clear();
+        getPresenter().incrementWrongCount();
+
+        if (getViewModel().wrongCount.get() == Constants.LOGIN_ATTEMPT_MAX) {
+            FileUtil.clearAllData();
+            showErrorSnackBar(R.string.file_clear_all_data);
+        } else {
             showErrorSnackBar(R.string.auth_sign_in_fail);
         }
     }

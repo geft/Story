@@ -6,6 +6,7 @@ package com.mager.story.constant;
 
 public class Constants {
 
+    public static final int LOGIN_ATTEMPT_MAX = 3;
     public static final int PHOTO_NAME_LENGTH = 2;
 
     public static final long MAX_MENU_SIZE = 1024 * 128;
