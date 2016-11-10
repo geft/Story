@@ -98,7 +98,7 @@ public class PhotoPagerAdapter extends PagerAdapter {
                 .listener(new RequestListener<byte[], Bitmap>() {
                     @Override
                     public boolean onException(Exception e, byte[] model, Target<Bitmap> target, boolean isFirstResource) {
-                        displayErrorMessage(ResourceUtil.getString(R.string.photo_load_error_single), binding);
+                        displayErrorMessage(ResourceUtil.getString(R.string.photo_load_error), binding);
                         return false;
                     }
 

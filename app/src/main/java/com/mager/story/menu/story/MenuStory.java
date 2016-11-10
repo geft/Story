@@ -2,12 +2,10 @@ package com.mager.story.menu.story;
 
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
-import android.graphics.drawable.Drawable;
 
 import com.mager.story.BR;
 
 import org.parceler.Parcel;
-import org.parceler.Transient;
 
 /**
  * Created by Gerry on 21/10/2016.
@@ -18,9 +16,7 @@ public class MenuStory extends BaseObservable {
     protected String chapter;
     protected String title;
     protected String code;
-
-    @Transient
-    protected Drawable image;
+    protected String path;
 
     @Bindable
     public String getChapter() {
@@ -42,21 +38,21 @@ public class MenuStory extends BaseObservable {
         notifyPropertyChanged(BR.title);
     }
 
-    @Bindable
-    public Drawable getImage() {
-        return image;
-    }
-
-    public void setImage(Drawable image) {
-        this.image = image;
-        notifyPropertyChanged(BR.image);
-    }
-
     public String getCode() {
         return code;
     }
 
     public void setCode(String code) {
         this.code = code;
+    }
+
+    @Bindable
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+        notifyPropertyChanged(BR.path);
     }
 }

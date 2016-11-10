@@ -53,8 +53,26 @@ class MenuDownloader {
         if (file.exists()) {
             downloadable.downloadSuccess(null, downloadType);
         } else {
-            DownloadUtil.downloadBytes(activity, loadable, downloadable, code, downloadInfo);
+            DownloadUtil.downloadBytes(
+                    activity, loadable, getDownloadable(code, downloadInfo), code, downloadInfo);
         }
+    }
+
+    private Downloadable getDownloadable(String code, DownloadInfo downloadInfo) {
+        return new Downloadable() {
+            @Override
+            public void downloadSuccess(Object file, @EnumConstant.DownloadType String downloadType) {
+                if (file instanceof byte[]) {
+                    FileUtil.saveBytesToDevice((byte[]) file, code, downloadInfo);
+                    downloadable.downloadSuccess(file, downloadType);
+                }
+            }
+
+            @Override
+            public void downloadFail(String message) {
+                downloadable.downloadFail(message);
+            }
+        };
     }
 
     void downloadMenuJson() {

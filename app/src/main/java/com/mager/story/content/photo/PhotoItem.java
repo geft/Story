@@ -1,6 +1,7 @@
 package com.mager.story.content.photo;
 
 import android.databinding.Bindable;
+import android.databinding.ObservableBoolean;
 
 import com.mager.story.BR;
 import com.mager.story.core.CoreViewModel;
@@ -13,10 +14,13 @@ import org.parceler.Parcel;
 
 @Parcel
 public class PhotoItem extends CoreViewModel {
-    protected String name;
-    protected String group;
-    protected String url;
-    protected String path;
+
+    public ObservableBoolean loading = new ObservableBoolean(true);
+    public ObservableBoolean error = new ObservableBoolean();
+    String name;
+    String group;
+    String url;
+    String path;
 
     @Bindable
     public String getName() {

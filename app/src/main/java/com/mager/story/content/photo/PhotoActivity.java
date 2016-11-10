@@ -9,15 +9,12 @@ import android.support.v7.widget.GridLayoutManager;
 import com.f2prateek.dart.InjectExtra;
 import com.mager.story.R;
 import com.mager.story.StoryApplication;
-import com.mager.story.constant.EnumConstant.Tag;
 import com.mager.story.core.CoreActivity;
 import com.mager.story.core.callback.Blockable;
-import com.mager.story.core.callback.Loadable;
 import com.mager.story.core.recyclerView.BindAdapter;
 import com.mager.story.core.recyclerView.OnRecyclerItemClickListener;
 import com.mager.story.databinding.ActivityPhotoBinding;
 import com.mager.story.menu.photo.MenuPhoto;
-import com.mager.story.util.CrashUtil;
 import com.mager.story.util.ResourceUtil;
 import com.mager.story.util.ViewUtil;
 
@@ -27,7 +24,7 @@ import com.mager.story.util.ViewUtil;
 
 public class PhotoActivity
         extends CoreActivity<PhotoPresenter, PhotoViewModel>
-        implements OnRecyclerItemClickListener<PhotoItem>, Blockable, Loadable {
+        implements OnRecyclerItemClickListener<PhotoItem>, Blockable {
 
     private static final String TAG_DIALOG = "DIALOG";
     @InjectExtra
@@ -71,7 +68,7 @@ public class PhotoActivity
     }
 
     private void initDownloader() {
-        PhotoDownloader downloader = new PhotoDownloader(this, this, subscription);
+        PhotoDownloader downloader = new PhotoDownloader(this, subscription);
         downloader.setPaths(getViewModel().getItems());
     }
 
@@ -97,9 +94,7 @@ public class PhotoActivity
     }
 
     private void openFullPhoto(int position) {
-        if (isBlocked()) {
-            return;
-        }
+        if (isBlocked()) return;
 
         setBlock(true);
         PhotoDialog dialog = getPhotoDialog(position);
@@ -122,22 +117,5 @@ public class PhotoActivity
     @Override
     public boolean isBlocked() {
         return getViewModel().blocking.get();
-    }
-
-    @Override
-    public boolean isLoading() {
-        return getViewModel().loading.get();
-    }
-
-    @Override
-    public void setLoading(boolean loading) {
-        getPresenter().setLoading(loading);
-    }
-
-    @Override
-    public void setError(String message) {
-        setLoading(false);
-        CrashUtil.logWarning(Tag.PHOTO, message);
-        ResourceUtil.showErrorSnackBar(binding.getRoot(), ResourceUtil.getString(R.string.photo_load_error_multiple));
     }
 }

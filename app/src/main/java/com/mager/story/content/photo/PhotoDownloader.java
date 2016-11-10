@@ -3,16 +3,15 @@ package com.mager.story.content.photo;
 import android.app.Activity;
 import android.support.annotation.NonNull;
 
-import com.mager.story.R;
 import com.mager.story.constant.EnumConstant;
 import com.mager.story.core.callback.Downloadable;
 import com.mager.story.core.callback.Loadable;
 import com.mager.story.data.DownloadInfo;
 import com.mager.story.data.DownloadInfoUtil;
 import com.mager.story.util.CommonUtil;
+import com.mager.story.util.CrashUtil;
 import com.mager.story.util.DownloadUtil;
 import com.mager.story.util.FileUtil;
-import com.mager.story.util.ResourceUtil;
 
 import java.io.File;
 import java.util.List;
@@ -27,12 +26,10 @@ import rx.subscriptions.CompositeSubscription;
 
 class PhotoDownloader {
     private Activity activity;
-    private Loadable loadable;
     private CompositeSubscription subscription;
 
-    PhotoDownloader(Activity activity, Loadable loadable, CompositeSubscription subscription) {
+    PhotoDownloader(Activity activity, CompositeSubscription subscription) {
         this.activity = activity;
-        this.loadable = loadable;
         this.subscription = subscription;
     }
 
@@ -41,9 +38,8 @@ class PhotoDownloader {
                 Observable.from(list)
                         .map(this::handlePhotoItem)
                         .toList()
-                        .doOnError(e -> setError())
                         .compose(CommonUtil.getCommonTransformer())
-                        .subscribe(result -> loadable.setLoading(false))
+                        .subscribe()
         );
     }
 
@@ -59,13 +55,33 @@ class PhotoDownloader {
 
         DownloadUtil.downloadBytes(
                 activity,
-                loadable,
+                getLoadable(photoItem),
                 getDownloadable(photoItem, downloadInfo),
                 photoItem.getName(),
                 downloadInfo
         );
 
         return false;
+    }
+
+    private Loadable getLoadable(PhotoItem item) {
+        return new Loadable() {
+            @Override
+            public boolean isLoading() {
+                return item.loading.get();
+            }
+
+            @Override
+            public void setLoading(boolean loading) {
+                item.loading.set(loading);
+            }
+
+            @Override
+            public void setError(String message) {
+                item.loading.set(false);
+                item.error.set(true);
+            }
+        };
     }
 
     private Downloadable getDownloadable(PhotoItem item, DownloadInfo downloadInfo) {
@@ -77,13 +93,13 @@ class PhotoDownloader {
                 if (file instanceof byte[]) {
                     FileUtil.saveBytesToDevice((byte[]) file, code, downloadInfo);
                     setItemPath(item, downloadInfo);
-
                 }
             }
 
             @Override
             public void downloadFail(String message) {
-                setError();
+                item.error.set(true);
+                CrashUtil.logWarning(EnumConstant.Tag.PHOTO, message);
             }
         };
     }
@@ -94,12 +110,5 @@ class PhotoDownloader {
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(item::setPath)
         );
-    }
-
-    private boolean setError() {
-        loadable.setLoading(false);
-        loadable.setError(ResourceUtil.getString(R.string.photo_load_error_multiple));
-
-        return false;
     }
 }

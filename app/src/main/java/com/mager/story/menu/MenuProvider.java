@@ -1,9 +1,6 @@
 package com.mager.story.menu;
 
-import android.graphics.drawable.Drawable;
-import android.support.annotation.Nullable;
-
-import com.mager.story.constant.EnumConstant;
+import com.mager.story.constant.EnumConstant.DownloadType;
 import com.mager.story.data.DownloadInfo;
 import com.mager.story.data.DownloadInfoUtil;
 import com.mager.story.data.MenuData;
@@ -13,7 +10,6 @@ import com.mager.story.menu.story.MenuStory;
 import com.mager.story.menu.video.MenuVideo;
 import com.mager.story.util.FileUtil;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,9 +27,10 @@ public class MenuProvider {
             item.setCode(photo.code);
             item.setName(photo.name);
             item.setCount(photo.count);
-            item.setImage(getDrawableFromFile(
-                    EnumConstant.DownloadType.MENU_PHOTO, photo.code
-            ));
+            item.setPath(FileUtil.getFileFromCode(
+                    photo.code,
+                    DownloadInfoUtil.getMenuPhotoInfo(DownloadType.MENU_PHOTO)
+            ).getPath());
 
             photoList.add(item);
         }
@@ -49,9 +46,10 @@ public class MenuProvider {
             item.setCode(story.code);
             item.setTitle(story.title);
             item.setChapter(story.chapter);
-            item.setImage(getDrawableFromFile(
-                    EnumConstant.DownloadType.MENU_STORY, story.code
-            ));
+            item.setPath(FileUtil.getFileFromCode(
+                    story.code,
+                    DownloadInfoUtil.getMenuPhotoInfo(DownloadType.MENU_STORY)
+            ).getPath());
 
             storyList.add(item);
         }
@@ -92,13 +90,5 @@ public class MenuProvider {
         }
 
         return videoList;
-    }
-
-    @Nullable
-    private Drawable getDrawableFromFile(@EnumConstant.DownloadType String downloadType, String code) {
-        DownloadInfo downloadInfo = DownloadInfoUtil.getMenuPhotoInfo(downloadType);
-        File file = FileUtil.getFileFromCode(code, downloadInfo);
-
-        return Drawable.createFromPath(file.getAbsolutePath());
     }
 }
