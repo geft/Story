@@ -84,7 +84,6 @@ dependencies {
     apt 'com.hannesdorfmann.fragmentargs:processor:3.0.2'
     compile 'com.hannesdorfmann.fragmentargs:bundler-parceler:3.0.2'
     compile 'net.the4thdimension:audio-wife:1.0.3'
-    compile 'com.google.guava:guava:20.0'
     testCompile 'junit:junit:4.12'
     compile('com.crashlytics.sdk.android:crashlytics:2.6.5@aar') {
         transitive = true;

@@ -13,6 +13,7 @@ import com.mager.story.data.DownloadInfo;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.RandomAccessFile;
 
 /**
  * Created by Gerry on 31/10/2016.
@@ -40,7 +41,7 @@ public class FileUtil {
     public static byte[] readBytesFromDevice(File file) {
         if (file.exists()) {
             try {
-                byte[] bytes = EncryptionUtil.flip(Files.toByteArray(file));
+                byte[] bytes = EncryptionUtil.flip(readFile(file));
                 CrashUtil.logInfo(Tag.FILE, ResourceUtil.getString(R.string.file_load_success, file.getPath()));
                 return bytes;
             } catch (IOException e) {
@@ -49,6 +50,21 @@ public class FileUtil {
         }
 
         return null;
+    }
+
+    private static byte[] readFile(File file) throws IOException {
+        // Open file
+        try (RandomAccessFile f = new RandomAccessFile(file, "r")) {
+            // Get and check length
+            long longLength = f.length();
+            int length = (int) longLength;
+            if (length != longLength)
+                throw new IOException("File size >= 2 GB");
+            // Read file and return data
+            byte[] data = new byte[length];
+            f.readFully(data);
+            return data;
+        }
     }
 
     private static File getFileFromFileName(DownloadInfo downloadInfo, String fileName) {

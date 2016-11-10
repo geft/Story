@@ -28,20 +28,32 @@ public class MenuVideoFragment extends MenuFragment {
     protected RecyclerView.Adapter getAdapter() {
         BindAdapter<MenuVideo> adapter = new BindAdapter<>(context, R.layout.menu_video);
         adapter.setOnItemClickListener((position, item) -> {
-            AlertDialog passwordDialog = DialogUtil.getPasswordDialog(data -> {
-                        if (data) {
-                            menuInterface.goToVideo(item);
-                        } else {
-                            ResourceUtil.showErrorSnackBar(getView(), ResourceUtil.getString(R.string.video_password_wrong));
-                        }
-                    },
-                    getActivity(),
-                    ResourceUtil.getString(R.string.video_password_value)
-            );
-
-            passwordDialog.show();
+            if (item.protect.get()) {
+                showPassword(item);
+            } else {
+                goToVideo(item);
+            }
         });
         return adapter;
+    }
+
+    private void showPassword(MenuVideo item) {
+        AlertDialog passwordDialog = DialogUtil.getPasswordDialog(data -> {
+                    if (data) {
+                        goToVideo(item);
+                    } else {
+                        ResourceUtil.showErrorSnackBar(getView(), ResourceUtil.getString(R.string.video_password_wrong));
+                    }
+                },
+                getActivity(),
+                ResourceUtil.getString(R.string.video_password_value)
+        );
+
+        passwordDialog.show();
+    }
+
+    private void goToVideo(MenuVideo item) {
+        menuInterface.goToVideo(item);
     }
 
     @Override
