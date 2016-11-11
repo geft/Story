@@ -38,8 +38,8 @@ public class MenuVideoFragment extends MenuFragment {
     }
 
     private void showPassword(MenuVideo item) {
-        AlertDialog passwordDialog = DialogUtil.getPasswordDialog(data -> {
-                    if (data) {
+        AlertDialog passwordDialog = DialogUtil.getPasswordDialog(correct -> {
+                    if (correct) {
                         goToVideo(item);
                     } else {
                         ResourceUtil.showErrorSnackBar(getView(), ResourceUtil.getString(R.string.video_password_wrong));
