@@ -111,7 +111,7 @@ class LoginPresenter extends CorePresenter<LoginViewModel> {
     private boolean isValidKey(@ArrayRes int arrayRes, String key) {
         for (String password : ResourceUtil.getStringArray(arrayRes)) {
             String encryptedValue = EncryptionUtil.encrypt(key);
-            if (encryptedValue != null && encryptedValue.equals(password)) {
+            if (encryptedValue != null && encryptedValue.equalsIgnoreCase(password)) {
                 return true;
             }
         }
