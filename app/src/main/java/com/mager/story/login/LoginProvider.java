@@ -52,6 +52,8 @@ class LoginProvider {
     }
 
     boolean isLocalDataValid(MenuData localData, MenuData currentData, @FolderType String folderType) {
+        if (localData == null) return true;
+
         switch (folderType) {
             case FolderType.MENU:
                 return isVersionValid(localData.versionMenu, currentData.versionMenu);

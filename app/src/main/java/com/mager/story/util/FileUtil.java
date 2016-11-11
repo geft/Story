@@ -3,7 +3,6 @@ package com.mager.story.util;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.google.common.io.Files;
 import com.mager.story.R;
 import com.mager.story.StoryApplication;
 import com.mager.story.constant.EnumConstant;
@@ -12,6 +11,7 @@ import com.mager.story.constant.EnumConstant.Tag;
 import com.mager.story.data.DownloadInfo;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 
@@ -29,10 +29,10 @@ public class FileUtil {
             file.getParentFile().mkdirs();
         }
 
-        try {
-            Files.write(EncryptionUtil.flip(bytes), file);
+        try (FileOutputStream stream = new FileOutputStream(file.getPath())) {
+            stream.write(EncryptionUtil.flip(bytes));
             CrashUtil.logInfo(downloadInfo.downloadType, ResourceUtil.getString(R.string.file_save_success, file.getPath()));
-        } catch (IOException e) {
+        } catch (Exception e) {
             CrashUtil.logError(downloadInfo.downloadType, ResourceUtil.getString(R.string.file_save_error, file.getPath()), e);
         }
     }
@@ -44,7 +44,7 @@ public class FileUtil {
                 byte[] bytes = EncryptionUtil.flip(readFile(file));
                 CrashUtil.logInfo(Tag.FILE, ResourceUtil.getString(R.string.file_load_success, file.getPath()));
                 return bytes;
-            } catch (IOException e) {
+            } catch (Exception e) {
                 CrashUtil.logError(Tag.FILE, ResourceUtil.getString(R.string.file_load_error, file.getPath()), e);
             }
         }
