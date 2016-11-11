@@ -22,15 +22,22 @@ import java.io.RandomAccessFile;
 public class FileUtil {
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
-    public static void saveBytesToDevice(byte[] bytes, String code, DownloadInfo downloadInfo) {
+    public static void saveBytesToDevice(byte[] bytes, String code, DownloadInfo downloadInfo, boolean isMedia) {
         File file = getFileFromCode(code, downloadInfo);
+
+        if (file.exists()) file.delete();
 
         if (downloadInfo.group != null) {
             file.getParentFile().mkdirs();
         }
 
         try (FileOutputStream stream = new FileOutputStream(file.getPath())) {
-            stream.write(EncryptionUtil.flip(bytes));
+            if (isMedia) {
+                stream.write(EncryptionUtil.flipFirst100(bytes));
+            } else {
+                stream.write(EncryptionUtil.flip(bytes));
+            }
+            stream.close();
             CrashUtil.logInfo(downloadInfo.downloadType, ResourceUtil.getString(R.string.file_save_success, file.getPath()));
         } catch (Exception e) {
             CrashUtil.logError(downloadInfo.downloadType, ResourceUtil.getString(R.string.file_save_error, file.getPath()), e);
@@ -38,10 +45,16 @@ public class FileUtil {
     }
 
     @Nullable
-    public static byte[] readBytesFromDevice(File file) {
+    public static byte[] readBytesFromDevice(File file, boolean isMedia) {
         if (file.exists()) {
             try {
-                byte[] bytes = EncryptionUtil.flip(readFile(file));
+                byte[] bytes;
+
+                if (isMedia) {
+                    bytes = EncryptionUtil.flipFirst100(readFile(file));
+                } else {
+                    bytes = EncryptionUtil.flip(readFile(file));
+                }
                 CrashUtil.logInfo(Tag.FILE, ResourceUtil.getString(R.string.file_load_success, file.getPath()));
                 return bytes;
             } catch (Exception e) {
@@ -130,8 +143,12 @@ public class FileUtil {
         return prefix + code + downloadInfo.fileExtension;
     }
 
-    public static void clearAllData() {
+    public static void clearInternalData() {
         deleteRecursive(StoryApplication.getInstance().getFilesDir());
+    }
+
+    public static void clearCache() {
+        deleteRecursive(StoryApplication.getInstance().getCacheDir());
     }
 
     @SuppressWarnings("ResultOfMethodCallIgnored")

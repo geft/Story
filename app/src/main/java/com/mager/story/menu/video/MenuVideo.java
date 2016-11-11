@@ -16,6 +16,8 @@ import org.parceler.Parcel;
 public class MenuVideo extends BaseObservable {
     public ObservableBoolean offline = new ObservableBoolean();
     public ObservableBoolean protect = new ObservableBoolean();
+    public ObservableBoolean loading = new ObservableBoolean();
+
     protected String name;
     protected String code;
 

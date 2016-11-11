@@ -7,15 +7,24 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.mager.story.R;
+import com.mager.story.constant.EnumConstant;
 import com.mager.story.core.CoreFragment;
+import com.mager.story.core.callback.Downloadable;
+import com.mager.story.core.callback.Loadable;
 import com.mager.story.core.callback.MenuInterface;
+import com.mager.story.data.DownloadInfo;
 import com.mager.story.databinding.FragmentRecyclerViewBinding;
+import com.mager.story.util.CrashUtil;
+import com.mager.story.util.DownloadUtil;
+import com.mager.story.util.FileUtil;
+import com.mager.story.util.ResourceUtil;
 
 import java.util.List;
 
@@ -27,7 +36,7 @@ public abstract class MenuFragment extends CoreFragment<MenuPresenter, MenuViewM
 
     protected Context context;
     protected MenuInterface menuInterface;
-    private FragmentRecyclerViewBinding binding;
+    protected FragmentRecyclerViewBinding binding;
 
     @Nullable
     @Override
@@ -72,6 +81,40 @@ public abstract class MenuFragment extends CoreFragment<MenuPresenter, MenuViewM
         binding.recyclerView.setAdapter(getAdapter());
         binding.recyclerView.setBindItems(getItemList());
         binding.recyclerView.requestLayout();
+    }
+
+    protected void showMediaMenu(int position, PopupMenu.OnMenuItemClickListener listener) {
+        PopupMenu popupMenu = new PopupMenu(context, binding.recyclerView.getChildAt(position));
+        popupMenu.inflate(R.menu.media);
+        popupMenu.setOnMenuItemClickListener(listener);
+        popupMenu.show();
+    }
+
+    protected void downloadMedia(Loadable loadable, String code, DownloadInfo downloadInfo) {
+        DownloadUtil.downloadBytes(
+                loadable,
+                getDownloadable(code, downloadInfo),
+                code,
+                downloadInfo
+        );
+    }
+
+    private Downloadable getDownloadable(String code, DownloadInfo downloadInfo) {
+        return new Downloadable() {
+            @Override
+            public void downloadSuccess(Object bytes, @EnumConstant.DownloadType String downloadType) {
+                if (bytes instanceof byte[]) {
+                    FileUtil.saveBytesToDevice((byte[]) bytes, code, downloadInfo, true);
+                    ResourceUtil.showToast(ResourceUtil.getString(R.string.menu_media_download_success));
+                }
+            }
+
+            @Override
+            public void downloadFail(String message) {
+                CrashUtil.logWarning(EnumConstant.Tag.MENU, message);
+                ResourceUtil.showToast(ResourceUtil.getString(R.string.menu_media_download_fail));
+            }
+        };
     }
 
     protected abstract RecyclerView.Adapter getAdapter();

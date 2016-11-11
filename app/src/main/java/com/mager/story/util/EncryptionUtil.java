@@ -61,6 +61,20 @@ public class EncryptionUtil {
         return encrypted;
     }
 
+    public static byte[] flipFirst100(byte[] bytes) {
+        byte[] encrypted = new byte[bytes.length];
+
+        for (int i = 0; i < bytes.length; i++) {
+
+            if (i < 100) {
+                encrypted[i] = (byte) ~bytes[i];
+            } else {
+                encrypted[i] = bytes[i];
+            }
+        }
+        return encrypted;
+    }
+
     @Nullable
     public SecretKey getSecretKey(byte[] bytes) {
         return new SecretKeySpec(bytes, 0, 128, KEY_ALGORITHM);

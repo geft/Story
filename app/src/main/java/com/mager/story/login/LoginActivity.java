@@ -182,7 +182,7 @@ public class LoginActivity
         getPresenter().incrementWrongCount();
 
         if (getViewModel().wrongCount.get() == Constants.LOGIN_ATTEMPT_MAX) {
-            FileUtil.clearAllData();
+            FileUtil.clearInternalData();
             showErrorSnackBar(R.string.file_clear_all_data);
         } else {
             showErrorSnackBar(R.string.auth_sign_in_fail);

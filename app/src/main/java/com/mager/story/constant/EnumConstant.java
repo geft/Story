@@ -86,6 +86,6 @@ public class EnumConstant {
         String PHOTO = ".jpg";
         String STORY = ".txt";
         String AUDIO = ".amr";
-        String VIDEO = ".webm";
+        String VIDEO = ".mp4";
     }
 }

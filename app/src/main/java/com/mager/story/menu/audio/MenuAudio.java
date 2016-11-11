@@ -15,6 +15,7 @@ import org.parceler.Parcel;
 @Parcel
 public class MenuAudio extends BaseObservable {
     public ObservableBoolean offline = new ObservableBoolean();
+    public ObservableBoolean loading = new ObservableBoolean();
     protected String name;
     protected String code;
 

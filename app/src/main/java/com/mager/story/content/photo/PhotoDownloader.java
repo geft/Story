@@ -54,7 +54,6 @@ class PhotoDownloader {
         }
 
         DownloadUtil.downloadBytes(
-                activity,
                 getLoadable(photoItem),
                 getDownloadable(photoItem, downloadInfo),
                 photoItem.getName(),
@@ -91,7 +90,7 @@ class PhotoDownloader {
             @Override
             public void downloadSuccess(Object file, @EnumConstant.DownloadType String downloadType) {
                 if (file instanceof byte[]) {
-                    FileUtil.saveBytesToDevice((byte[]) file, code, downloadInfo);
+                    FileUtil.saveBytesToDevice((byte[]) file, code, downloadInfo, false);
                     setItemPath(item, downloadInfo);
                 }
             }

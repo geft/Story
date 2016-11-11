@@ -19,7 +19,11 @@ import com.mager.story.databinding.ActivityVideoBinding;
 import com.mager.story.menu.video.MenuVideo;
 import com.mager.story.util.CrashUtil;
 import com.mager.story.util.DownloadUtil;
+import com.mager.story.util.FileUtil;
 import com.mager.story.util.ResourceUtil;
+
+import java.io.File;
+import java.io.FileOutputStream;
 
 /**
  * Created by Gerry on 29/10/2016.
@@ -59,11 +63,39 @@ public class VideoActivity
 
         player = new VideoPlayer(this, binding);
 
-        downloadVideoUri();
+        File file = FileUtil.getFileFromCode(menuVideo.getCode(), DownloadInfoUtil.getVideoInfo());
+        if (file.exists()) {
+            handleFileExists(file);
+        } else {
+            downloadVideoUri();
+        }
+    }
+
+    private void handleFileExists(File file) {
+        File temp = new File(getCacheDir() + File.separator + menuVideo.getCode());
+
+        try (FileOutputStream stream = new FileOutputStream(temp)) {
+            byte[] data = FileUtil.readBytesFromDevice(file, true);
+            if (data != null) {
+                stream.write(data);
+            }
+            stream.close();
+
+            player.playVideo(Uri.fromFile(temp));
+        } catch (Exception e) {
+            CrashUtil.logWarning(EnumConstant.Tag.VIDEO, e.getMessage());
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        FileUtil.clearCache();
+
+        super.onStop();
     }
 
     private void downloadVideoUri() {
-        DownloadUtil.downloadUri(this, this, this,
+        DownloadUtil.downloadUri(this, this,
                 menuVideo.getCode(), DownloadInfoUtil.getVideoInfo());
     }
 

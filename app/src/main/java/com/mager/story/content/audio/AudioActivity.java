@@ -16,7 +16,10 @@ import com.mager.story.menu.audio.MenuAudio;
 import com.mager.story.util.CommonUtil;
 import com.mager.story.util.CrashUtil;
 import com.mager.story.util.DownloadUtil;
+import com.mager.story.util.FileUtil;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.concurrent.TimeUnit;
 
 import nl.changer.audiowife.AudioWife;
@@ -59,8 +62,33 @@ public class AudioActivity extends CoreActivity<AudioPresenter, AudioViewModel>
 
         setTitle(menuAudio.getName());
 
-        DownloadUtil.downloadUri(this, this, this,
+        File file = FileUtil.getFileFromCode(menuAudio.getCode(), DownloadInfoUtil.getAudioInfo());
+        if (file.exists()) {
+            handleFileExists(file);
+        } else {
+            downloadAudioUri();
+        }
+    }
+
+    private void downloadAudioUri() {
+        DownloadUtil.downloadUri(this, this,
                 menuAudio.getCode(), DownloadInfoUtil.getAudioInfo());
+    }
+
+    private void handleFileExists(File file) {
+        File temp = new File(getCacheDir() + File.separator + menuAudio.getCode());
+
+        try (FileOutputStream stream = new FileOutputStream(temp)) {
+            byte[] data = FileUtil.readBytesFromDevice(file, true);
+            if (data != null) {
+                stream.write(data);
+            }
+            stream.close();
+
+            initAudioWife(Uri.fromFile(temp));
+        } catch (Exception e) {
+            CrashUtil.logWarning(EnumConstant.Tag.AUDIO, e.getMessage());
+        }
     }
 
     @Override
@@ -68,6 +96,8 @@ public class AudioActivity extends CoreActivity<AudioPresenter, AudioViewModel>
         if (audioWife != null) {
             audioWife.release();
         }
+
+        FileUtil.clearCache();
 
         super.onStop();
     }

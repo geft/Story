@@ -54,7 +54,7 @@ class MenuDownloader {
             downloadable.downloadSuccess(null, downloadType);
         } else {
             DownloadUtil.downloadBytes(
-                    activity, loadable, getDownloadable(code, downloadInfo), code, downloadInfo);
+                    loadable, getDownloadable(code, downloadInfo), code, downloadInfo);
         }
     }
 
@@ -63,7 +63,7 @@ class MenuDownloader {
             @Override
             public void downloadSuccess(Object file, @EnumConstant.DownloadType String downloadType) {
                 if (file instanceof byte[]) {
-                    FileUtil.saveBytesToDevice((byte[]) file, code, downloadInfo);
+                    FileUtil.saveBytesToDevice((byte[]) file, code, downloadInfo, false);
                     downloadable.downloadSuccess(file, downloadType);
                 }
             }
@@ -76,7 +76,7 @@ class MenuDownloader {
     }
 
     void downloadMenuJson() {
-        DownloadUtil.downloadBytes(activity, loadable, downloadable,
+        DownloadUtil.downloadBytes(loadable, downloadable,
                 Constants.MENU_JSON, DownloadInfoUtil.getMenuJsonInfo());
     }
 }

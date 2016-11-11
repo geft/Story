@@ -30,7 +30,7 @@ public class CustomBindingAdapter {
         if (path == null) return;
 
         Glide.with(view.getContext())
-                .load(FileUtil.readBytesFromDevice(new File(path)))
+                .load(FileUtil.readBytesFromDevice(new File(path), false))
                 .asBitmap()
                 .into(view);
     }

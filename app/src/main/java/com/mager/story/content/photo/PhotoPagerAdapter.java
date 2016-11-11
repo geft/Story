@@ -61,7 +61,6 @@ public class PhotoPagerAdapter extends PagerAdapter {
             loadFileToImage(binding, getLoadable(binding), photoItem.getName(), downloadInfo);
         } else {
             DownloadUtil.downloadBytes(
-                    activity,
                     getLoadable(binding),
                     getDownloadable(binding, photoItem.getName(), downloadInfo),
                     photoItem.getName(),
@@ -75,7 +74,7 @@ public class PhotoPagerAdapter extends PagerAdapter {
             @Override
             public void downloadSuccess(Object file, @EnumConstant.DownloadType String downloadType) {
                 if (file instanceof byte[]) {
-                    FileUtil.saveBytesToDevice((byte[]) file, code, downloadInfo);
+                    FileUtil.saveBytesToDevice((byte[]) file, code, downloadInfo, false);
                     loadFileToImage(binding, getLoadable(binding), code, downloadInfo);
                 }
             }
@@ -93,7 +92,7 @@ public class PhotoPagerAdapter extends PagerAdapter {
         File file = FileUtil.getFileFromCode(code, downloadInfo);
 
         Glide.with(activity)
-                .load(FileUtil.readBytesFromDevice(file))
+                .load(FileUtil.readBytesFromDevice(file, false))
                 .asBitmap()
                 .listener(new RequestListener<byte[], Bitmap>() {
                     @Override

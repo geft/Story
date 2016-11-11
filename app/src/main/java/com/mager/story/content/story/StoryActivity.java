@@ -60,7 +60,7 @@ public class StoryActivity
         File file = FileUtil.getFileFromCode(menuStory.getCode(), downloadInfo);
 
         if (!file.exists()) {
-            DownloadUtil.downloadBytes(this, this, this, getViewModel().getCode(), downloadInfo);
+            DownloadUtil.downloadBytes(this, this, getViewModel().getCode(), downloadInfo);
         } else {
             readData(file);
         }
@@ -104,7 +104,7 @@ public class StoryActivity
         File data = FileUtil.getFileFromCode(menuStory.getCode(), downloadInfo);
 
         if (file instanceof byte[]) {
-            FileUtil.saveBytesToDevice((byte[]) file, menuStory.getCode(), downloadInfo);
+            FileUtil.saveBytesToDevice((byte[]) file, menuStory.getCode(), downloadInfo, false);
             readData(data);
         } else {
             setError(ResourceUtil.getString(R.string.story_download_error));
@@ -112,7 +112,7 @@ public class StoryActivity
     }
 
     private void readData(File data) {
-        getPresenter().setContent(FileUtil.readBytesFromDevice(data));
+        getPresenter().setContent(FileUtil.readBytesFromDevice(data, false));
     }
 
     @Override
