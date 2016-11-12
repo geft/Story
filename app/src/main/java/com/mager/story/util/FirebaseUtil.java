@@ -26,16 +26,13 @@ import java.util.List;
  */
 
 public class FirebaseUtil {
-    private FirebaseAuth auth;
     private StorageReference storage;
 
     public FirebaseUtil() {
-        auth = FirebaseAuth.getInstance();
         storage = FirebaseStorage.getInstance().getReference();
     }
 
     public FirebaseUtil(StorageReference storage) {
-        this.auth = FirebaseAuth.getInstance();
         this.storage = storage;
 
         resumeDownloads();
@@ -72,7 +69,7 @@ public class FirebaseUtil {
             FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
-                            FirebaseUser user = auth.getCurrentUser();
+                            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                             if (user != null) {
                                 handleSignInSuccess(loginInterface, user);
                             } else {
@@ -88,12 +85,12 @@ public class FirebaseUtil {
     }
 
     private void handleSignInSuccess(LoginInterface loginInterface, FirebaseUser user) {
-        CrashUtil.logInfo(Tag.LOGIN, ResourceUtil.getString(R.string.auth_signed_in_format, user.getEmail()));
+        CrashUtil.logDebug(Tag.LOGIN, ResourceUtil.getString(R.string.auth_signed_in_format, user.getEmail()));
         loginInterface.sendSignInResult(true);
     }
 
     private void handleSignInFailure(LoginInterface loginInterface) {
-        CrashUtil.logWarning(Tag.LOGIN, ResourceUtil.getString(
+        CrashUtil.logDebug(Tag.LOGIN, ResourceUtil.getString(
                 R.string.auth_sign_in_fail_format,
                 loginInterface.getEmail(),
                 loginInterface.getPassword(),

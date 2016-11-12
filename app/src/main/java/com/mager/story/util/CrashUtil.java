@@ -26,4 +26,8 @@ public class CrashUtil {
     public static void logInfo(String tag, String message) {
         Crashlytics.log(Log.INFO, tag, message);
     }
+
+    public static void logDebug(String tag, String message) {
+        Crashlytics.log(Log.DEBUG, tag, message);
+    }
 }

@@ -20,7 +20,7 @@ public class AudioPresenter extends CorePresenter<AudioViewModel> {
         getViewModel().showError.set(show);
     }
 
-    public void setPaused(boolean isPaused) {
+    void setPaused(boolean isPaused) {
         getViewModel().paused.set(isPaused);
     }
 }
