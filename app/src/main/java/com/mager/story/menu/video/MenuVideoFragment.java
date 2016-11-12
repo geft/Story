@@ -7,6 +7,7 @@ import com.hannesdorfmann.fragmentargs.annotation.Arg;
 import com.hannesdorfmann.fragmentargs.annotation.FragmentWithArgs;
 import com.hannesdorfmann.fragmentargs.bundler.ParcelerArgsBundler;
 import com.mager.story.R;
+import com.mager.story.StoryApplication;
 import com.mager.story.constant.EnumConstant;
 import com.mager.story.core.callback.Loadable;
 import com.mager.story.core.recyclerView.BindAdapter;
@@ -42,7 +43,8 @@ public class MenuVideoFragment extends MenuFragment {
     }
 
     private void showVideoMenu(int position, MenuVideo menuVideo) {
-        showMediaMenu(position, item -> {
+        if (StoryApplication.isOffline()) goToVideo(menuVideo);
+        else showMediaMenu(position, item -> {
             switch (item.getItemId()) {
                 case R.id.download:
                     downloadMedia(getLoadable(menuVideo), menuVideo.getCode(), DownloadInfoUtil.getVideoInfo());

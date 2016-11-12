@@ -57,7 +57,6 @@
                 android:layout_centerVertical="true"
                 android:layout_marginStart="@dimen/default_padding"
                 android:text="@{item.offline ? @string/video_offline : null}"
-                android:textColor="@{item.protect ? @color/white : @color/black}"
                 tools:text="Offline" />
 
         </RelativeLayout>

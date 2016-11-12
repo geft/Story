@@ -6,6 +6,7 @@ import com.hannesdorfmann.fragmentargs.annotation.Arg;
 import com.hannesdorfmann.fragmentargs.annotation.FragmentWithArgs;
 import com.hannesdorfmann.fragmentargs.bundler.ParcelerArgsBundler;
 import com.mager.story.R;
+import com.mager.story.StoryApplication;
 import com.mager.story.constant.EnumConstant;
 import com.mager.story.core.callback.Loadable;
 import com.mager.story.core.recyclerView.BindAdapter;
@@ -28,7 +29,15 @@ public class MenuAudioFragment extends MenuFragment {
     @Override
     protected RecyclerView.Adapter getAdapter() {
         BindAdapter<MenuAudio> adapter = new BindAdapter<>(context, R.layout.menu_audio);
-        adapter.setOnItemClickListener((position, menuAudio) -> showMediaMenu(position, item -> {
+        adapter.setOnItemClickListener((position, menuAudio) -> {
+            if (StoryApplication.isOffline()) menuInterface.goToAudio(menuAudio);
+            else showAudioMenu(position, menuAudio);
+        });
+        return adapter;
+    }
+
+    private void showAudioMenu(int position, MenuAudio menuAudio) {
+        showMediaMenu(position, item -> {
             switch (item.getItemId()) {
                 case R.id.download:
                     downloadMedia(getLoadable(menuAudio), menuAudio.getCode(), DownloadInfoUtil.getAudioInfo());
@@ -39,8 +48,7 @@ public class MenuAudioFragment extends MenuFragment {
             }
 
             return false;
-        }));
-        return adapter;
+        });
     }
 
     private Loadable getLoadable(MenuAudio menuAudio) {
