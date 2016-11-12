@@ -210,6 +210,8 @@ public class LoginActivity
 
     @Override
     public void downloadSuccess(@Nullable Object file, @EnumConstant.DownloadType String downloadType) {
+        setLoading(true);
+
         switch (downloadType) {
             case EnumConstant.DownloadType.MENU_JSON:
                 if (file instanceof byte[]) {

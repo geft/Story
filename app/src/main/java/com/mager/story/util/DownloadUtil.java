@@ -44,8 +44,8 @@ public class DownloadUtil {
     private static OnSuccessListener<byte[]> getOnSuccessListener(Loadable loadable, Downloadable downloadable, DownloadInfo downloadInfo, String fileName) {
         return bytes -> {
             FileUtil.createFileInFolder(downloadInfo.folderType, fileName);
-            downloadable.downloadSuccess(bytes, downloadInfo.downloadType);
             loadable.setLoading(false);
+            downloadable.downloadSuccess(bytes, downloadInfo.downloadType);
         };
     }
 

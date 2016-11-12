@@ -56,7 +56,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="@dimen/default_padding"
-                android:text="@{item.offline ? @string/video_offline : @string/video_online}"
+                android:text="@{item.offline ? @string/video_offline : null}"
                 tools:text="Offline" />
 
         </RelativeLayout>
