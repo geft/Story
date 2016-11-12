@@ -44,11 +44,14 @@
                 <TextView
                     android:id="@+id/chapter"
                     style="@style/TextAppearance.AppCompat.Title.Inverse"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:drawableEnd="@{item.offline ? @drawable/bg_circle_green_small : null}"
+                    android:drawablePadding="@dimen/half_padding"
                     android:ellipsize="end"
                     android:maxLines="1"
                     android:text="@{item.chapter}"
+                    tools:drawableEnd="@drawable/bg_circle_green_small"
                     tools:text="Chapter 1" />
 
                 <TextView

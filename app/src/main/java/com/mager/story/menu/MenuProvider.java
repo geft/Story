@@ -50,6 +50,7 @@ public class MenuProvider {
                     story.code,
                     DownloadInfoUtil.getMenuPhotoInfo(DownloadType.MENU_STORY)
             ).getPath());
+            item.offline.set(FileUtil.getFileFromCode(story.code, DownloadInfoUtil.getStoryInfo()).exists());
 
             storyList.add(item);
         }
