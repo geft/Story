@@ -3,6 +3,7 @@ package com.mager.story.content.audio;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.net.Uri;
+import android.view.View;
 
 import com.f2prateek.dart.InjectExtra;
 import com.mager.story.R;
@@ -30,7 +31,7 @@ import rx.Observable;
  */
 
 public class AudioActivity extends CoreActivity<AudioPresenter, AudioViewModel>
-        implements Loadable, Downloadable {
+        implements Loadable, Downloadable, View.OnClickListener {
 
     @InjectExtra
     MenuAudio menuAudio;
@@ -52,6 +53,7 @@ public class AudioActivity extends CoreActivity<AudioPresenter, AudioViewModel>
     protected ViewDataBinding initBinding(AudioViewModel viewModel) {
         binding = DataBindingUtil.setContentView(this, R.layout.dialog_audio);
         binding.setViewModel(viewModel);
+        binding.setOnClickListener(this);
 
         return binding;
     }
@@ -153,5 +155,16 @@ public class AudioActivity extends CoreActivity<AudioPresenter, AudioViewModel>
         setLoading(false);
         getPresenter().showError(true);
         CrashUtil.logWarning(EnumConstant.Tag.AUDIO, message);
+    }
+
+    @Override
+    public void onClick(View view) {
+        if (view.equals(binding.pause)) {
+            getPresenter().setPaused(true);
+            audioWife.pause();
+        } else if (view.equals(binding.play)) {
+            getPresenter().setPaused(false);
+            audioWife.play();
+        }
     }
 }

@@ -16,7 +16,7 @@
             type="android.view.View.OnClickListener" />
     </data>
 
-    <RelativeLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:orientation="vertical">
@@ -31,6 +31,7 @@
 
         <TextView
             style="@style/ErrorText"
+            android:layout_gravity="center"
             android:text="@string/audio_download_error"
             android:visibility="@{viewModel.showError ? View.VISIBLE : View.GONE}"
             tools:visibility="gone" />
@@ -38,16 +39,14 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentStart="true"
-            android:padding="@dimen/default_padding"
             android:visibility="@{viewModel.showError ? View.GONE : View.VISIBLE}">
 
             <FrameLayout
                 android:id="@+id/play_container"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_alignParentEnd="true">
+                android:layout_alignParentEnd="true"
+                android:padding="@dimen/default_padding">
 
                 <ImageView
                     android:id="@+id/play"
@@ -55,7 +54,6 @@
                     android:layout_height="match_parent"
                     android:background="@null"
                     android:onClick="@{onClickListener}"
-                    android:visibility="@{viewModel.paused ? View.VISIBLE : View.INVISIBLE}"
                     app:srcCompat="@drawable/ic_play" />
 
                 <ImageView
@@ -64,7 +62,6 @@
                     android:layout_height="match_parent"
                     android:background="@null"
                     android:onClick="@{onClickListener}"
-                    android:visibility="@{viewModel.paused ? View.INVISIBLE : View.VISIBLE}"
                     app:srcCompat="@drawable/ic_pause" />
             </FrameLayout>
 
@@ -74,6 +71,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
+                android:padding="@dimen/default_padding"
                 tools:text="10:00" />
 
             <TextView
@@ -82,7 +80,6 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_toStartOf="@+id/play_container"
-                android:paddingEnd="@dimen/default_padding"
                 tools:text="15:00" />
 
             <SeekBar
@@ -95,6 +92,6 @@
                 android:padding="@dimen/default_padding" />
         </RelativeLayout>
 
-    </RelativeLayout>
+    </FrameLayout>
 
 </layout>
