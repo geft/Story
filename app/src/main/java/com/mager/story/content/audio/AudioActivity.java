@@ -70,11 +70,6 @@ public class AudioActivity extends CoreActivity<AudioPresenter, AudioViewModel>
         }
     }
 
-    private void downloadAudioUri() {
-        DownloadUtil.downloadUri(this, this,
-                menuAudio.getCode(), DownloadInfoUtil.getAudioInfo());
-    }
-
     private void handleFileExists(File file) {
         File temp = new File(getCacheDir() + File.separator + menuAudio.getCode());
 
@@ -89,6 +84,11 @@ public class AudioActivity extends CoreActivity<AudioPresenter, AudioViewModel>
         } catch (Exception e) {
             CrashUtil.logWarning(EnumConstant.Tag.AUDIO, e.getMessage());
         }
+    }
+
+    private void downloadAudioUri() {
+        DownloadUtil.downloadUri(this, this,
+                menuAudio.getCode(), DownloadInfoUtil.getAudioInfo());
     }
 
     @Override

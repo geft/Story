@@ -81,10 +81,15 @@ public class VideoActivity
             }
             stream.close();
 
-            player.playVideo(Uri.fromFile(temp));
+            playVideo(Uri.fromFile(temp));
         } catch (Exception e) {
             CrashUtil.logWarning(EnumConstant.Tag.VIDEO, e.getMessage());
         }
+    }
+
+    private void downloadVideoUri() {
+        DownloadUtil.downloadUri(this, this,
+                menuVideo.getCode(), DownloadInfoUtil.getVideoInfo());
     }
 
     @Override
@@ -92,11 +97,6 @@ public class VideoActivity
         FileUtil.clearCache();
 
         super.onStop();
-    }
-
-    private void downloadVideoUri() {
-        DownloadUtil.downloadUri(this, this,
-                menuVideo.getCode(), DownloadInfoUtil.getVideoInfo());
     }
 
     @Override
@@ -108,9 +108,13 @@ public class VideoActivity
     @Override
     public void downloadSuccess(@Nullable Object file, @DownloadType String downloadType) {
         if (file instanceof Uri) {
-            getPresenter().setReady(true);
-            player.playVideo((Uri) file);
+            playVideo((Uri) file);
         }
+    }
+
+    private void playVideo(@Nullable Uri file) {
+        getPresenter().setReady(true);
+        player.playVideo(file);
     }
 
     @Override

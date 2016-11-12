@@ -1,6 +1,5 @@
 package com.mager.story.constant;
 
-import android.support.annotation.IntDef;
 import android.support.annotation.StringDef;
 
 import java.lang.annotation.Retention;
@@ -22,12 +21,6 @@ public class EnumConstant {
         String AUDIO = "AUDIO";
         String VIDEO = "VIDEO";
         String FILE = "FILE";
-    }
-
-    @IntDef
-    @Retention(RetentionPolicy.SOURCE)
-    public @interface RequestCode {
-        int PERMISSION = 100;
     }
 
     @StringDef
