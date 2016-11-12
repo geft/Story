@@ -28,12 +28,10 @@ import java.util.List;
 public class FirebaseUtil {
     private FirebaseAuth auth;
     private StorageReference storage;
-    private DatabaseReference database;
 
     public FirebaseUtil() {
         auth = FirebaseAuth.getInstance();
         storage = FirebaseStorage.getInstance().getReference();
-        database = FirebaseDatabase.getInstance().getReference();
     }
 
     public FirebaseUtil(StorageReference storage) {
@@ -108,6 +106,7 @@ public class FirebaseUtil {
     }
 
     public void checkVersion(Context context) {
+        DatabaseReference database = getDatabaseReference();
         database.child(Constants.DATABASE_VERSION).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -126,5 +125,9 @@ public class FirebaseUtil {
 
             }
         });
+    }
+
+    private DatabaseReference getDatabaseReference() {
+        return FirebaseDatabase.getInstance().getReference();
     }
 }

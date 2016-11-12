@@ -20,8 +20,12 @@ public class VideoPlayer {
         this.binding = binding;
     }
 
-    void showController() {
-        controller.show();
+    void toggleController() {
+        if (controller.isShowing()) {
+            controller.hide();
+        } else if (!controller.isShowing()) {
+            controller.show();
+        }
     }
 
     void playVideo(Uri uri) {

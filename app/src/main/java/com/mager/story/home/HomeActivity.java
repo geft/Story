@@ -17,6 +17,7 @@ import com.mager.story.menu.audio.MenuAudio;
 import com.mager.story.menu.photo.MenuPhoto;
 import com.mager.story.menu.story.MenuStory;
 import com.mager.story.menu.video.MenuVideo;
+import com.mager.story.util.FileUtil;
 import com.mager.story.util.ResourceUtil;
 
 /**
@@ -50,14 +51,21 @@ public class HomeActivity extends CoreActivity<HomePresenter, HomeViewModel>
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
         getPresenter().setMenuDataModel(menuData);
         navigationHandler = new NavigationHandler(this, binding.bottomView);
 
         initNavigationState();
         initVersionCheck();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        FileUtil.clearCache();
     }
 
     private void initVersionCheck() {

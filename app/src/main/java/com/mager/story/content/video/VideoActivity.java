@@ -74,16 +74,21 @@ public class VideoActivity
     private void handleFileExists(File file) {
         File temp = new File(getCacheDir() + File.separator + menuVideo.getCode());
 
-        try (FileOutputStream stream = new FileOutputStream(temp)) {
-            byte[] data = FileUtil.readBytesFromDevice(file, true);
-            if (data != null) {
-                stream.write(data);
-            }
-            stream.close();
-
+        if (temp.exists()) {
+            getPresenter().setReady(true);
             playVideo(Uri.fromFile(temp));
-        } catch (Exception e) {
-            CrashUtil.logWarning(EnumConstant.Tag.VIDEO, e.getMessage());
+        } else {
+            try (FileOutputStream stream = new FileOutputStream(temp)) {
+                byte[] data = FileUtil.readBytesFromDevice(file, true);
+                if (data != null) {
+                    stream.write(data);
+                }
+                stream.close();
+
+                playVideo(Uri.fromFile(temp));
+            } catch (Exception e) {
+                CrashUtil.logWarning(EnumConstant.Tag.VIDEO, e.getMessage());
+            }
         }
     }
 
@@ -93,15 +98,8 @@ public class VideoActivity
     }
 
     @Override
-    protected void onStop() {
-        FileUtil.clearCache();
-
-        super.onStop();
-    }
-
-    @Override
     public boolean onTouchEvent(MotionEvent event) {
-        player.showController();
+        player.toggleController();
         return false;
     }
 

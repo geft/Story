@@ -99,8 +99,6 @@ public class AudioActivity extends CoreActivity<AudioPresenter, AudioViewModel>
             audioWife.release();
         }
 
-        FileUtil.clearCache();
-
         super.onStop();
     }
 
