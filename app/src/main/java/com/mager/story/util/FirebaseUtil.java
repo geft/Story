@@ -1,11 +1,21 @@
 package com.mager.story.util;
 
+import android.content.Context;
+import android.content.pm.PackageManager;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.mager.story.R;
+import com.mager.story.constant.Constants;
+import com.mager.story.constant.EnumConstant;
 import com.mager.story.constant.EnumConstant.Tag;
 import com.mager.story.core.callback.LoginInterface;
 
@@ -18,10 +28,12 @@ import java.util.List;
 public class FirebaseUtil {
     private FirebaseAuth auth;
     private StorageReference storage;
+    private DatabaseReference database;
 
     public FirebaseUtil() {
         auth = FirebaseAuth.getInstance();
         storage = FirebaseStorage.getInstance().getReference();
+        database = FirebaseDatabase.getInstance().getReference();
     }
 
     public FirebaseUtil(StorageReference storage) {
@@ -93,5 +105,26 @@ public class FirebaseUtil {
 
     public StorageReference getStorageWithChild(String folder) {
         return storage.child(folder);
+    }
+
+    public void checkVersion(Context context) {
+        database.child(Constants.DATABASE_VERSION).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                long version = (long) dataSnapshot.getValue();
+                try {
+                    if (CommonUtil.doesAppNeedUpdate(context, version)) {
+                        DialogUtil.getUpdateDialog(context).show();
+                    }
+                } catch (PackageManager.NameNotFoundException e) {
+                    CrashUtil.logError(EnumConstant.Tag.FIREBASE, e.getMessage(), e);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 }

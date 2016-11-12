@@ -16,10 +16,9 @@
             type="android.view.View.OnClickListener" />
     </data>
 
-    <FrameLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:orientation="vertical">
+        android:layout_height="100dp">
 
         <ProgressBar
             android:id="@+id/progress_bar"
@@ -92,6 +91,6 @@
                 android:padding="@dimen/default_padding" />
         </RelativeLayout>
 
-    </FrameLayout>
+    </RelativeLayout>
 
 </layout>

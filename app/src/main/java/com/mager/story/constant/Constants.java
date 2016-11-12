@@ -17,4 +17,5 @@ public class Constants {
     public static final long MAX_VIDEO_SIZE = 1024 * 1024 * 16;
 
     public static final String MENU_JSON = "menu";
+    public static final String DATABASE_VERSION = "version";
 }

@@ -7,6 +7,7 @@ import android.os.Bundle;
 import com.f2prateek.dart.InjectExtra;
 import com.mager.story.Henson;
 import com.mager.story.R;
+import com.mager.story.StoryApplication;
 import com.mager.story.core.CoreActivity;
 import com.mager.story.core.callback.Loadable;
 import com.mager.story.core.callback.MenuInterface;
@@ -56,6 +57,13 @@ public class HomeActivity extends CoreActivity<HomePresenter, HomeViewModel>
         navigationHandler = new NavigationHandler(this, binding.bottomView);
 
         initNavigationState();
+        initVersionCheck();
+    }
+
+    private void initVersionCheck() {
+        if (!StoryApplication.isOffline()) {
+            firebaseUtil.checkVersion(this);
+        }
     }
 
     private void initNavigationState() {

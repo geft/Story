@@ -20,6 +20,11 @@
     <string name="login_menu_error">Failed to load menu data</string>
     <string name="login_folder_removed">The following outdated folders are removed: </string>
 
+    <string name="update_title">Version Update</string>
+    <string name="update_message">A new update is available</string>
+    <string name="update_button_positive">Update Now</string>
+    <string name="update_button_negative">Later</string>
+
     <string name="home_email_error_empty">E-mail cannot be empty</string>
     <string name="home_email_error_invalid">Invalid e-mail format</string>
     <string name="home_password_error_empty">Password cannot be empty</string>

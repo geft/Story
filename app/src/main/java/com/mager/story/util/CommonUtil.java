@@ -2,6 +2,9 @@ package com.mager.story.util;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.PowerManager;
 import android.view.View;
@@ -45,5 +48,18 @@ public class CommonUtil {
         } else {
             return powerManager.isInteractive();
         }
+    }
+
+    public static void goToPlayStore(Context context) {
+        final String appPackageName = context.getPackageName();
+        try {
+            context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+        } catch (android.content.ActivityNotFoundException e) {
+            context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
+        }
+    }
+
+    public static boolean doesAppNeedUpdate(Context context, long version) throws PackageManager.NameNotFoundException {
+        return version > context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionCode;
     }
 }

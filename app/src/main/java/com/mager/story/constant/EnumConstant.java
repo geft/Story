@@ -14,6 +14,7 @@ public class EnumConstant {
     @StringDef
     @Retention(RetentionPolicy.SOURCE)
     public @interface Tag {
+        String FIREBASE = "FIREBASE";
         String LOGIN = "LOGIN";
         String MENU = "MENU";
         String PHOTO = "MENU_PHOTO";

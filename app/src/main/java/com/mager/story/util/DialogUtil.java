@@ -37,6 +37,15 @@ public class DialogUtil {
         return encryptedValue != null && encryptedValue.equals(passwordToMatch);
     }
 
+    public static AlertDialog getUpdateDialog(Context context) {
+        return new AlertDialog.Builder(context)
+                .setTitle(R.string.update_title)
+                .setMessage(R.string.update_message)
+                .setPositiveButton(R.string.update_button_positive, (dialogInterface, i) -> CommonUtil.goToPlayStore(context))
+                .setNegativeButton(R.string.update_button_negative, null)
+                .create();
+    }
+
     public interface DialogListener<T> {
         void onComplete(T data);
     }
