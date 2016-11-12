@@ -10,6 +10,8 @@ import android.os.PowerManager;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
+import com.mager.story.R;
+
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -52,10 +54,13 @@ public class CommonUtil {
 
     public static void goToPlayStore(Context context) {
         final String appPackageName = context.getPackageName();
+        final String link = ResourceUtil.getString(R.string.update_link_format, appPackageName);
+        final String linkDirect = ResourceUtil.getString(R.string.update_link_direct_format, appPackageName);
+
         try {
-            context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+            context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(link)));
         } catch (android.content.ActivityNotFoundException e) {
-            context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
+            context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(linkDirect)));
         }
     }
 

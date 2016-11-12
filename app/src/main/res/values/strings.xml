@@ -24,6 +24,8 @@
     <string name="update_message">A new update is available</string>
     <string name="update_button_positive">Update Now</string>
     <string name="update_button_negative">Later</string>
+    <string name="update_link_format">market://details?id=%s</string>
+    <string name="update_link_direct_format">https://play.google.com/store/apps/details?id=%s</string>
 
     <string name="home_email_error_empty">E-mail cannot be empty</string>
     <string name="home_email_error_invalid">Invalid e-mail format</string>
