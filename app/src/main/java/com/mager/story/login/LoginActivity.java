@@ -25,8 +25,8 @@ import com.mager.story.core.callback.LoginInterface;
 import com.mager.story.data.MenuData;
 import com.mager.story.databinding.ActivityLoginBinding;
 import com.mager.story.util.CommonUtil;
-import com.mager.story.util.CrashUtil;
 import com.mager.story.util.FileUtil;
+import com.mager.story.util.LogUtil;
 import com.mager.story.util.ResourceUtil;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
@@ -97,16 +97,16 @@ public class LoginActivity
         getPresenter().loadEmail();
 
         editText.addValidator(new CustomValidator(
-                RegexConstant.NONEMPTY, ResourceUtil.getString(R.string.home_email_error_empty)));
+                RegexConstant.NONEMPTY, ResourceUtil.INSTANCE.getString(R.string.home_email_error_empty)));
         editText.addValidator(new CustomValidator(
-                RegexConstant.EMAIL_FORMAT, ResourceUtil.getString(R.string.home_email_error_invalid)));
+                RegexConstant.EMAIL_FORMAT, ResourceUtil.INSTANCE.getString(R.string.home_email_error_invalid)));
     }
 
     private void initPasswordInput(MaterialEditText editText) {
         editText.addValidator(new CustomValidator(
-                RegexConstant.NONEMPTY, ResourceUtil.getString(R.string.home_password_error_empty)));
+                RegexConstant.NONEMPTY, ResourceUtil.INSTANCE.getString(R.string.home_password_error_empty)));
         editText.addValidator(new CustomValidator(
-                RegexConstant.SIX_CHAR, ResourceUtil.getString(R.string.home_password_error_minimum)));
+                RegexConstant.SIX_CHAR, ResourceUtil.INSTANCE.getString(R.string.home_password_error_minimum)));
     }
 
     private boolean validateInputs() {
@@ -140,7 +140,7 @@ public class LoginActivity
             getPresenter().setLocalMenuData();
             handleMenuReady();
         } else {
-            ResourceUtil.showErrorSnackBar(binding.getRoot(), ResourceUtil.getString(R.string.login_menu_error));
+            ResourceUtil.INSTANCE.showErrorSnackBar(binding.getRoot(), ResourceUtil.INSTANCE.getString(R.string.login_menu_error));
         }
     }
 
@@ -155,9 +155,9 @@ public class LoginActivity
 
     @Override
     public void setError(String message) {
-        CrashUtil.logWarning(EnumConstant.Tag.LOGIN, message);
-        ResourceUtil.showErrorSnackBar(
-                binding.getRoot(), ResourceUtil.getString(R.string.login_download_error));
+        LogUtil.INSTANCE.logWarning(EnumConstant.Tag.LOGIN, message);
+        ResourceUtil.INSTANCE.showErrorSnackBar(
+                binding.getRoot(), ResourceUtil.INSTANCE.getString(R.string.login_download_error));
     }
 
     @Override
@@ -182,7 +182,7 @@ public class LoginActivity
         getPresenter().incrementWrongCount();
 
         if (getViewModel().wrongCount.get() == Constants.LOGIN_ATTEMPT_MAX) {
-            FileUtil.clearInternalData();
+            FileUtil.INSTANCE.clearInternalData();
             showErrorSnackBar(R.string.file_clear_all_data);
         } else {
             showErrorSnackBar(R.string.auth_sign_in_fail);
@@ -205,7 +205,7 @@ public class LoginActivity
     }
 
     private void showErrorSnackBar(@StringRes int stringRes) {
-        ResourceUtil.showErrorSnackBar(binding.getRoot(), ResourceUtil.getString(stringRes));
+        ResourceUtil.INSTANCE.showErrorSnackBar(binding.getRoot(), ResourceUtil.INSTANCE.getString(stringRes));
     }
 
     @Override
@@ -243,7 +243,7 @@ public class LoginActivity
     }
 
     private void handleMenuReady() {
-        ResourceUtil.showToast(ResourceUtil.getString(R.string.auth_sign_in_success));
+        ResourceUtil.INSTANCE.showToast(ResourceUtil.INSTANCE.getString(R.string.auth_sign_in_success));
         getPresenter().clearOutdatedData();
         goToHome();
     }
@@ -260,7 +260,7 @@ public class LoginActivity
     @Override
     public void downloadFail(String message) {
         setLoading(false);
-        CrashUtil.logWarning(EnumConstant.Tag.MENU, message);
+        LogUtil.INSTANCE.logWarning(EnumConstant.Tag.MENU, message);
         showErrorSnackBar(R.string.login_download_error);
     }
 

@@ -18,9 +18,9 @@ import com.mager.story.core.callback.Loadable;
 import com.mager.story.data.DownloadInfo;
 import com.mager.story.data.DownloadInfoUtil;
 import com.mager.story.databinding.DialogPhotoPagerBinding;
-import com.mager.story.util.CrashUtil;
 import com.mager.story.util.DownloadUtil;
 import com.mager.story.util.FileUtil;
+import com.mager.story.util.LogUtil;
 import com.mager.story.util.ResourceUtil;
 
 import java.io.File;
@@ -55,7 +55,7 @@ public class PhotoPagerAdapter extends PagerAdapter {
     private void downloadFullPhoto(PhotoItem photoItem, DialogPhotoPagerBinding binding) {
         DownloadInfo downloadInfo = DownloadInfoUtil.getPhotoInfo(photoItem, true);
 
-        File file = FileUtil.getFileFromCode(photoItem.getName(), downloadInfo);
+        File file = FileUtil.INSTANCE.getFileFromCode(photoItem.getName(), downloadInfo);
 
         if (file.exists()) {
             loadFileToImage(binding, getLoadable(binding), photoItem.getName(), downloadInfo);
@@ -74,7 +74,7 @@ public class PhotoPagerAdapter extends PagerAdapter {
             @Override
             public void downloadSuccess(Object file, @EnumConstant.DownloadType String downloadType) {
                 if (file instanceof byte[]) {
-                    FileUtil.saveBytesToDevice((byte[]) file, code, downloadInfo, false);
+                    FileUtil.INSTANCE.saveBytesToDevice((byte[]) file, code, downloadInfo, false);
                     loadFileToImage(binding, getLoadable(binding), code, downloadInfo);
                 }
             }
@@ -89,15 +89,15 @@ public class PhotoPagerAdapter extends PagerAdapter {
     private void loadFileToImage(final DialogPhotoPagerBinding binding, Loadable loadable, String code, DownloadInfo downloadInfo) {
         loadable.setLoading(true);
 
-        File file = FileUtil.getFileFromCode(code, downloadInfo);
+        File file = FileUtil.INSTANCE.getFileFromCode(code, downloadInfo);
 
         Glide.with(activity)
-                .load(FileUtil.readBytesFromDevice(file, false))
+                .load(FileUtil.INSTANCE.readBytesFromDevice(file, false))
                 .asBitmap()
                 .listener(new RequestListener<byte[], Bitmap>() {
                     @Override
                     public boolean onException(Exception e, byte[] model, Target<Bitmap> target, boolean isFirstResource) {
-                        displayErrorMessage(ResourceUtil.getString(R.string.photo_load_error), binding);
+                        displayErrorMessage(ResourceUtil.INSTANCE.getString(R.string.photo_load_error), binding);
                         return false;
                     }
 
@@ -114,7 +114,7 @@ public class PhotoPagerAdapter extends PagerAdapter {
     private void displayErrorMessage(String message, DialogPhotoPagerBinding binding) {
         binding.progress.setVisibility(View.GONE);
         binding.error.setVisibility(View.VISIBLE);
-        CrashUtil.logWarning(EnumConstant.Tag.PHOTO, message);
+        LogUtil.INSTANCE.logWarning(EnumConstant.Tag.PHOTO, message);
     }
 
     private Loadable getLoadable(DialogPhotoPagerBinding binding) {

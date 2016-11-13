@@ -42,9 +42,9 @@ public class FirebaseUtil {
         return firebaseAuth -> {
             FirebaseUser user = firebaseAuth.getCurrentUser();
             if (user != null) {
-                CrashUtil.logInfo(Tag.LOGIN, ResourceUtil.getString(R.string.firebase_logged_in, user.getEmail()));
+                LogUtil.INSTANCE.logInfo(Tag.LOGIN, ResourceUtil.INSTANCE.getString(R.string.firebase_logged_in, user.getEmail()));
             } else {
-                CrashUtil.logInfo(Tag.LOGIN, ResourceUtil.getString(R.string.firebase_logged_out));
+                LogUtil.INSTANCE.logInfo(Tag.LOGIN, ResourceUtil.INSTANCE.getString(R.string.firebase_logged_out));
             }
         };
     }
@@ -57,10 +57,10 @@ public class FirebaseUtil {
                 task
                         .addOnSuccessListener(successTask -> {
                         })
-                        .addOnFailureListener(e -> CrashUtil.logWarning(Tag.MENU, e.getMessage()));
+                        .addOnFailureListener(e -> LogUtil.INSTANCE.logWarning(Tag.MENU, e.getMessage()));
             }
         } catch (Exception e) {
-            CrashUtil.logError(Tag.MENU, ResourceUtil.getString(R.string.login_download_error), e);
+            LogUtil.INSTANCE.logError(Tag.MENU, ResourceUtil.INSTANCE.getString(R.string.login_download_error), e);
         }
     }
 
@@ -80,17 +80,17 @@ public class FirebaseUtil {
                         }
                     });
         } catch (Exception e) {
-            CrashUtil.logWarning(Tag.LOGIN, e.getMessage());
+            LogUtil.INSTANCE.logWarning(Tag.LOGIN, e.getMessage());
         }
     }
 
     private void handleSignInSuccess(LoginInterface loginInterface, FirebaseUser user) {
-        CrashUtil.logDebug(Tag.LOGIN, ResourceUtil.getString(R.string.auth_signed_in_format, user.getEmail()));
+        LogUtil.INSTANCE.logDebug(Tag.LOGIN, ResourceUtil.INSTANCE.getString(R.string.auth_signed_in_format, user.getEmail()));
         loginInterface.sendSignInResult(true);
     }
 
     private void handleSignInFailure(LoginInterface loginInterface) {
-        CrashUtil.logDebug(Tag.LOGIN, ResourceUtil.getString(
+        LogUtil.INSTANCE.logDebug(Tag.LOGIN, ResourceUtil.INSTANCE.getString(
                 R.string.auth_sign_in_fail_format,
                 loginInterface.getEmail(),
                 loginInterface.getPassword(),
@@ -113,7 +113,7 @@ public class FirebaseUtil {
                         DialogUtil.getUpdateDialog(context).show();
                     }
                 } catch (PackageManager.NameNotFoundException e) {
-                    CrashUtil.logError(EnumConstant.Tag.FIREBASE, e.getMessage(), e);
+                    LogUtil.INSTANCE.logError(EnumConstant.Tag.FIREBASE, e.getMessage(), e);
                 }
             }
 

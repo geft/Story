@@ -9,9 +9,9 @@ import com.mager.story.core.callback.Loadable;
 import com.mager.story.data.DownloadInfo;
 import com.mager.story.data.DownloadInfoUtil;
 import com.mager.story.util.CommonUtil;
-import com.mager.story.util.CrashUtil;
 import com.mager.story.util.DownloadUtil;
 import com.mager.story.util.FileUtil;
+import com.mager.story.util.LogUtil;
 
 import java.io.File;
 import java.util.List;
@@ -46,7 +46,7 @@ class PhotoDownloader {
     @NonNull
     private Boolean handlePhotoItem(PhotoItem photoItem) {
         DownloadInfo downloadInfo = DownloadInfoUtil.getPhotoInfo(photoItem, false);
-        File file = FileUtil.getFileFromCode(photoItem.getName(), downloadInfo);
+        File file = FileUtil.INSTANCE.getFileFromCode(photoItem.getName(), downloadInfo);
 
         if (file.exists()) {
             setItemPath(photoItem, downloadInfo);
@@ -90,7 +90,7 @@ class PhotoDownloader {
             @Override
             public void downloadSuccess(Object file, @EnumConstant.DownloadType String downloadType) {
                 if (file instanceof byte[]) {
-                    FileUtil.saveBytesToDevice((byte[]) file, code, downloadInfo, false);
+                    FileUtil.INSTANCE.saveBytesToDevice((byte[]) file, code, downloadInfo, false);
                     setItemPath(item, downloadInfo);
                 }
             }
@@ -98,14 +98,14 @@ class PhotoDownloader {
             @Override
             public void downloadFail(String message) {
                 item.error.set(true);
-                CrashUtil.logWarning(EnumConstant.Tag.PHOTO, message);
+                LogUtil.INSTANCE.logWarning(EnumConstant.Tag.PHOTO, message);
             }
         };
     }
 
     private void setItemPath(PhotoItem item, DownloadInfo downloadInfo) {
         subscription.add(
-                Observable.just(FileUtil.getFileFromCode(item.getName(), downloadInfo).getPath())
+                Observable.just(FileUtil.INSTANCE.getFileFromCode(item.getName(), downloadInfo).getPath())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(item::setPath)
         );

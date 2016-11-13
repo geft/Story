@@ -17,9 +17,9 @@ import com.mager.story.core.callback.Loadable;
 import com.mager.story.data.DownloadInfoUtil;
 import com.mager.story.databinding.ActivityVideoBinding;
 import com.mager.story.menu.video.MenuVideo;
-import com.mager.story.util.CrashUtil;
 import com.mager.story.util.DownloadUtil;
 import com.mager.story.util.FileUtil;
+import com.mager.story.util.LogUtil;
 import com.mager.story.util.ResourceUtil;
 
 import java.io.File;
@@ -63,7 +63,7 @@ public class VideoActivity
 
         player = new VideoPlayer(this, binding);
 
-        File file = FileUtil.getFileFromCode(menuVideo.getCode(), DownloadInfoUtil.getVideoInfo());
+        File file = FileUtil.INSTANCE.getFileFromCode(menuVideo.getCode(), DownloadInfoUtil.getVideoInfo());
         if (file.exists()) {
             handleFileExists(file);
         } else {
@@ -79,7 +79,7 @@ public class VideoActivity
             playVideo(Uri.fromFile(temp));
         } else {
             try (FileOutputStream stream = new FileOutputStream(temp)) {
-                byte[] data = FileUtil.readBytesFromDevice(file, true);
+                byte[] data = FileUtil.INSTANCE.readBytesFromDevice(file, true);
                 if (data != null) {
                     stream.write(data);
                 }
@@ -87,7 +87,7 @@ public class VideoActivity
 
                 playVideo(Uri.fromFile(temp));
             } catch (Exception e) {
-                CrashUtil.logWarning(EnumConstant.Tag.VIDEO, e.getMessage());
+                LogUtil.INSTANCE.logWarning(EnumConstant.Tag.VIDEO, e.getMessage());
             }
         }
     }
@@ -117,7 +117,7 @@ public class VideoActivity
 
     @Override
     public void downloadFail(String message) {
-        setError(ResourceUtil.getString(R.string.video_download_error));
+        setError(ResourceUtil.INSTANCE.getString(R.string.video_download_error));
     }
 
     @Override
@@ -133,7 +133,7 @@ public class VideoActivity
     @Override
     public void setError(String message) {
         setLoading(false);
-        CrashUtil.logWarning(EnumConstant.Tag.VIDEO, message);
-        ResourceUtil.showErrorSnackBar(binding.getRoot(), ResourceUtil.getString(R.string.video_download_error));
+        LogUtil.INSTANCE.logWarning(EnumConstant.Tag.VIDEO, message);
+        ResourceUtil.INSTANCE.showErrorSnackBar(binding.getRoot(), ResourceUtil.INSTANCE.getString(R.string.video_download_error));
     }
 }

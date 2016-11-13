@@ -21,9 +21,9 @@ import com.mager.story.core.callback.Loadable;
 import com.mager.story.core.callback.MenuInterface;
 import com.mager.story.data.DownloadInfo;
 import com.mager.story.databinding.FragmentRecyclerViewBinding;
-import com.mager.story.util.CrashUtil;
 import com.mager.story.util.DownloadUtil;
 import com.mager.story.util.FileUtil;
+import com.mager.story.util.LogUtil;
 import com.mager.story.util.ResourceUtil;
 
 import java.util.List;
@@ -104,15 +104,15 @@ public abstract class MenuFragment extends CoreFragment<MenuPresenter, MenuViewM
             @Override
             public void downloadSuccess(Object bytes, @EnumConstant.DownloadType String downloadType) {
                 if (bytes instanceof byte[]) {
-                    FileUtil.saveBytesToDevice((byte[]) bytes, code, downloadInfo, true);
-                    ResourceUtil.showToast(ResourceUtil.getString(R.string.menu_media_download_success));
+                    FileUtil.INSTANCE.saveBytesToDevice((byte[]) bytes, code, downloadInfo, true);
+                    ResourceUtil.INSTANCE.showToast(ResourceUtil.INSTANCE.getString(R.string.menu_media_download_success));
                 }
             }
 
             @Override
             public void downloadFail(String message) {
-                CrashUtil.logWarning(EnumConstant.Tag.MENU, message);
-                ResourceUtil.showToast(ResourceUtil.getString(R.string.menu_media_download_fail));
+                LogUtil.INSTANCE.logWarning(EnumConstant.Tag.MENU, message);
+                ResourceUtil.INSTANCE.showToast(ResourceUtil.INSTANCE.getString(R.string.menu_media_download_fail));
             }
         };
     }

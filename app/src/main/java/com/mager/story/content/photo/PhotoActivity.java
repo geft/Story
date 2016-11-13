@@ -85,7 +85,7 @@ public class PhotoActivity
     private int getSpanCount() {
         return ViewUtil.calculateSpanCount(
                 StoryApplication.getInstance(),
-                ResourceUtil.getDimenInDp(R.dimen.photo_size));
+                ResourceUtil.INSTANCE.getDimenInDp(R.dimen.photo_size));
     }
 
     @Override

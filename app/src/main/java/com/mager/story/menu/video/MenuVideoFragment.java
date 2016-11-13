@@ -2,6 +2,7 @@ package com.mager.story.menu.video;
 
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
 import com.hannesdorfmann.fragmentargs.annotation.Arg;
 import com.hannesdorfmann.fragmentargs.annotation.FragmentWithArgs;
@@ -13,8 +14,8 @@ import com.mager.story.core.callback.Loadable;
 import com.mager.story.core.recyclerView.BindAdapter;
 import com.mager.story.data.DownloadInfoUtil;
 import com.mager.story.menu.MenuFragment;
-import com.mager.story.util.CrashUtil;
 import com.mager.story.util.DialogUtil;
+import com.mager.story.util.LogUtil;
 import com.mager.story.util.ResourceUtil;
 
 import java.util.List;
@@ -73,7 +74,7 @@ public class MenuVideoFragment extends MenuFragment {
             @Override
             public void setError(String message) {
                 menuVideo.loading.set(false);
-                CrashUtil.logWarning(EnumConstant.Tag.AUDIO, message);
+                LogUtil.INSTANCE.logWarning(EnumConstant.Tag.AUDIO, message);
             }
         };
     }
@@ -83,11 +84,15 @@ public class MenuVideoFragment extends MenuFragment {
                     if (correct) {
                         showVideoMenu(position, menuVideo);
                     } else {
-                        ResourceUtil.showErrorSnackBar(getView(), ResourceUtil.getString(R.string.video_password_wrong));
+                        View view = getView();
+
+                        if (view != null) {
+                            ResourceUtil.INSTANCE.showErrorSnackBar(getView(), ResourceUtil.INSTANCE.getString(R.string.video_password_wrong));
+                        }
                     }
                 },
                 getActivity(),
-                ResourceUtil.getString(R.string.video_password_value)
+                ResourceUtil.INSTANCE.getString(R.string.video_password_value)
         );
 
         passwordDialog.show();

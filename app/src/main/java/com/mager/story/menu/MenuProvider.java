@@ -27,7 +27,7 @@ public class MenuProvider {
             item.setCode(photo.code);
             item.setName(photo.name);
             item.setCount(photo.count);
-            item.setPath(FileUtil.getFileFromCode(
+            item.setPath(FileUtil.INSTANCE.getFileFromCode(
                     photo.code,
                     DownloadInfoUtil.getMenuPhotoInfo(DownloadType.MENU_PHOTO)
             ).getPath());
@@ -46,11 +46,11 @@ public class MenuProvider {
             item.setCode(story.code);
             item.setTitle(story.title);
             item.setChapter(story.chapter);
-            item.setPath(FileUtil.getFileFromCode(
+            item.setPath(FileUtil.INSTANCE.getFileFromCode(
                     story.code,
                     DownloadInfoUtil.getMenuPhotoInfo(DownloadType.MENU_STORY)
             ).getPath());
-            item.offline.set(FileUtil.getFileFromCode(story.code, DownloadInfoUtil.getStoryInfo()).exists());
+            item.offline.set(FileUtil.INSTANCE.getFileFromCode(story.code, DownloadInfoUtil.getStoryInfo()).exists());
 
             storyList.add(item);
         }
@@ -67,7 +67,7 @@ public class MenuProvider {
             item.setName(audio.name);
 
             DownloadInfo downloadInfo = DownloadInfoUtil.getAudioInfo();
-            item.offline.set(FileUtil.getFileFromCode(audio.code, downloadInfo).exists());
+            item.offline.set(FileUtil.INSTANCE.getFileFromCode(audio.code, downloadInfo).exists());
 
             audioList.add(item);
         }
@@ -85,7 +85,7 @@ public class MenuProvider {
             item.protect.set(video.protect);
 
             DownloadInfo downloadInfo = DownloadInfoUtil.getVideoInfo();
-            item.offline.set(FileUtil.getFileFromCode(video.code, downloadInfo).exists());
+            item.offline.set(FileUtil.INSTANCE.getFileFromCode(video.code, downloadInfo).exists());
 
             videoList.add(item);
         }

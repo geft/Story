@@ -12,7 +12,7 @@ import com.mager.story.core.callback.Loadable;
 import com.mager.story.core.recyclerView.BindAdapter;
 import com.mager.story.data.DownloadInfoUtil;
 import com.mager.story.menu.MenuFragment;
-import com.mager.story.util.CrashUtil;
+import com.mager.story.util.LogUtil;
 
 import java.util.List;
 
@@ -66,7 +66,7 @@ public class MenuAudioFragment extends MenuFragment {
             @Override
             public void setError(String message) {
                 menuAudio.loading.set(false);
-                CrashUtil.logWarning(EnumConstant.Tag.AUDIO, message);
+                LogUtil.INSTANCE.logWarning(EnumConstant.Tag.AUDIO, message);
             }
         };
     }

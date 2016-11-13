@@ -65,7 +65,7 @@ public class HomeActivity extends CoreActivity<HomePresenter, HomeViewModel>
     protected void onStart() {
         super.onStart();
 
-        FileUtil.clearCache();
+        FileUtil.INSTANCE.clearCache();
     }
 
     private void initVersionCheck() {
@@ -101,7 +101,7 @@ public class HomeActivity extends CoreActivity<HomePresenter, HomeViewModel>
     @Override
     public void setError(String message) {
         getPresenter().setLoading(false);
-        ResourceUtil.showErrorSnackBar(binding.getRoot(), message);
+        ResourceUtil.INSTANCE.showErrorSnackBar(binding.getRoot(), message);
     }
 
     @Override

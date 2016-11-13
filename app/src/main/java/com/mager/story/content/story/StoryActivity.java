@@ -15,9 +15,9 @@ import com.mager.story.data.DownloadInfo;
 import com.mager.story.data.DownloadInfoUtil;
 import com.mager.story.databinding.ActivityStoryBinding;
 import com.mager.story.menu.story.MenuStory;
-import com.mager.story.util.CrashUtil;
 import com.mager.story.util.DownloadUtil;
 import com.mager.story.util.FileUtil;
+import com.mager.story.util.LogUtil;
 import com.mager.story.util.ResourceUtil;
 
 import java.io.File;
@@ -57,7 +57,7 @@ public class StoryActivity
 
     private void initContent() {
         DownloadInfo downloadInfo = DownloadInfoUtil.getStoryInfo();
-        File file = FileUtil.getFileFromCode(menuStory.getCode(), downloadInfo);
+        File file = FileUtil.INSTANCE.getFileFromCode(menuStory.getCode(), downloadInfo);
 
         if (!file.exists()) {
             DownloadUtil.downloadBytes(this, this, getViewModel().getCode(), downloadInfo);
@@ -101,18 +101,18 @@ public class StoryActivity
     @Override
     public void downloadSuccess(Object file, @EnumConstant.DownloadType String downloadType) {
         DownloadInfo downloadInfo = DownloadInfoUtil.getStoryInfo();
-        File data = FileUtil.getFileFromCode(menuStory.getCode(), downloadInfo);
+        File data = FileUtil.INSTANCE.getFileFromCode(menuStory.getCode(), downloadInfo);
 
         if (file instanceof byte[]) {
-            FileUtil.saveBytesToDevice((byte[]) file, menuStory.getCode(), downloadInfo, false);
+            FileUtil.INSTANCE.saveBytesToDevice((byte[]) file, menuStory.getCode(), downloadInfo, false);
             readData(data);
         } else {
-            setError(ResourceUtil.getString(R.string.story_download_error));
+            setError(ResourceUtil.INSTANCE.getString(R.string.story_download_error));
         }
     }
 
     private void readData(File data) {
-        getPresenter().setContent(FileUtil.readBytesFromDevice(data, false));
+        getPresenter().setContent(FileUtil.INSTANCE.readBytesFromDevice(data, false));
     }
 
     @Override
@@ -132,9 +132,9 @@ public class StoryActivity
 
     @Override
     public void setError(String message) {
-        CrashUtil.logWarning(EnumConstant.Tag.STORY, message);
+        LogUtil.INSTANCE.logWarning(EnumConstant.Tag.STORY, message);
 
         setLoading(false);
-        ResourceUtil.showErrorSnackBar(binding.getRoot(), ResourceUtil.getString(R.string.story_download_error));
+        ResourceUtil.INSTANCE.showErrorSnackBar(binding.getRoot(), ResourceUtil.INSTANCE.getString(R.string.story_download_error));
     }
 }

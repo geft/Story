@@ -54,8 +54,8 @@ public class CommonUtil {
 
     public static void goToPlayStore(Context context) {
         final String appPackageName = context.getPackageName();
-        final String link = ResourceUtil.getString(R.string.update_link_format, appPackageName);
-        final String linkDirect = ResourceUtil.getString(R.string.update_link_direct_format, appPackageName);
+        final String link = ResourceUtil.INSTANCE.getString(R.string.update_link_format, appPackageName);
+        final String linkDirect = ResourceUtil.INSTANCE.getString(R.string.update_link_direct_format, appPackageName);
 
         try {
             context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(link)));

@@ -38,7 +38,7 @@ class PhotoPresenter extends CorePresenter<PhotoViewModel> {
 
         for (int i = 0; i < count; i++) {
             PhotoItem item = new PhotoItem();
-            item.setName(StringUtil.padLeft(
+            item.setName(StringUtil.INSTANCE.padLeft(
                     "0", Integer.toString(i + 1), Constants.PHOTO_NAME_LENGTH));
             item.setGroup(group);
             list.add(item);

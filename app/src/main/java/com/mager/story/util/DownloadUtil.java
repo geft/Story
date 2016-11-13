@@ -17,7 +17,7 @@ import com.mager.story.data.DownloadInfo;
 
 public class DownloadUtil {
     public static void downloadBytes(Loadable loadable, Downloadable downloadable, String code, DownloadInfo downloadInfo) {
-        String fileName = FileUtil.getFileName(code, downloadInfo);
+        String fileName = FileUtil.INSTANCE.getFileName(code, downloadInfo);
 
         try {
             initStorageReference(loadable, fileName, downloadInfo)
@@ -25,25 +25,25 @@ public class DownloadUtil {
                     .addOnSuccessListener(getOnSuccessListener(loadable, downloadable, downloadInfo, fileName))
                     .addOnFailureListener(getOnFailureListener(loadable, downloadable));
         } catch (Exception e) {
-            CrashUtil.logError(e);
+            LogUtil.INSTANCE.logError(e);
         }
     }
 
     public static void downloadUri(Loadable loadable, Downloadable downloadable, String code, DownloadInfo downloadInfo) {
         try {
-            initStorageReference(loadable, FileUtil.getFileName(code, downloadInfo), downloadInfo)
+            initStorageReference(loadable, FileUtil.INSTANCE.getFileName(code, downloadInfo), downloadInfo)
                     .getDownloadUrl()
                     .addOnCompleteListener(getUriOnCompleteListener(loadable, downloadable, downloadInfo))
                     .addOnFailureListener(getOnFailureListener(loadable, downloadable));
         } catch (Exception e) {
-            CrashUtil.logError(e);
+            LogUtil.INSTANCE.logError(e);
         }
     }
 
     @NonNull
     private static OnSuccessListener<byte[]> getOnSuccessListener(Loadable loadable, Downloadable downloadable, DownloadInfo downloadInfo, String fileName) {
         return bytes -> {
-            FileUtil.createFileInFolder(downloadInfo.folderType, fileName);
+            FileUtil.INSTANCE.createFileInFolder(downloadInfo.folderType, fileName);
             loadable.setLoading(false);
             downloadable.downloadSuccess(bytes, downloadInfo.downloadType);
         };

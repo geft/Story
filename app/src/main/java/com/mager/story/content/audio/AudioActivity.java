@@ -15,9 +15,9 @@ import com.mager.story.data.DownloadInfoUtil;
 import com.mager.story.databinding.DialogAudioBinding;
 import com.mager.story.menu.audio.MenuAudio;
 import com.mager.story.util.CommonUtil;
-import com.mager.story.util.CrashUtil;
 import com.mager.story.util.DownloadUtil;
 import com.mager.story.util.FileUtil;
+import com.mager.story.util.LogUtil;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -64,7 +64,7 @@ public class AudioActivity extends CoreActivity<AudioPresenter, AudioViewModel>
 
         setTitle(menuAudio.getName());
 
-        File file = FileUtil.getFileFromCode(menuAudio.getCode(), DownloadInfoUtil.getAudioInfo());
+        File file = FileUtil.INSTANCE.getFileFromCode(menuAudio.getCode(), DownloadInfoUtil.getAudioInfo());
         if (file.exists()) {
             handleFileExists(file);
         } else {
@@ -76,7 +76,7 @@ public class AudioActivity extends CoreActivity<AudioPresenter, AudioViewModel>
         File temp = new File(getCacheDir() + File.separator + menuAudio.getCode());
 
         try (FileOutputStream stream = new FileOutputStream(temp)) {
-            byte[] data = FileUtil.readBytesFromDevice(file, true);
+            byte[] data = FileUtil.INSTANCE.readBytesFromDevice(file, true);
             if (data != null) {
                 stream.write(data);
             }
@@ -84,7 +84,7 @@ public class AudioActivity extends CoreActivity<AudioPresenter, AudioViewModel>
 
             initAudioWife(Uri.fromFile(temp));
         } catch (Exception e) {
-            CrashUtil.logWarning(EnumConstant.Tag.AUDIO, e.getMessage());
+            LogUtil.INSTANCE.logWarning(EnumConstant.Tag.AUDIO, e.getMessage());
         }
     }
 
@@ -152,7 +152,7 @@ public class AudioActivity extends CoreActivity<AudioPresenter, AudioViewModel>
     public void setError(String message) {
         setLoading(false);
         getPresenter().showError(true);
-        CrashUtil.logWarning(EnumConstant.Tag.AUDIO, message);
+        LogUtil.INSTANCE.logWarning(EnumConstant.Tag.AUDIO, message);
     }
 
     @Override

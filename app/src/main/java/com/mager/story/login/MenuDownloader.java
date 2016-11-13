@@ -49,7 +49,7 @@ class MenuDownloader {
 
     private void downloadMenuPhoto(String code, @EnumConstant.DownloadType String downloadType) {
         DownloadInfo downloadInfo = DownloadInfoUtil.getMenuPhotoInfo(downloadType);
-        File file = FileUtil.getFileFromCode(code, downloadInfo);
+        File file = FileUtil.INSTANCE.getFileFromCode(code, downloadInfo);
         if (file.exists()) {
             downloadable.downloadSuccess(null, downloadType);
         } else {
@@ -63,7 +63,7 @@ class MenuDownloader {
             @Override
             public void downloadSuccess(Object file, @EnumConstant.DownloadType String downloadType) {
                 if (file instanceof byte[]) {
-                    FileUtil.saveBytesToDevice((byte[]) file, code, downloadInfo, false);
+                    FileUtil.INSTANCE.saveBytesToDevice((byte[]) file, code, downloadInfo, false);
                     downloadable.downloadSuccess(file, downloadType);
                 }
             }
